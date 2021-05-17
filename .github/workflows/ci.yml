@@ -2,7 +2,12 @@
 name: ci
 
 on: # yamllint disable-line rule:truthy
+<<<<<<< HEAD
   pull_request:
+=======
+  # pull_request:
+  push:
+>>>>>>> e3bd70d... Added: github runner workflow for CI
   schedule:
     - cron: "45 9 1-28/2 * *"
   workflow_dispatch:
@@ -80,9 +85,12 @@ jobs:
           su ubuntu -c 'source ./ci/provision_emulate.sh && install_shellspec'
       - name: test
         run: >
+<<<<<<< HEAD
           # See https://github.com/shellspec/shellspec/issues/203#issuecomment-838201627
           if [[ "${{ matrix.test_spec }}" == "debian_pkgs" ]]; then exit 0; fi
           if [[ "${{ matrix.test_spec }}" == "rust_pkgs" ]]; then exit 0; fi
+=======
+>>>>>>> e3bd70d... Added: github runner workflow for CI
           su ubuntu -c """
           export PATH=${PATH}:/home/ubuntu/.local/bin &&
           make test_spec spec_file=spec/bin/${{ matrix.test_spec }}_spec.sh use_docker=false
