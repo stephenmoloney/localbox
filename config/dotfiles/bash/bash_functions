@@ -1,0 +1,32 @@
+# @file bash_functions
+# @brief A collection of helper functions loaded into "${HOME}/.bashrc"
+# @description
+#
+#    List of functions
+#
+#      * git_push
+
+# @description
+# Push current git branch to origin
+#
+# @example
+#   git_push
+#   git_push force
+#
+# @arg $1 string An option to pass.
+# "force" will git push force on the remote branch
+function git_push() {
+  local force_push="${1:-}"
+  local args=()
+
+  if [[ "${force_push}" == "force" ]]; then
+    args+=("--force-with-lease")
+  fi
+
+  if [[ -z "${args[*]}" ]]; then
+    git push origin "$(git branch --show-current)"
+  else
+    git push origin "$(git branch --show-current)" "${args[*]}"
+  fi
+}
+

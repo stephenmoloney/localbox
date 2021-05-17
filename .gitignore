@@ -1,0 +1,11 @@
+kubectl
+node_modules
+*.log
+*.tar.*
+*.deb
+config/dotfiles/bash/*.sh
+!config/vim/coc/coc-settings.json
+report
+coverage
+core
+asdf-helm.*

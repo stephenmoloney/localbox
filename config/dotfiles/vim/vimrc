@@ -1,0 +1,336 @@
+" Vimrc file.
+"
+" Maintainer:   Stephen Moloney <stephen@stephenmoloney.com>
+
+set nocompatible
+let g:polyglot_disabled = []
+
+" ----------------------------------------------------------------------------------
+" Plugs
+call plug#begin('~/.vim/autoload/plugged')
+    Plug 'vim-airline/vim-airline' " powerbar at bottom of vim
+    Plug 'vim-airline/vim-airline-themes' " themes for the airline status bar
+    Plug 'arcticicestudio/nord-vim', {'branch' : 'master'} " theme for the vim ui
+    Plug 'wfxr/minimap.vim' " show a minimap while you scroll through the code
+    Plug 'ojroques/vim-scrollstatus' " show the relative scroll progress in the horizontal status bar
+    Plug 'psliwka/vim-smoothie' " smooth scrolling
+    Plug 'editorconfig/editorconfig-vim' " follow editorconfig rules
+    Plug 'scrooloose/nerdtree' " show navigation of left side
+    Plug 'preservim/nerdcommenter' " easy commenting and uncommenting
+    Plug 'airblade/vim-gitgutter' " some basic git diff info in gutter
+    Plug 'eugen0329/vim-esearch' " search and replace across a range of files
+    Plug 'dhruvasagar/vim-table-mode' " Write dynamically formatted tables
+    Plug 'honza/vim-snippets' " ultisnip compliant snippets in a variety of languages
+    Plug 'matze/vim-move' " make it easier to move stuff around
+    Plug 'neoclide/coc.nvim', {'branch': 'release'} " code completion, snippets, linting, formatting
+    Plug 'sheerun/vim-polyglot' " bundler for various languages vim plugins for syntax assistance
+    Plug 'mbbill/undotree' " visualize the undo tree stored by vim (vim stores undo history as a tree)
+    Plug 'zivyangll/git-blame.vim' " reveal the author of a given line of code below the statusbar
+    Plug 'iamcco/markdown-preview.nvim', { 'do': 'cd app && yarn install'  } " markdown preview tool
+    Plug 'pseewald/vim-anyfold' " make folding code blocks easier
+    Plug 'ryanoasis/vim-devicons' " icons for file extensions
+    Plug 'tiagofumo/vim-nerdtree-syntax-highlight' " icons beautification for the nerdtree menu
+    Plug 'osyo-manga/vim-over' " highlight the new changes when doing substitutions
+    Plug 'skanehira/preview-markdown.vim' " Preview markdown as you write
+    Plug 'preservim/tagbar' " enhanced code overview with a tag menu
+    Plug 'mcchrish/nnn.vim' " an additional file manager alternative to nerdtree
+call plug#end()
+
+" ----------------------------------------------------------------------------------
+" General vim settings
+
+" Cursor appearance depending on mode
+au InsertEnter * silent execute "!echo -en \<esc>[5 q"
+au InsertLeave * silent execute "!echo -en \<esc>[2 q"
+
+" Show when leader key is pressed
+set showcmd
+
+" Syntax highlighting enabled
+syntax on
+
+" Filetype event triggering for filetype syntax recognition
+if has('autocmd')
+    filetype plugin indent on
+endif
+
+" Highlight all exact matches in search
+set hlsearch
+
+" Highlight incremental matches in search
+set incsearch
+
+" Copy to the clipboard the content
+" set clipboard^=autoselect
+
+" --  Show help on the right
+augroup vimrc_help
+    autocmd!
+    autocmd BufEnter *.txt if &buftype == 'help' | wincmd L | endif
+augroup END
+
+" To be allowed to close buffers without saving
+set hidden
+
+" Set max colors
+set t_Co=256
+
+" Set visual highlighted mode
+" highlight ColorColumn ctermbg=238 ctermfg=15 guibg='#005FFF' guifg='#0087af'
+" highlight Search ctermbg=238 ctermfg=15 guibg='#005FFF' guifg='#0087af'
+" highlight esearchMatch ctermbg=238 ctermfg=15 guibg='#005FFF' guifg='#0087af'
+
+" Show the last characters that fit as opposed to showing @@ for the last characters
+set display=lastline
+
+" Use utf-8 character encoding in vim internallm
+set encoding=utf-8
+
+" Use utf-8 character encoding in written files
+set fileencoding=utf-8
+
+" Formatting options (see :help fo-table for full description)
+set formatoptions=tcqj
+
+" Set default file format
+:setlocal fileformat=unix
+
+" Amount of commands to keep in history
+set history=500
+
+" Show statusline regardless of if buffer is open
+set laststatus=2
+
+" Show listed special characters (rather than hidden)
+set nolist
+set listchars=tab:>\ ,trail:-,nbsp:+
+
+" Enble mouse bu mouse will not allow copy on hover (hold shift to copy content with mouse will owkr)
+set mouse=a
+set ttymouse=sgr " fix for issue with alacritty terminal
+
+" Allow <c-a> and <c-x> to increment/decrement octal and hexadecimal numbers and alphabet
+set nrformats=octal,hex,alpha
+
+" Options to include in a vim session
+set sessionoptions-=options
+
+" Show absolute number of the current line and relative number of lines around it
+set number relativenumber
+
+" Affects how tab presses are interpreted, if on, uses shiftwidth as guage of indentation
+set smarttab
+
+" Default width of indentation (should be overriden by editorconfig)
+set shiftwidth=2
+set tabstop=2
+
+" Maximum number of vim tabs
+set tabpagemax=6
+
+" Function names and variables can be tags in vim. Tags can be useful for moving around and for some plugins
+set tags=./tags;,tags
+
+" For faster redraws on vim
+set ttyfast
+
+" Default vim info saved in viminfo file
+set viminfo+=!
+
+" Assistance with commandline completion
+set wildmenu
+set wildmode=longest:list,full
+
+" Persistent undo will allow for changes recovery when switching between files
+set undodir="$HOME"."/.vim/tmp"
+set directory="$HOME"."/.vim/tmp"
+set nobackup
+
+" Use spaces instead of tabs (should respect editorconfig as precedent)
+set expandtab
+
+" Setting leader key explicitly
+let mapleader = '\'
+
+" Setting keybinding for copy to clipboard
+noremap <Leader>y "+y
+
+" Set colortheme to nord
+colorscheme nord
+
+" Required to allow coc-highlight show hex colors
+set termguicolors
+let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
+let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
+
+" ----------------------------------------------------------------------------------
+" Airline settings
+let g:airline_theme = 'papercolor'
+
+" Show tablines when multiple buffers are open
+let g:airline#extensions#tabline#enabled = 1
+let g:airline#extensions#tabline#formatter = 'unique_tail_improved'
+
+" Enable use of powerline fonts
+let g:airline_powerline_fonts = 1
+
+" Show list of buffers at top of screen by filename (buffers are text for files)
+let g:airline#extensions#tabline#enabled = 1
+let g:airline#extensions#tabline#fnamemod = ':t'
+let g:airline#extensions#tabline#show_tabs = 1
+
+" scrollstatus bar to allow viewing page progress on airline statusbar
+let g:scrollstatus_size = 30
+let g:airline_section_x = '%{ScrollStatus()}'
+
+" Hotkeys for direct access to buffer tabs 1 through 9
+let g:airline#extensions#tabline#buffer_idx_mode = 1
+nmap <leader>1 <Plug>AirlineSelectTab1
+nmap <leader>2 <Plug>AirlineSelectTab2
+nmap <leader>3 <Plug>AirlineSelectTab3
+nmap <leader>4 <Plug>AirlineSelectTab4
+nmap <leader>5 <Plug>AirlineSelectTab5
+nmap <leader>6 <Plug>AirlineSelectTab6
+nmap <leader>7 <Plug>AirlineSelectTab7
+nmap <leader>8 <Plug>AirlineSelectTab8
+nmap <leader>9 <Plug>AirlineSelectTab9
+
+" Hotkeys for cycling through buffer tabs
+nmap <leader>`` <Plug>AirlineSelectPrevTab
+nmap <leader>` <Plug>AirlineSelectNextTab
+
+" ----------------------------------------------------------------------------------
+" Coc.nvim settings
+let g:coc_filetype_map = {
+    \ 'yaml.ansible': 'yaml',
+    \ 'Dockerfile.*': 'dockerfile',
+    \ '*.Dockerfile': 'dockerfile',
+    \ '*.dockerfile': 'dockerfile'
+    \ }
+
+" Make Shift Tab trigger autocompletion in insert mode
+inoremap <silent><expr> <S-Tab> coc#refresh()
+
+" ----------------------------------------------------------------------------------
+" Minimap settings
+let g:minimap_left = 0
+let g:minimap_width = 14
+let g:minimap_highlight = 'Title'
+let g:minimap_base_highlight = 'Normal'
+let g:minimap_auto_start = 0
+let g:minimap_auto_start_win_enter = 0
+let g:minimap_block_filetypes = ['fugitive', 'nerdtree', 'tagbar' ]
+let g:minimap_block_buftypes = ['nofile', 'nowrite', 'quickfix', 'terminal', 'prompt']
+let g:minimap_close_filetypes = ['startify', 'netrw']
+let g:minimap_close_buftypes = []
+
+" Hotkeys for cycling through minimap on and off
+map <leader>qq :MinimapToggle<CR>
+
+" Undotree hotkey for visualizing undo history
+map <leader>uu :UndotreeToggle<CR>
+
+" ----------------------------------------------------------------------------------
+" Nerdtree settings
+let NERDTreeMinimalUI = 1
+let NERDTreeDirArrows = 1
+let NERDTreeQuitOnOpen = 0
+let NERDTreeAutoDeleteBuffer = 1
+let NERDTreeShowHidden = 1
+let g:NERDTreeWinPos = 0
+let g:NERDTreeIgnore = ['^node_modules$[[dir]]', '^.git$[[dir]]']
+map <leader>ee :NERDTreeToggle<CR>
+map <leader>tt :NERDTreeRefreshRoot<CR>
+
+" Automatically open NERDTree on startup
+if (empty(argv(0)) && empty($NERDTREE_CLOSED))
+    autocmd VimEnter * NERDTree
+endif
+
+" Exit Vim if NERDTree is the only window left.
+autocmd BufEnter * if tabpagenr('$') == 1 &&
+    \ winnr('$') == 1 &&
+    \ exists('b:NERDTree') &&
+    \ b:NERDTree.isTabTree() |
+    \ quit |
+    \ endif
+
+" ----------------------------------------------------------------------------------
+" Snippets settings
+let g:UltiSnipsSnippetDirectories=[$HOME.'/.vim/snippets']
+
+" ----------------------------------------------------------------------------------
+" Esearch settings
+let g:esearch = {}
+
+" Use regex matching with the smart case mode by default and avoid matching text-objects
+let g:esearch.regex   = 1
+let g:esearch.textobj = 0
+let g:esearch.case    = 'smart'
+
+" How to determin project root
+let g:esearch.root_markers = ['.git', 'Makefile', 'node_modules']
+
+" ----------------------------------------------------------------------------------
+" NerdCommenter settings
+let g:NERDCreateDefaultMappings = 1
+
+" Add spaces after comment delimiters by default
+let g:NERDSpaceDelims = 1
+
+" Use compact syntax for prettified multi-line comments
+let g:NERDCompactSexyComs = 0
+
+" Align line-wise comment delimiters flush left instead of following code indentation
+let g:NERDDefaultAlign = 'left'
+
+" Set a language to use its alternate delimiters by default
+let g:NERDAltDelims_java = 0
+
+" Allow commenting and inverting empty lines (useful when commenting a region)
+let g:NERDCommentEmptyLines = 1
+
+" Enable trimming of trailing whitespace when uncommenting
+let g:NERDTrimTrailingWhitespace = 1
+
+" Enable NERDCommenterToggle to check all selected lines is commented or not
+let g:NERDToggleCheckAllLines = 1
+
+" ----------------------------------------------------------------------------------
+" Git blame settings
+"rkdownPreviewTogglerkdownPreviewTogglerkdownPreviewToggle Prevent conflicts with git blame from other plugins
+nnoremap <Leader>s :<C-u>call gitblame#echo()<CR>
+
+" ----------------------------------------------------------------------------------
+" Vim move settings
+let g:move_map_keys = 0
+vmap <C-k> <Plug>MoveBlockUp
+vmap <C-j> <Plug>MoveBlockDown
+
+" ----------------------------------------------------------------------------------
+" markdown-preview settings
+let g:mkdp_auto_start = 0
+let g:mkdp_auto_close = 1
+let g:mkdp_refresh_slow = 0
+let g:mkdp_command_for_global = 0
+let g:mkdp_open_to_the_world = 0
+let g:mkdp_open_ip = ''
+let g:mkdp_browser = 'firefox'
+let g:mkdp_echo_preview_url = 0
+let g:mkdp_page_title = '「${name}」'
+let g:mkdp_filetypes = ['markdown']
+nmap <leader>ww <Plug>MarkdownPreviewToggle
+
+" ----------------------------------------------------------------------------------
+" tagbar settings
+map <leader>rr :TagbarToggle<CR>
+
+" ----------------------------------------------------------------------------------
+" nnn settings
+let g:nnn#set_default_mappings = 0
+map <leader>nn :TagbarToggle<CR>
+
+" ----------------------------------------------------------------------------------
+" Anyfold settings
+set foldlevel=1
+map <leader>aa :AnyFoldActivate<CR>

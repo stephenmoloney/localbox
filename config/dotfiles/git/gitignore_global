@@ -1,0 +1,21 @@
+# IDES
+.idea
+.swp
+.swo
+
+# Configs
+coc-settings.json
+.vim
+
+# Packages/binaries
+node_modules
+*.dll
+*.exe
+*.tar
+*.zip
+*_linux_amd64
+*_linux
+
+# Logs
+*.log
+

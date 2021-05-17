@@ -1,0 +1,53 @@
+# shellcheck disable=SC2148,SC2155,SC1091
+export PATH="${HOME}/.local/bin:/usr/local/sbin:/usr/local/bin"
+export PATH+=":/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin"
+
+LOCALBOX_PATH="${HOME}/src/open/localbox"
+
+function setup_builtins() {
+    set +Eeux
+    set +o >/dev/null
+}
+
+function setup_additional_completions() {
+    if [[ -e /usr/share/bash-completion/bash_completion ]]; then
+        source /usr/share/bash-completion/bash_completion
+    fi
+}
+
+function main() {
+    source "${HOME}/.bash_aliases"
+    source "${HOME}/.bash_functions"
+    source "${LOCALBOX_PATH}/bin/configure/asdf.sh"
+    source "${LOCALBOX_PATH}/bin/configure/asdf_plugins.sh"
+    source "${LOCALBOX_PATH}/bin/configure/git.sh"
+    source "${LOCALBOX_PATH}/bin/configure/go.sh"
+    source "${LOCALBOX_PATH}/bin/configure/misc.sh"
+    source "${LOCALBOX_PATH}/bin/configure/rust.sh"
+    source "${LOCALBOX_PATH}/bin/configure/tmux.sh"
+    source "${LOCALBOX_PATH}/bin/configure/yamllint.sh"
+
+    # From external functions
+    setup_asdf
+    setup_editors
+    setup_gcloud # asdf plugin
+    setup_git
+    setup_go
+    setup_gpg_ssh_agent
+    setup_java    # asdf plugin
+    setup_kubectl # asdf plugin
+    setup_locales
+    setup_timezone
+    setup_rust
+    setup_starship # asdf plugin
+    setup_tmux_plugin_manager
+    setup_yamllint
+    setup_yq # asdf plugin
+
+    # From functions within bashrc
+    export DEBIAN_FRONTEND=dialog
+    setup_additional_completions
+    setup_builtins
+}
+
+main

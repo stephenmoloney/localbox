@@ -1,0 +1,57 @@
+[alias]
+        plog = log --decorate=short --pretty=oneline -n 40 --graph --abbrev-commit
+        contrib = shortlog --summary --numbered --email
+
+[cola]
+        spellcheck = false
+
+[commit]
+        gpgsign = true
+        template = ~/.git_template
+
+[core]
+        excludesfile = ~/.gitignore_global
+        pager = delta
+        attributesfile = ~/.gitattributes
+
+[delta]
+	line-numbers = true
+	navigate = true
+	side-by-side = true
+	paging = always
+	syntax-theme = Nord
+	features = "nordic-style"
+
+[delta "nordic-style"]
+	hunk-header-decoration-style = omit
+
+	minus-non-emph-style          = dim "#94545d"
+	minus-style                   = syntax "#94545d"
+	minus-emph-style              = "#3b4252" "#a9444e"
+	minus-empty-line-marker-style = normal "#2E3440"
+
+	plus-non-emph-style           = dim "#728562"
+	plus-style                    = dim "#728562"
+	plus-emph-style               = "#3b4252" "#728562"
+	plus-empty-line-marker-style  = normal "#2E3440"
+
+	whitespace-error-style        = reverse "#bf616a"
+
+[include]
+        path = ~/.gitconfig.themes
+
+[interactive]
+        diffFilter = delta --color-only
+
+[merge "ours"]
+        driver = true
+
+[tag]
+        gpgSign = true
+        forceSignAnnotated = true
+
+[user]
+        name = Stephen Moloney
+        email = stephen@stephenmoloney.com
+        signingkey = CBCD59F76B456328
+

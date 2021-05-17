@@ -1,0 +1,274 @@
+{
+  // Coc general preferences config
+  "coc.preferences.colorSupport": true,
+  "coc.preferences.formatOnSaveFiletypes": [
+    "bash",
+    "elixir",
+    "go",
+    "dockerfile",
+    "json",
+    "jsonc",
+    "markdown",
+    "python",
+    "sh",
+    "rust",
+    "typescript",
+    "typescriptreact",
+    "vim",
+    "yaml"
+  ],
+  "coc.preferences.formatOnType": false,
+  "coc.preferences.rootPatterns": [".vim", ".git", "mix.exs", "tsconfig.json"],
+  "coc.preferences.snippets.enable": true,
+  "coc.preferences.extensionUpdateCheck": "never",
+  //
+  // Diagnostics config and coc-diagnostics config
+  "diagnostic.enable": true,
+  "diagnostic.level": "hint",
+  "diagnostic.enableSign": true,
+  "diagnostic.enableHighlightLineNumber": true,
+  "diagnostic.showUnused": true,
+  "diagnostic.refreshOnInsertMode": true,
+  "diagnostic.displayByAle": false,
+  "diagnostic.hintSign": ">>",
+  "diagnostic.infoSign": "",
+  "diagnostic.warningSign": "",
+  "diagnostic.errorSign": "",
+  "diagnostic.virtualText": true,
+  "diagnostic-languageserver.enable": true,
+  "diagnostic-languageserver.debug": false,
+  "diagnostic-languageserver.filetypes": {
+    "elixir": ["mix_credo", "mix_credo_compile"],
+    "markdown": ["markdownlint", "remark"],
+    "sh": "shellcheck",
+    "vim": "vint"
+  },
+  "diagnostic-languageserver.formatters": {},
+  "diagnostic-languageserver.formatFiletypes": {
+    "elixir": "mix_format",
+    "eelixir": "mix_format",
+    "json": "prettier",
+    "python": "black",
+    "sh": "shfmt"
+  },
+  "diagnostic-languageserver.mergeConfig": false,
+  "diagnostic-languageserver.trace.server": "off",
+  //
+  // coc-elixir LS config
+  "elixir.enable": true,
+  "elixir.pathToElixirLS": "~/.config/coc/extensions/node_modules/coc-elixir/els-release/language_server.sh",
+  "elixir.trace.server": "off",
+  "elixirLS.dialyzerEnabled": true,
+  "elixirLS.dialyzerWarnOpts": [
+    "error_handling",
+    "no_behaviours",
+    "no_contracts",
+    "no_fail_call",
+    "no_fun_app",
+    "no_improper_lists",
+    "no_match",
+    "no_missing_calls",
+    "no_opaque",
+    "no_return",
+    "no_undefined_callbacks",
+    "no_unused",
+    "underspecs",
+    "unknown",
+    "unmatched_returns",
+    "overspecs",
+    "specdiffs"
+  ],
+  "elixirLS.dialyzerFormat": "dialyzer",
+  "elixirLS.mixEnv": "test",
+  "elixirLS.mixTarget": "",
+  "elixirLS.projectDir": ".",
+  "elixirLS.fetchDeps": true,
+  "elixirLS.suggestSpecs": true,
+  //
+  // coc-eslint LS config
+  "eslint.packageManager": "yarn",
+  "eslint.alwaysShowStatus": true,
+  "eslint.nodeEnv": null,
+  "eslint.nodePath": null,
+  "eslint.options": {},
+  "eslint.trace.server": {},
+  "eslint.run": "onType",
+  "eslint.workingDirectories": [],
+  "eslint.autoFixOnSave": false,
+  "eslint.quiet": false,
+  "eslint.onIgnoredFiles": "off",
+  "eslint.validate": [],
+  "eslint.probe": [
+    "javascript",
+    "javascriptreact",
+    "typescript",
+    "typescriptreact",
+    "html",
+    "vue",
+    "markdown"
+  ],
+  "eslint.runtime": null,
+  "eslint.debug": false,
+  "eslint.execArgv": [],
+  "eslint.codeAction.disableRuleComment": {},
+  "eslint.codeAction.showDocumentation": {
+    "enable": true
+  },
+  "eslint.codeActionsOnSave.mode": "all",
+  "eslint.format.enable": false,
+  "eslint.lintTask.options": ["."],
+  //
+  // coc-fsharp LS config
+  "FSharp.Linter": true,
+  "FSharp.server.trace": false,
+  "FSharp.UseSdkScripts": true,
+  //
+  // coc-highlight LS config
+  "highlight.colorNames.enable": true,
+  "highlight.trace.server": "off",
+  //
+  // Hover config
+  "hover.target": "float",
+  //
+  // coc-json LS config (see catalog.json in coc-json for schemas)
+  "json.enable": true,
+  "json.trace.server": "off",
+  "json.format.enable": true,
+  "json.schemaDownload.enable": true,
+  "json.maxItemsComputed": 1000,
+  "json.schemas": [],
+  //
+  // Raw LSP language server configs
+  "languageserver": {
+    "bash": {
+      "args": ["bash-language-server", "start"],
+      "command": "yarn",
+      "filetypes": ["sh"],
+      "ignoredRootPaths": ["~"]
+    },
+    "golang": {
+      "command": "gopls",
+      "rootPatterns": ["go.mod", ".vim/", ".git/"],
+      "filetypes": ["go"]
+    },
+    "graphql": {
+      "args": ["graphql-lsp", "server", "-m", "stream"],
+      "command": "yarn",
+      "filetypes": ["javascript", "typescript", "typescriptreact", "graphql"]
+    },
+    "terraform": {
+      "args": ["serve"],
+      "command": "terraform-ls",
+      "enable": true,
+      "filetypes": ["terraform", "tf"],
+      "initializationOptions": {}
+    }
+  },
+  "markdownlint.onOpen": true,
+  "markdownlint.onSave": true,
+  "markdownlint.onChange": true,
+  // Read here to understand where the config is read from
+  // https://github.com/fannheyward/coc-markdownlint/blob/master/README.md#rules
+  "markdownlint.config": {
+    "default": true,
+    "extends": "~/.markdownlintrc"
+  },
+  //
+  // coc-marketplace settings
+  "marketplace.npmsio": false,
+  //
+  // coc-pairs LS config
+  "pairs.disableLanguages": [],
+  "pairs.enableCharacters": ["(", "[", "{", "<", "'", "\"", "`"],
+  "pairs.alwaysPairCharacters": [],
+  "pairs.enableBackspace": true,
+  //
+  // coc-pyright and python config
+  "pyright.enable": true,
+  "pyright.trace.server": "off",
+  "pyright.completion.snippetSupport": true,
+  "python.pythonPath": "/usr/bin/python3",
+  "python.formatting.provider": "black",
+  "python.formatting.blackPath": "~/.local/bin/black",
+  "python.linting.pylintEnabled": true,
+  "python.linting.pylintArgs": [],
+  "python.linting.mypyEnabled": false,
+  "python.linting.mypyPath": "",
+  //
+  // coc-rust-analyer config
+  "rust-analyzer.enable": true,
+  "rust-analyzer.diagnostics.enableExperimental": true,
+  "rust-analyzer.diagnostics.disabled": [],
+  "rust-analyzer.inlayHints.typeHintsSeparator": "",
+  "rust-analyzer.inlayHints.chainingHintsSeparator": " ",
+  "rust-analyzer.updates.prompt": false,
+  "rust-analyzer.lens.enable": false,
+  "rust-analyzer.trace.server": "off",
+  "rust-analyzer.updates.channel": "stable",
+  "rust-analyzer.lruCapacity": 256,
+  "rust-analyzer.completion.addCallParenthesis": true,
+  "rust-analyzer.cargo.autoreload": true,
+  "rust-analyzer.cargo.allFeatures": true,
+  "rust-analyzer.inlayHints.enable": true,
+  "rust-analyzer.hoverActions.enable": true,
+  "rust-analyzer.diagnostics.warningsAsHint": [],
+  "rust-analyzer.diagnostics.warningsAsInfo": [],
+  "rust-analyzer.inlayHints.refreshOnInsertMode": true,
+  //
+  // Signature config
+  "signature.enable": true,
+  //
+  // Suggest config
+  "suggest.autoTrigger": "always",
+  "suggest.numberSelect": false,
+  //
+  // coc-snippets config
+  "snippets.trace": "error",
+  "snippets.autoTrigger": true,
+  "snippets.snipmate.enable": true,
+  "snippets.loadFromExtensions": true,
+  "snippets.ultisnips.enable": true,
+  "snippets.ultisnips.directories": ["~/.vim/snippets"],
+  "snippets.ultisnips.pythonVersion": 3,
+  //
+  // coc-sql settings
+  "sql.lintOnOpen": true,
+  "sql.lintOnSave": true,
+  "sql.lintOnChange": true,
+  "sql.database": "postgresql",
+  //
+  // coc-toml config
+  "toml.enabled": true,
+  "toml.formatter.crlf": false,
+  "toml.activationStatus": true,
+  "toml.schema.enabled": true,
+  //
+  // coc-tsserver config
+  // see https://github.com/neoclide/coc-tsserver#configuration-options
+  "tsserver.enable": true,
+  //
+  // coc-yaml config
+  // See https://github.com/redhat-developer/yaml-language-server
+  "yaml.format.enable": true,
+  "yaml.trace.server": "verbose",
+  "yaml.completion": true,
+  "yaml.validate": true,
+  "yaml.hover": true,
+  "yaml.format.bracketSpacing": true,
+  "yaml.schemaStore.enable": true,
+  "yaml.schemas": {
+    "https://json.schemastore.org/ansible-playbook": [
+      "*ansible*.y*ml",
+      "*playbook*.y*ml"
+    ]
+  },
+  //
+  // coc-yank LS config
+  "yank.limit": 50,
+  "yank.enableCompletion": true,
+  "yank.byteLengthLimit": 102400,
+  //
+  // coc-vimlsp config
+  "vimlsp.diagnostic.enable": true,
+  "vimlsp.indexes.projectRootPatterns": [".git"]
+}
