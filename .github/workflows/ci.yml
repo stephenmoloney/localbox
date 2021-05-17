@@ -1,0 +1,122 @@
+---
+name: ci
+
+on: # yamllint disable-line rule:truthy
+  # pull_request:
+  push:
+  schedule:
+    - cron: "45 9 1-28/2 * *"
+  workflow_dispatch:
+
+defaults:
+  run:
+    shell: bash
+
+env:
+  DEBIAN_FRONTEND: noninteractive
+  TZ: Europe/Zurich
+  USER: runner
+
+jobs:
+  # Lint codebase
+  lint:
+    name: lint
+    continue-on-error: false
+    runs-on: ubuntu-20.04
+    env:
+      GOROOT: "/opt/hostedtoolcache/go/1.15.12/x64"
+    steps:
+      - name: git checkout
+        uses: actions/checkout@v2
+      - name: prepare
+        run: >
+          sudo apt update -y -qq &&
+          sudo apt install -y -qq make &&
+          make init
+      - name: lint
+        run: >
+          make lint
+  # Create test variables for matrix dynamically
+  set-test-matrix-vars:
+    name: set-test-matrix-vars
+    continue-on-error: false
+    needs: [lint]
+    outputs:
+      specs: ${{ steps.set-test-matrix-vars.outputs.specs }}
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: actions/checkout@v2
+      - id: set-test-matrix-vars
+        run: |
+          specs="$(ls -A ./spec/bin | sed 's/_spec//g' | sed 's/\.sh//g' | jq -R | jq -cs)" &&
+          echo "::set-output name=specs::${specs}"
+  # Integration tests for bin/install/*.sh scripts (incomplete coverage)
+  tests:
+    name: test
+    # Github runners do not provide a plain vaniall vm image
+    # So using a docker image is unfortunately necessary
+    # https://github.com/actions/virtual-environments/tree/main/images/linux
+    container:
+      image: ubuntu:20.04
+      env:
+        DEBIAN_FRONTEND: noninteractive
+        TZ: Europe/Zurich
+        USER: ubuntu
+    continue-on-error: true
+    needs: [set-test-matrix-vars, lint]
+    runs-on: ubuntu-20.04
+    strategy:
+      fail-fast: false
+      max-parallel: 20
+      matrix:
+        test_spec: ${{ fromJson(needs.set-test-matrix-vars.outputs.specs) }}
+    steps:
+      - name: git checkout
+        uses: actions/checkout@v2
+      - name: prepare
+        run: >
+          source ./ci/provision_emulate.sh &&
+          create_user &&
+          sudo chown -R ubuntu:ubuntu /__w/localbox/localbox &&
+          su ubuntu -c 'source ./ci/provision_emulate.sh && install_shellspec'
+      - name: test
+        run: >
+          su ubuntu -c """
+          export PATH=${PATH}:/home/ubuntu/.local/bin &&
+          make test_spec spec_file=spec/bin/${{ matrix.test_spec }}_spec.sh use_docker=false
+          """
+    timeout-minutes: 720
+  # Provision and configure run
+  provision:
+    name: provision
+    # Github runners do not provide a plain vaniall vm image
+    # So using a docker image is unfortunately necessary
+    # https://github.com/actions/virtual-environments/tree/main/images/linux
+    container:
+      image: ubuntu:20.04
+      env:
+        DEBIAN_FRONTEND: noninteractive
+        TZ: Europe/Zurich
+        USER: ubuntu
+    continue-on-error: false
+    needs: [set-test-matrix-vars, lint, tests]
+    runs-on: ubuntu-20.04
+    strategy:
+      fail-fast: false
+      max-parallel: 4
+      matrix:
+        fallback_version:
+          - true
+          - false
+    steps:
+      - name: git checkout
+        uses: actions/checkout@v2
+      - name: provision
+        run: >
+          echo $PWD &&
+          whoami &&
+          source ./ci/provision_emulate.sh &&
+          create_user &&
+          sudo chown -R ubuntu:ubuntu /__w/localbox/localbox &&
+          su ubuntu -c 'make provision fallback_versions=${{ matrix.fallback_version}}'
+    timeout-minutes: 720

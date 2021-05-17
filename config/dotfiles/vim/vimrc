@@ -156,7 +156,12 @@ let mapleader = '\'
 noremap <Leader>y "+y
 
 " Set colortheme to nord
-colorscheme nord
+try
+    colorscheme nord
+catch /.*/
+    " See default color shemes here /usr/share/vim/vim81/colors/
+    colorscheme slate
+endtry"
 
 " Required to allow coc-highlight show hex colors
 set termguicolors

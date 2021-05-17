@@ -30,7 +30,6 @@ function install_tmux_plugin_manager() {
 
     if [[ -d "${HOME}/.tmux/plugins/tpm" ]]; then
         rm -rf "${HOME}/.tmux/plugins/tpm"
-        mkdir -p "${HOME}/.tmux/plugins/tpm"
     fi
 
     git clone \

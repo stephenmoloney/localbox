@@ -54,11 +54,11 @@ function maybe_install_rust_as_fallback() {
 }
 
 function maybe_install_go_as_fallback() {
-    export GOPATH="${HOME}/src/go"
+    export GOPATH="${GOPATH:-${HOME}/src/go}"
     if [[ ! -d "${GOPATH}" ]]; then
         mkdir -p "${GOPATH}"
     fi
-    export GOROOT=/usr/local/go
+    export GOROOT="${GOROOT:-/usr/local/go}"
     export PATH="${PATH}:${GOROOT}/bin"
 
     if [[ -z "$(command -v go)" ]]; then
