@@ -20,6 +20,7 @@ function main() {
     source "${HOME}/.bash_functions"
     source "${LOCALBOX_PATH}/bin/configure/asdf.sh"
     source "${LOCALBOX_PATH}/bin/configure/asdf_plugins.sh"
+    source "${LOCALBOX_PATH}/bin/configure/dotnet_core.sh"
     source "${LOCALBOX_PATH}/bin/configure/git.sh"
     source "${LOCALBOX_PATH}/bin/configure/go.sh"
     source "${LOCALBOX_PATH}/bin/configure/misc.sh"
@@ -27,8 +28,8 @@ function main() {
     source "${LOCALBOX_PATH}/bin/configure/tmux.sh"
     source "${LOCALBOX_PATH}/bin/configure/yamllint.sh"
 
-    # From external functions
     setup_asdf
+    setup_dotnet_core
     setup_editors
     setup_gcloud # asdf plugin
     setup_git
@@ -44,7 +45,6 @@ function main() {
     setup_yamllint
     setup_yq # asdf plugin
 
-    # From functions within bashrc
     export DEBIAN_FRONTEND=dialog
     setup_additional_completions
     setup_builtins
