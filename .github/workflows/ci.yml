@@ -86,11 +86,17 @@ jobs:
       - name: test
         run: >
 <<<<<<< HEAD
+<<<<<<< HEAD
           # See https://github.com/shellspec/shellspec/issues/203#issuecomment-838201627
           if [[ "${{ matrix.test_spec }}" == "debian_pkgs" ]]; then exit 0; fi
           if [[ "${{ matrix.test_spec }}" == "rust_pkgs" ]]; then exit 0; fi
 =======
 >>>>>>> e3bd70d... Added: github runner workflow for CI
+=======
+          # See https://github.com/shellspec/shellspec/issues/203#issuecomment-838201627
+          if [[ "${{ matrix.test_spec }}" == "debian_pkgs" ]]; then exit 0; fi
+          if [[ "${{ matrix.test_spec }}" == "rust_pkgs" ]]; then exit 0; fi
+>>>>>>> 51cc22c... Changed: skip debian_pkgs and rust_pkgs tests
           su ubuntu -c """
           export PATH=${PATH}:/home/ubuntu/.local/bin &&
           make test_spec spec_file=spec/bin/${{ matrix.test_spec }}_spec.sh use_docker=false
