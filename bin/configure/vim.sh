@@ -44,10 +44,13 @@ function setup_vimrc() {
         "${PROJECT_ROOT}/config/vim/coc/coc-settings.json" \
         "${HOME}/.vim/coc-settings.json"
 
-    if [[ -n "$(ls -A "${PROJECT_ROOT}/config/vim/snippets")" ]] &&
-        [[ -d "${PROJECT_ROOT}/config/vim/snippets" ]]; then
-        cp \
-            "${PROJECT_ROOT}/config/vim/snippets/*" \
-            "${HOME}/.vim/snippets"
+    if [[ -n "$(ls -A "${PROJECT_ROOT}/config/vim/snippets")" ]]; then
+        if [[ -d "${PROJECT_ROOT}/config/vim/snippets" ]]; then
+            cp \
+                "${PROJECT_ROOT}/config/vim/snippets/*" \
+                "${HOME}/.vim/snippets"
+        else
+            mkdir -p "${HOME}/.vim/snippets"
+        fi
     fi
 }
