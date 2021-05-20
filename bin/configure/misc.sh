@@ -30,22 +30,22 @@ function setup_locales() {
     export LANGUAGE
     export LC_ALL
     if [[ -z "${LANG}" ]]; then
-        if [[ -n "$(grep LANG "${LOCALBOX_PATH}/.env" | cut -d'=' -f2 2>/dev/null || true)" ]]; then
-            LANG="$(grep LANG "${LOCALBOX_PATH}/.env" | cut -d'=' -f2 2>/dev/null || true)"
+        if [[ -n "$(grep "LANG=" "${LOCALBOX_PATH}/.env" | cut -d'=' -f2 2>/dev/null || true)" ]]; then
+            LANG="$(grep "LANG=" "${LOCALBOX_PATH}/.env" | cut -d'=' -f2 2>/dev/null || true)"
         else
             LANG=en_US.UTF-8
         fi
     fi
     if [[ -z "${LANGUAGE}" ]]; then
-        if [[ -n "$(grep LANGUAGE "${LOCALBOX_PATH}/.env" | cut -d'=' -f2 2>/dev/null || true)" ]]; then
-            LANGUAGE="$(grep LANGUAGE "${LOCALBOX_PATH}/.env" | cut -d'=' -f2 2>/dev/null || true)"
+        if [[ -n "$(grep "LANGUAGE=" "${LOCALBOX_PATH}/.env" | cut -d'=' -f2 2>/dev/null || true)" ]]; then
+            LANGUAGE="$(grep "LANGUAGE=" "${LOCALBOX_PATH}/.env" | cut -d'=' -f2 2>/dev/null || true)"
         else
             LANGUAGE=en_US.UTF-8
         fi
     fi
     if [[ -z "${LC_ALL}" ]]; then
-        if [[ -n "$(grep LC_ALL "${LOCALBOX_PATH}/.env" | cut -d'=' -f2 2>/dev/null || true)" ]]; then
-            LC_ALL="$(grep LC_ALL "${LOCALBOX_PATH}/.env" | cut -d'=' -f2 2>/dev/null || true)"
+        if [[ -n "$(grep "LC_ALL=" "${LOCALBOX_PATH}/.env" | cut -d'=' -f2 2>/dev/null || true)" ]]; then
+            LC_ALL="$(grep "LC_ALL=" "${LOCALBOX_PATH}/.env" | cut -d'=' -f2 2>/dev/null || true)"
         else
             LC_ALL=en_US.UTF-8
         fi

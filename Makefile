@@ -32,7 +32,7 @@ endif
 .ONESHELL:
 init:
 	echo "starting $@ process using $(SHELL) as user $$(whoami)"
-	source ./ci/init.sh && install_required_pkgs
+	source ./ci/init.sh && init
 
 .ONESHELL:
 format:

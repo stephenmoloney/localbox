@@ -23,21 +23,32 @@ fi
 # ************************************************************************
 PROJECT_ROOT="$(project_root)"
 
-function install_required_pkgs() {
-    . "${PROJECT_ROOT}/bin/install/docker.sh"
-    . "${PROJECT_ROOT}/bin/install/go.sh"
-    . "${PROJECT_ROOT}/bin/install/shfmt.sh"
-    . "${PROJECT_ROOT}/bin/install/shellcheck.sh"
-    . "${PROJECT_ROOT}/bin/install/yamllint.sh"
-    . "${PROJECT_ROOT}/bin/install/asdf.sh"
+function install_and_configure_if_absent() {
+    local program="${1}"
+    local configure_deps
+    configure_deps="go yamllint adsf"
+
+    if [[ -z "$(command -v "${program}")" ]]; then
+        echo "Executing ${PROJECT_ROOT}/bin/install/${program}.sh"
+        . "${PROJECT_ROOT}/bin/install/${program}.sh" ""
+        if [[ -n "$(grep "${program}" "${configure_deps}" 2>/dev/null || true)" ]]; then
+            . "${PROJECT_ROOT}/bin/configure/${program}.sh" && "setup_${program}"
+        fi
+    else
+        echo "${program} is already installed, skipping..."
+    fi
+}
+
+function init() {
+    local programs
+    programs=(docker go shfmt shellcheck yamllint asdf)
+
+    for program in "${programs[@]}"; do
+        install_and_configure_if_absent "${program}"
+    done
+
     . "${PROJECT_ROOT}/bin/fallbacks.sh"
     maybe_install_node_as_fallback
     maybe_install_yarn_as_fallback
     yarn install --no-lockfile
-}
-
-function setup_required_pkgs() {
-    . "${PROJECT_ROOT}/bin/configure/go.sh" && setup_go
-    . "${PROJECT_ROOT}/bin/configure/yamllint.sh" && setup_yamllint
-    . "${PROJECT_ROOT}/bin/configure/asdf.sh" && setup_asdf
 }

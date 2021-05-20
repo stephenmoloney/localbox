@@ -22,14 +22,17 @@ lint:
   needs: []
   image: ubuntu:20.04
   before_script:
-    - |-
-      source ./ci/provision_emulate.sh
-      create_user
-      sudo -u ubuntu make init
-
+    - >
+      source ./ci/provision_emulate.sh &&
+      create_user &&
+      su ubuntu -c 'make init'
   script:
-    - |-
-      su ubuntu -c 'source ./ci/init.sh && setup_required_pkgs && make lint'
+    - >
+      su ubuntu -c """
+      export PATH=${PATH}:/home/ubuntu/.local/bin &&
+      source ~/.asdf/asdf.sh &&
+      make lint
+      """
 
 .test: &test
   variables:
@@ -39,10 +42,10 @@ lint:
   image: ubuntu:20.04
   timeout: 12h
   before_script:
-    - |-
-      source ./ci/provision_emulate.sh
-      create_user
-      su ubuntu -c 'source ./ci/provision_emulate.sh && install_shellspec'
+    - >
+      source ./ci/provision_emulate.sh &&
+      create_user &&
+      su ubuntu -c "source ./ci/provision_emulate.sh && install_shellspec"
 
 tests:
   <<: *test
@@ -80,7 +83,7 @@ tests:
 provision:ubuntu_20_04:
   <<: *provision_base
   script:
-    - sudo -u ubuntu make provision fallback_versions=${FALLBACK_VERSIONS}
+    - su ubuntu -c "make provision fallback_versions=${FALLBACK_VERSIONS}"
   parallel:
     matrix:
       - FALLBACK_VERSIONS: "true"
