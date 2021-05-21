@@ -6,7 +6,7 @@ set -eo pipefail
 GITHUB_URL=https://raw.githubusercontent.com/stephenmoloney/localbox/master
 UTILS_PATH="$(dirname "${BASH_SOURCE[0]}")/utils.sh"
 if [[ -e "${UTILS_PATH}" ]]; then
-    . "${UTILS_PATH}"
+    source "${UTILS_PATH}"
 else
     if [[ -z "$(command -v curl)" ]]; then
         sudo apt update -y -qq
@@ -14,7 +14,7 @@ else
     fi
     echo "Falling back to remote script ${GITHUB_URL}/bin/utils.sh"
     if curl -sIf -o /dev/null ${GITHUB_URL}/bin/utils.sh; then
-        . <(curl -s "${GITHUB_URL}/bin/utils.sh")
+        source <(curl -s "${GITHUB_URL}/bin/utils.sh")
     else
         echo "${GITHUB_URL}/bin/utils.sh does not exist" >/dev/stderr
         return 1
@@ -35,32 +35,32 @@ function install() {
     fi
     if [[ "${SOURCE_ENV_FILE}" == "true" ]]; then
         echo "Sourcing environment variables from ${PROJECT_ROOT}/.env"
-        . "${PROJECT_ROOT}/.env"
+        source "${PROJECT_ROOT}/.env"
     else
         echo "Skipping sourcing environment variables from ${PROJECT_ROOT}/.env"
         echo "Default fallback versions will be employed"
     fi
 
     # Run first
-    . "${PROJECT_ROOT}/bin/install/asdf.sh" "${ASDF_VERSION}"
-    . "${PROJECT_ROOT}/bin/install/asdf_plugins.sh"
-    . "${PROJECT_ROOT}/bin/install/azure_cli.sh" "${AZURE_CLI_VERSION}"
-    . "${PROJECT_ROOT}/bin/install/debian_pkgs.sh"
-    . "${PROJECT_ROOT}/bin/install/docker.sh" "${DOCKER_VERSION}"
-    . "${PROJECT_ROOT}/bin/install/docker_compose.sh" "${DOCKER_COMPOSE_VERSION}"
-    . "${PROJECT_ROOT}/bin/install/dotnet_core.sh" "${DOTNET_CORE_SDK_VERSION}"
-    . "${PROJECT_ROOT}/bin/install/go.sh" "${GO_VERSION}"
-    . "${PROJECT_ROOT}/bin/install/krew.sh" "${KREW_VERSION}"
-    . "${PROJECT_ROOT}/bin/install/rust.sh" "${RUST_VERSION}"
-    . "${PROJECT_ROOT}/bin/install/rust_pkgs.sh"
-    . "${PROJECT_ROOT}/bin/install/shellcheck.sh" "${SHELLCHECK_VERSION}"
-    . "${PROJECT_ROOT}/bin/install/shfmt.sh" "${SHFMT_VERSION}"
-    . "${PROJECT_ROOT}/bin/install/tmuxinator.sh" "${TMUXINATOR_VERSION}"
-    . "${PROJECT_ROOT}/bin/install/yamllint.sh" "${YAMLLINT_VERSION}"
+    bash "${PROJECT_ROOT}/bin/install/asdf.sh" "${ASDF_VERSION}"
+    bash "${PROJECT_ROOT}/bin/install/asdf_plugins.sh"
+    bash "${PROJECT_ROOT}/bin/install/azure_cli.sh" "${AZURE_CLI_VERSION}"
+    bash "${PROJECT_ROOT}/bin/install/debian_pkgs.sh"
+    bash "${PROJECT_ROOT}/bin/install/docker.sh" "${DOCKER_VERSION}"
+    bash "${PROJECT_ROOT}/bin/install/docker_compose.sh" "${DOCKER_COMPOSE_VERSION}"
+    bash "${PROJECT_ROOT}/bin/install/dotnet_core.sh" "${DOTNET_CORE_SDK_VERSION}"
+    bash "${PROJECT_ROOT}/bin/install/go.sh" "${GO_VERSION}"
+    bash "${PROJECT_ROOT}/bin/install/krew.sh" "${KREW_VERSION}"
+    bash "${PROJECT_ROOT}/bin/install/rust.sh" "${RUST_VERSION}"
+    bash "${PROJECT_ROOT}/bin/install/rust_pkgs.sh"
+    bash "${PROJECT_ROOT}/bin/install/shellcheck.sh" "${SHELLCHECK_VERSION}"
+    bash "${PROJECT_ROOT}/bin/install/shfmt.sh" "${SHFMT_VERSION}"
+    bash "${PROJECT_ROOT}/bin/install/tmuxinator.sh" "${TMUXINATOR_VERSION}"
+    bash "${PROJECT_ROOT}/bin/install/yamllint.sh" "${YAMLLINT_VERSION}"
 
     # Run second (may have dependencies on first run)
-    . "${PROJECT_ROOT}/bin/install/tmux_plugin_manager.sh" "${TMUX_PLUGIN_MANAGER_VERSION}"
-    . "${PROJECT_ROOT}/bin/install/vim.sh" \
+    bash "${PROJECT_ROOT}/bin/install/tmux_plugin_manager.sh" "${TMUX_PLUGIN_MANAGER_VERSION}"
+    bash "${PROJECT_ROOT}/bin/install/vim.sh" \
         "${VIM_GTK3_VERSION:-latest}" \
         "${VIM_PLUG_VERSION:-0.10.0}" \
         "${TERRAFORM_LS_VERSION:-latest}" \
@@ -70,23 +70,23 @@ function install() {
 }
 
 function setup() {
-    . "${PROJECT_ROOT}/bin/configure/asdf.sh"
-    . "${PROJECT_ROOT}/bin/configure/asdf_plugins.sh"
-    . "${PROJECT_ROOT}/bin/configure/azure_cli.sh"
-    . "${PROJECT_ROOT}/bin/configure/bashrc.sh"
-    . "${PROJECT_ROOT}/bin/configure/docker.sh"
-    . "${PROJECT_ROOT}/bin/configure/dotnet_core.sh"
-    . "${PROJECT_ROOT}/bin/configure/editorconfig.sh"
-    . "${PROJECT_ROOT}/bin/configure/git.sh"
-    . "${PROJECT_ROOT}/bin/configure/go.sh"
-    . "${PROJECT_ROOT}/bin/configure/krew.sh"
-    . "${PROJECT_ROOT}/bin/configure/misc.sh"
-    . "${PROJECT_ROOT}/bin/configure/markdownlint.sh"
-    . "${PROJECT_ROOT}/bin/configure/prettier.sh"
-    . "${PROJECT_ROOT}/bin/configure/rust.sh"
-    . "${PROJECT_ROOT}/bin/configure/tmux.sh"
-    . "${PROJECT_ROOT}/bin/configure/vim.sh"
-    . "${PROJECT_ROOT}/bin/configure/yamllint.sh"
+    source "${PROJECT_ROOT}/bin/configure/asdf.sh"
+    source "${PROJECT_ROOT}/bin/configure/asdf_plugins.sh"
+    source "${PROJECT_ROOT}/bin/configure/azure_cli.sh"
+    source "${PROJECT_ROOT}/bin/configure/bashrc.sh"
+    source "${PROJECT_ROOT}/bin/configure/docker.sh"
+    source "${PROJECT_ROOT}/bin/configure/dotnet_core.sh"
+    source "${PROJECT_ROOT}/bin/configure/editorconfig.sh"
+    source "${PROJECT_ROOT}/bin/configure/git.sh"
+    source "${PROJECT_ROOT}/bin/configure/go.sh"
+    source "${PROJECT_ROOT}/bin/configure/krew.sh"
+    source "${PROJECT_ROOT}/bin/configure/misc.sh"
+    source "${PROJECT_ROOT}/bin/configure/markdownlint.sh"
+    source "${PROJECT_ROOT}/bin/configure/prettier.sh"
+    source "${PROJECT_ROOT}/bin/configure/rust.sh"
+    source "${PROJECT_ROOT}/bin/configure/tmux.sh"
+    source "${PROJECT_ROOT}/bin/configure/vim.sh"
+    source "${PROJECT_ROOT}/bin/configure/yamllint.sh"
 
     # Run first
     setup_locales
@@ -112,5 +112,5 @@ function setup() {
     setup_vimrc
     setup_yamllint_dotfiles
 
-    . "${HOME}/.bashrc"
+    source "${HOME}/.bashrc"
 }

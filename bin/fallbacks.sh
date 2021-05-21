@@ -6,7 +6,7 @@ set -euo pipefail
 GITHUB_URL=https://raw.githubusercontent.com/stephenmoloney/localbox/master
 UTILS_PATH="$(dirname "${BASH_SOURCE[0]}")/utils.sh"
 if [[ -e "${UTILS_PATH}" ]]; then
-    . "${UTILS_PATH}"
+    source "${UTILS_PATH}"
 else
     if [[ -z "$(command -v curl)" ]]; then
         sudo apt update -y -qq
@@ -14,7 +14,7 @@ else
     fi
     echo "Falling back to remote script ${GITHUB_URL}/bin/utils.sh"
     if curl -sIf -o /dev/null ${GITHUB_URL}/bin/utils.sh; then
-        . <(curl -s "${GITHUB_URL}/bin/utils.sh")
+        source <(curl -s "${GITHUB_URL}/bin/utils.sh")
     else
         echo "${GITHUB_URL}/bin/utils.sh does not exist" >/dev/stderr
         return 1
@@ -52,11 +52,11 @@ function maybe_install_rust_as_fallback() {
     if [[ -z "$(command -v rustup)" ]] || [[ -z "$(command -v cargo)" ]]; then
         echo "Installing rust tools as a fallback measure"
         if [[ -e "${RUST_INSTALL_SCRIPT}" ]]; then
-            . "${RUST_INSTALL_SCRIPT}"
+            source "${RUST_INSTALL_SCRIPT}"
         else
             echo "Falling back to remote script ${GITHUB_URL}/bin/install/rust.sh"
             if curl -sIf -o /dev/null ${GITHUB_URL}/bin/install/rust.sh; then
-                . <(curl -s "${GITHUB_URL}/bin/install/rust.sh")
+                source <(curl -s "${GITHUB_URL}/bin/install/rust.sh")
             else
                 echo "${GITHUB_URL}/bin/install/rust.sh does not exist" >/dev/stderr
                 return 1
@@ -79,11 +79,11 @@ function maybe_install_go_as_fallback() {
     if [[ -z "$(command -v go)" ]]; then
         echo "Installing go as a fallback measure"
         if [[ -e "${GO_INSTALL_SCRIPT}" ]]; then
-            . "${GO_INSTALL_SCRIPT}"
+            source "${GO_INSTALL_SCRIPT}"
         else
             echo "Falling back to remote script ${GITHUB_URL}/bin/install/go.sh"
             if curl -sIf -o /dev/null ${GITHUB_URL}/bin/install/go.sh; then
-                . <(curl -s "${GITHUB_URL}/bin/install/go.sh")
+                source <(curl -s "${GITHUB_URL}/bin/install/go.sh")
             else
                 echo "${GITHUB_URL}/bin/install/go.sh does not exist" >/dev/stderr
                 return 1
@@ -100,11 +100,11 @@ function maybe_install_asdf_as_fallback() {
     if [[ -z "$(command -v asdf)" ]]; then
         echo "Installing asdf as a fallback measure"
         if [[ -e "${ASDF_INSTALL_SCRIPT}" ]]; then
-            . "${ASDF_INSTALL_SCRIPT}"
+            source "${ASDF_INSTALL_SCRIPT}"
         else
             echo "Falling back to remote script ${GITHUB_URL}/bin/install/asdf.sh"
             if curl -sIf -o /dev/null ${GITHUB_URL}/bin/install/asdf.sh; then
-                . <(curl -s "${GITHUB_URL}/bin/install/asdf.sh")
+                source <(curl -s "${GITHUB_URL}/bin/install/asdf.sh")
             else
                 echo "${GITHUB_URL}/bin/install/asdf.sh does not exist" >/dev/stderr
                 return 1
@@ -162,11 +162,11 @@ function maybe_install_jq_as_fallback() {
     if [[ -z "$(command -v jq)" ]]; then
         echo "Installing jq as a fallback measure"
         if [[ -e "${JQ_INSTALL_SCRIPT}" ]]; then
-            . "${JQ_INSTALL_SCRIPT}"
+            source "${JQ_INSTALL_SCRIPT}"
         else
             echo "Falling back to remote script ${GITHUB_URL}/bin/install/jq.sh"
             if curl -sIf -o /dev/null ${GITHUB_URL}/bin/install/jq.sh; then
-                . <(curl -s "${GITHUB_URL}/bin/install/jq.sh")
+                source <(curl -s "${GITHUB_URL}/bin/install/jq.sh")
             else
                 echo "${GITHUB_URL}/bin/install/jq.sh does not exist" >/dev/stderr
                 return 1

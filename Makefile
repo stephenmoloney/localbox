@@ -58,21 +58,21 @@ test_spec:
 install:
 	sudo echo "starting $@ process using $(SHELL) as user $$(whoami)"
 	set -e
-	. ./bin/preinstall.sh && preinstall $(preinstall_args)
-	. ./bin/main.sh && install $(preinstall_args) $(install_args)
+	source ./bin/preinstall.sh && preinstall $(preinstall_args)
+	source ./bin/main.sh && install $(preinstall_args) $(install_args)
 
 .ONESHELL:
 configure:
 	sudo echo "starting $@ process using $(SHELL) as user $$(whoami)"
 	set -e
-	. ./bin/main.sh && setup
+	source ./bin/main.sh && setup
 
 .ONESHELL:
 provision:
 	sudo echo "starting $@ process using $(SHELL) as user $$(whoami)"
 	set -e
-	. ./bin/preinstall.sh && preinstall $(preinstall_args) &&
-	. ./bin/main.sh && install $(preinstall_args) $(install_args) && setup
+	source ./bin/preinstall.sh && preinstall $(preinstall_args) &&
+	source ./bin/main.sh && install $(preinstall_args) $(install_args) && setup
 
 .ONESHELL:
 provision_emulate:
