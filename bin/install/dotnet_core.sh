@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -Eeuo pipefail
 
-AZURE_CLI_VERSION_FALLBACK="*"
+DOTNET_CORE_SDK_VERSION_FALLBACK=5.0
 
 # ******* Importing utils.sh as a source of common shell functions *******
 GITHUB_URL=https://raw.githubusercontent.com/stephenmoloney/localbox/master
@@ -23,41 +23,33 @@ else
 fi
 # ************************************************************************
 
-function install_azure_cli() {
+function install_dotnet_core_sdk() {
     local version="${1}"
+    local ubuntu_version
 
     [[ "${version}" == "latest" ]] && version="*"
 
-    maybe_install_apt_pkg "ca-certificates" "*"
-    maybe_install_apt_pkg "curl" "*"
-    maybe_install_apt_pkg "apt-transport-https" "*"
+    maybe_install_apt_pkg "wget" "*"
     maybe_install_apt_pkg "lsb-release" "*"
-    maybe_install_apt_pkg "gnupg" "*"
+    maybe_install_apt_pkg "apt-transport-https" "*"
 
-    if [[ -e /etc/apt/trusted.gpg.d/microsoft.gpg ]]; then
-        sudo rm /etc/apt/trusted.gpg.d/microsoft.gpg
-    fi
+    ubuntu_version="$(lsb_release -cas 2>/dev/stdout | awk NR==4)"
 
-    if [[ -e /etc/apt/sources.list.d/azure-cli.list ]]; then
-        sudo rm /etc/apt/sources.list.d/azure-cli.list
-    fi
+    wget \
+        "https://packages.microsoft.com/config/ubuntu/${ubuntu_version}/packages-microsoft-prod.deb" \
+        -O packages-microsoft-prod.deb &&
+        sudo dpkg -i packages-microsoft-prod.deb &&
+        rm packages-microsoft-prod.deb &&
+        sudo apt update -y -qq &&
+        sudo apt install -y "dotnet-sdk-${version}"
 
-    curl -sL https://packages.microsoft.com/keys/microsoft.asc |
-        gpg --dearmor |
-        sudo tee /etc/apt/trusted.gpg.d/microsoft.gpg >/dev/null
-
-    echo "deb [arch=amd64] https://packages.microsoft.com/repos/azure-cli/ $(lsb_release -cs) main" |
-        sudo tee /etc/apt/sources.list.d/azure-cli.list
-
-    maybe_install_apt_pkg azure-cli "${version}"
-
-    az --version
+    dotnet --version
 }
 
 function main() {
-    local version="${1:-$AZURE_CLI_VERSION_FALLBACK}"
+    local version="${1:-$DOTNET_CORE_SDK_VERSION_FALLBACK}"
 
-    install_azure_cli "${version}"
+    install_dotnet_core_sdk "${version}"
 }
 
 main "${@}"
