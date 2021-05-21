@@ -11,7 +11,7 @@ function install_krew() {
 
     pushd "$(mktemp -d)" || exit
     curl -fsSLO "https://github.com/kubernetes-sigs/krew/releases/download/v${version}/krew.tar.gz"
-    tar zxvf krew.tar.g
+    tar zxvf krew.tar.gz
     KREW=./krew-"$(
         uname |
             tr '[:upper:]' '[:lower:]'
