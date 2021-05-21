@@ -29,6 +29,21 @@ ASDF_INSTALL_SCRIPT="${PROJECT_ROOT}/bin/install/asdf.sh"
 JQ_INSTALL_SCRIPT="${PROJECT_ROOT}/bin/install/jq.sh"
 NODEJS_VERSION_FALLBACK=14.17.0
 YARN_VERSION_FALLBACK=1.22.10
+RUBY_VERSION_FALLBACK=2.7.2
+ASDF_RUBY_DEPS=(
+    autoconf
+    bison
+    build-essential
+    libssl-dev
+    libyaml-dev
+    libreadline6-dev
+    zlib1g-dev
+    libncurses5-dev
+    libffi-dev
+    libgdbm6
+    libgdbm-dev
+    libdb-dev
+)
 
 function maybe_install_rust_as_fallback() {
     if [[ -e "${HOME}/.env/cargo" ]]; then
@@ -159,5 +174,24 @@ function maybe_install_jq_as_fallback() {
         fi
     else
         echo "jq version $(jq --version | tr -d "jq-") is already installed"
+    fi
+}
+
+function maybe_install_ruby_as_fallback() {
+    if [[ -z "$(command -v ruby)" ]]; then
+        if [[ -z "$(command -v asdf)" ]]; then
+            maybe_install_asdf_as_fallback
+        fi
+
+        for dep in "${ASDF_RUBY_DEPS[@]}"; do
+            maybe_install_apt_pkg "${dep}" "*"
+        done
+
+        asdf plugin add ruby
+        asdf install ruby "${RUBY_VERSION_FALLBACK}"
+        asdf global ruby "${RUBY_VERSION_FALLBACK}"
+        ruby --version
+    else
+        echo "ruby version $(ruby --version) is already installed"
     fi
 }

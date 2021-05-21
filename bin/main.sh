@@ -55,6 +55,7 @@ function install() {
     . "${PROJECT_ROOT}/bin/install/rust_pkgs.sh"
     . "${PROJECT_ROOT}/bin/install/shellcheck.sh" "${SHELLCHECK_VERSION}"
     . "${PROJECT_ROOT}/bin/install/shfmt.sh" "${SHFMT_VERSION}"
+    . "${PROJECT_ROOT}/bin/install/tmuxinator.sh" "${TMUXINATOR_VERSION}"
     . "${PROJECT_ROOT}/bin/install/yamllint.sh" "${YAMLLINT_VERSION}"
 
     # Run second (may have dependencies on first run)
