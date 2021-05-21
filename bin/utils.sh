@@ -102,26 +102,43 @@ function opts_handler() {
     done
 }
 
-function err_handler() {
-    rc=$1
+function exec_with_retries() {
+    local script="${1}"
+    local current_try="${2:-0}"
+    local max_retries="${3:-3}"
+    local script_args="${4:-}"
 
-    echo "ERR, rc: ${rc}"
-    echo "Source: ${BASH_SOURCE[*]}"
-    echo "Line Number: ${BASH_LINENO[*]}"
-    echo "Function : ${FUNCNAME[*]}"
-    echo "Command: ${BASH_COMMAND}"
-
-    if [[ -n "$(ls -A "${PROJECT_ROOT}/asdf" 2>/dev/null || true)" ]]; then
-        rm -rf "${PROJECT_ROOT}/asdf-*"
+    sleep 3s
+    current_try=$(("${current_try}" + 1))
+    if [[ "${current_try}" -eq 1 ]]; then
+        echo "---------------------------------------------------"
+        echo "Executing ${script}"
+        echo "---------------------------------------------------"
+    else
+        echo "***************************************************"
+        echo "Initiating retry ${current_try} of ${max_retries} :: ${script} ${script_args}"
+        echo "***************************************************"
     fi
-
-    exit "${rc}"
+    if [[ "${max_retries}" -gt "${current_try}" ]]; then
+        if [[ -z "${script_args}" ]]; then
+            "${script}" || exec_with_retries "${script}" "${current_try}" "${max_retries}"
+        else
+            "${script}" "${script_args}" || exec_with_retries "${script}" "${current_try}" "${max_retries}" "${script_args}"
+        fi
+    else
+        if [[ -z "${script_args}" ]]; then
+            "${script}"
+        else
+            "${script}" "${script_args}"
+        fi
+    fi
 }
 
 function exit_handler() {
-    rc=$1
+    local rc="${1}"
+    local type="${2}"
 
-    echo "EXIT, rc: ${rc}"
+    echo "${type}, rc: ${rc}"
     echo "Source: ${BASH_SOURCE[*]}"
     echo "Line Number: ${BASH_LINENO[*]}"
     echo "Function : ${FUNCNAME[*]}"

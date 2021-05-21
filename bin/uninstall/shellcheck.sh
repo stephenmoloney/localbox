@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
-set -Eeuo pipefail
+set -eu
+set -o pipefail
+set -o errtrace
 
 function uninstall_shellcheck() {
     if [[ -e /usr/local/bin/shellcheck ]]; then

@@ -9,6 +9,9 @@ function setup_go() {
         if [[ ! -d "${GOPATH}" ]]; then
             mkdir -p "${GOPATH}"
         fi
-        export PATH="${PATH}:${GOROOT}/bin"
+        if [[ -e "${GOROOT}/bin" ]] &&
+            [[ -z "$(grep "${GOROOT}/bin" <<<"${PATH}" 2>/dev/null || true)" ]]; then
+            export PATH="${PATH}:${GOROOT}/bin"
+        fi
     fi
 }

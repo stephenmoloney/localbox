@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
-set -Eeuo pipefail
+set -eu
+set -o pipefail
+set -o errtrace
 
 function uninstall_asdf() {
     if [[ -n "$(command -v asdf)" ]]; then
