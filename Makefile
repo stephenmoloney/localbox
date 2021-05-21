@@ -57,25 +57,26 @@ test_spec:
 .ONESHELL:
 install:
 	sudo echo "starting $@ process using $(SHELL) as user $$(whoami)"
+	set -e
 	. ./bin/preinstall.sh && preinstall $(preinstall_args)
 	. ./bin/main.sh && install $(preinstall_args) $(install_args)
 
 .ONESHELL:
 configure:
 	sudo echo "starting $@ process using $(SHELL) as user $$(whoami)"
+	set -e
 	. ./bin/main.sh && setup
 
 .ONESHELL:
 provision:
 	sudo echo "starting $@ process using $(SHELL) as user $$(whoami)"
+	set -e
 	. ./bin/preinstall.sh && preinstall $(preinstall_args) &&
-	. ./bin/main.sh &&
-	install $(preinstall_args) $(install_args) &&
-	setup
+	. ./bin/main.sh && install $(preinstall_args) $(install_args) && setup
 
 .ONESHELL:
 provision_emulate:
 	sudo echo "starting $@ process using $(SHELL) as user $$(whoami)"
-	echo "This target runs the provision command is a docker image"
+	echo "This target runs the provision commandin a docker image"
 	echo "The motivation for this is to emulate a CI run locally"
-	. ./ci/provision_emulate.sh && emulate_ci
+	source ./ci/provision_emulate.sh && emulate_ci
