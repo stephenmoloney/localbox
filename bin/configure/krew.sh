@@ -2,5 +2,7 @@
 set -eo pipefail
 
 function setup_krew() {
-    export PATH="${PATH}:${HOME}/.krew/bin"
+    if [[ -d "${HOME}/.krew/bin" ]]; then
+        export PATH="${PATH}:${HOME}/.krew/bin"
+    fi
 }
