@@ -23,10 +23,12 @@ fi
 # ************************************************************************
 PROJECT_ROOT="$(project_root)"
 
-RUST_INSTALL_SCRIPT="${PROJECT_ROOT}/bin/install/rust.sh"
-GO_INSTALL_SCRIPT="${PROJECT_ROOT}/bin/install/go.sh"
+ANSIBLE_INSTALL_SCRIPT="${PROJECT_ROOT}/bin/install/ansible.sh"
 ASDF_INSTALL_SCRIPT="${PROJECT_ROOT}/bin/install/asdf.sh"
+GO_INSTALL_SCRIPT="${PROJECT_ROOT}/bin/install/go.sh"
 JQ_INSTALL_SCRIPT="${PROJECT_ROOT}/bin/install/jq.sh"
+RUST_INSTALL_SCRIPT="${PROJECT_ROOT}/bin/install/rust.sh"
+
 NODEJS_VERSION_FALLBACK=14.17.0
 YARN_VERSION_FALLBACK=1.22.10
 RUBY_VERSION_FALLBACK=2.7.2
@@ -263,5 +265,29 @@ function maybe_install_kubectl_as_fallback() {
         kubectl version --short --client
     else
         echo "kubectl version $(kubectl version --short --client | cut -d' ' -f3) is already installed"
+    fi
+}
+
+function maybe_install_ansible_as_fallback() {
+    if [[ -e "${HOME}/.local/bin/ansible" ]] &&
+        [[ -z "$(grep "${HOME}/.local/bin" <<<"${PATH}" 2>/dev/null || true)" ]]; then
+        export PATH="${PATH}:${HOME}/.local/bin"
+    fi
+
+    if [[ -z "$(command -v ansible)" ]]; then
+        echo "Installing ansible as a fallback measure"
+        if [[ -e "${ANSIBLE_INSTALL_SCRIPT}" ]]; then
+            "${ANSIBLE_INSTALL_SCRIPT}"
+        else
+            echo "Falling back to remote script ${GITHUB_URL}/bin/install/ansible.sh"
+            if curl -sIf -o /dev/null ${GITHUB_URL}/bin/install/ansible.sh; then
+                source <(curl -s "${GITHUB_URL}/bin/install/ansible.sh")
+            else
+                echo "${GITHUB_URL}/bin/install/ansible.sh does not exist" >/dev/stderr
+                return 1
+            fi
+        fi
+    else
+        echo "Ansible version $(ansible --version | cut -d ' ' -f2) already installed"
     fi
 }

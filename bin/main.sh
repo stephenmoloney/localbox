@@ -50,6 +50,8 @@ function install() {
     exec_with_retries "${PROJECT_ROOT}/bin/install/jq.sh" 0 2 "${JQ_VERSION}"
 
     # Phase 2
+    exec_with_retries "${PROJECT_ROOT}/bin/install/ansible.sh" 0 2 "${ANSIBLE_VERSION}"
+    exec_with_retries "${PROJECT_ROOT}/bin/install/ansible_modules.sh" 0 2
     exec_with_retries "${PROJECT_ROOT}/bin/install/asdf.sh" 0 2 "${ASDF_VERSION}"
     exec_with_retries "${PROJECT_ROOT}/bin/install/asdf_plugins.sh" 0 2
     exec_with_retries "${PROJECT_ROOT}/bin/install/azure_cli.sh" 0 2 "${AZURE_CLI_VERSION}"
@@ -78,6 +80,7 @@ function install() {
 }
 
 function setup() {
+    source "${PROJECT_ROOT}/bin/configure/ansible.sh"
     source "${PROJECT_ROOT}/bin/configure/asdf.sh"
     source "${PROJECT_ROOT}/bin/configure/asdf_plugins.sh"
     source "${PROJECT_ROOT}/bin/configure/azure_cli.sh"
@@ -103,6 +106,7 @@ function setup() {
     setup_directory_structure
 
     # Run second
+    setup_ansible_dotfiles
     setup_asdf
     setup_asdf_dotfiles
     setup_azure_cli_dotfiles
