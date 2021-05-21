@@ -50,6 +50,7 @@ function install() {
     . "${PROJECT_ROOT}/bin/install/docker_compose.sh" "${DOCKER_COMPOSE_VERSION}"
     . "${PROJECT_ROOT}/bin/install/dotnet_core.sh" "${DOTNET_CORE_SDK_VERSION}"
     . "${PROJECT_ROOT}/bin/install/go.sh" "${GO_VERSION}"
+    . "${PROJECT_ROOT}/bin/install/krew.sh" "${KREW_VERSION}"
     . "${PROJECT_ROOT}/bin/install/rust.sh" "${RUST_VERSION}"
     . "${PROJECT_ROOT}/bin/install/rust_pkgs.sh"
     . "${PROJECT_ROOT}/bin/install/shellcheck.sh" "${SHELLCHECK_VERSION}"
@@ -77,6 +78,7 @@ function setup() {
     . "${PROJECT_ROOT}/bin/configure/editorconfig.sh"
     . "${PROJECT_ROOT}/bin/configure/git.sh"
     . "${PROJECT_ROOT}/bin/configure/go.sh"
+    . "${PROJECT_ROOT}/bin/configure/krew.sh"
     . "${PROJECT_ROOT}/bin/configure/misc.sh"
     . "${PROJECT_ROOT}/bin/configure/markdownlint.sh"
     . "${PROJECT_ROOT}/bin/configure/prettier.sh"
@@ -99,6 +101,7 @@ function setup() {
     setup_docker
     setup_editorconfig
     setup_git_dotfiles
+    setup_krew
     setup_markdownlint
     setup_go
     setup_prettier
