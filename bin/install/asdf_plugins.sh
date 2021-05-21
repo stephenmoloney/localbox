@@ -46,6 +46,43 @@ fi
 maybe_install_jq_as_fallback
 maybe_install_go_as_fallback
 
+ASDF_ERLANG_DEPS=(
+    autoconf
+    build-essential
+    fop
+    libncurses5-dev
+    libwxgtk3.0-gtk3-dev
+    libgl1-mesa-dev
+    libglu1-mesa-dev
+    libpng-dev
+    libssh-dev
+    libxml2-utils
+    m4
+    openssl
+    xsltproc
+)
+
+ASDF_NODEJS_DEPS=(
+    dirmngrn
+    gpg
+    curl
+)
+
+ASDF_RUBY_DEPS=(
+    autoconf
+    bison
+    build-essential
+    libssl-dev
+    libyaml-dev
+    libreadline6-dev
+    zlib1g-dev
+    libncurses5-dev
+    libffi-dev
+    libgdbm6
+    libgdbm-dev
+    libdb-dev
+)
+
 function install_asdf_plugins() {
     local plugins
     local plugin
@@ -55,25 +92,14 @@ function install_asdf_plugins() {
     maybe_install_apt_pkg "libreadline-dev" "*"
 
     # Required for nodejs amd yarn
-    maybe_install_apt_pkg "dirmngr" "*"
-    maybe_install_apt_pkg "gpg" "*"
-    maybe_install_apt_pkg "curl" "*"
+    for dep in "${ASDF_NODEJS_DEPS[@]}"; do
+        maybe_install_apt_pkg "${dep}" "*"
+    done
 
     # Required for erlang
-    maybe_install_apt_pkg "curl" "*"
-    maybe_install_apt_pkg "build-essential" "*"
-    maybe_install_apt_pkg "autoconf" "*"
-    maybe_install_apt_pkg "libncurses5-dev" "*"
-    maybe_install_apt_pkg "libwxgtk3.0-gtk3-dev" "*"
-    maybe_install_apt_pkg "libgl1-mesa-dev" "*"
-    maybe_install_apt_pkg "libglu1-mesa-dev" "*"
-    maybe_install_apt_pkg "libpng-dev" "*"
-    maybe_install_apt_pkg "libssh-dev" "*"
-    maybe_install_apt_pkg "openssl" "*"
-    maybe_install_apt_pkg "m4" "*"
-    maybe_install_apt_pkg "xsltproc" "*"
-    maybe_install_apt_pkg "fop" "*"
-    maybe_install_apt_pkg "libxml2-utils" "*"
+    for dep in "${ASDF_ERLANG_DEPS[@]}"; do
+        maybe_install_apt_pkg "${dep}" "*"
+    done
 
     export KERL_CONFIGURE_OPTIONS="--disable-debug --without-odbc --without-javac"
     export KERL_BUILD_DOCS=yes
@@ -89,6 +115,11 @@ function install_asdf_plugins() {
     cp \
         "${PROJECT_ROOT}/config/dotfiles/gcloud/default-cloud-sdk-components" \
         "${HOME}/.config/gcloud/.default-cloud-sdk-componentsi"
+
+    #  Required for ruby
+    for dep in "${ASDF_RUBY_DEPS[@]}"; do
+        maybe_install_apt_pkg "${dep}" "*"
+    done
 
     mapfile -t plugins <"${PROJECT_ROOT}/config/dotfiles/asdf/tool-versions"
 
