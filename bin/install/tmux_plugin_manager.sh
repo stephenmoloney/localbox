@@ -35,9 +35,12 @@ function install_tmux_plugin_manager() {
     fi
 
     git clone \
-        --branch "${version}" \
         https://github.com/tmux-plugins/tpm \
         "${HOME}/.tmux/plugins/tpm"
+
+    pushd "${HOME}/.tmux/plugins/tpm" || exit
+    git checkout "${version}"
+    popd || exit
 }
 
 function main() {

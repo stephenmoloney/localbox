@@ -83,7 +83,7 @@ provision:
 	preinstall $(preinstall_args)
 	source ./bin/main.sh
 	install $(preinstall_args) $(install_args)
-	# setup
+	setup
 
 .ONESHELL:
 provision_emulate:
