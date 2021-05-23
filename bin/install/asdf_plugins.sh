@@ -1,11 +1,13 @@
 #!/usr/bin/env bash
-set -Eeuo pipefail
+set -eu
+set -o pipefail
+set -o errtrace
 
 # ******* Importing utils.sh as a source of common shell functions *******
 GITHUB_URL=https://raw.githubusercontent.com/stephenmoloney/localbox/master
 UTILS_PATH="$(dirname "${BASH_SOURCE[0]}")/../utils.sh"
 if [[ -e "${UTILS_PATH}" ]]; then
-    . "${UTILS_PATH}"
+    source "${UTILS_PATH}"
 else
     if [[ -z "$(command -v curl)" ]]; then
         sudo apt update -y -qq
@@ -13,7 +15,7 @@ else
     fi
     echo "Falling back to remote script ${GITHUB_URL}/bin/utils.sh"
     if curl -sIf -o /dev/null ${GITHUB_URL}/bin/utils.sh; then
-        . <(curl -s "${GITHUB_URL}/bin/utils.sh")
+        source <(curl -s "${GITHUB_URL}/bin/utils.sh")
     else
         echo "${GITHUB_URL}/bin/utils.sh does not exist" >/dev/stderr
         return 1
@@ -34,7 +36,7 @@ else
     fi
     echo "Falling back to remote script ${GITHUB_URL}/bin/fallbacks.sh"
     if curl -sIf -o /dev/null ${GITHUB_URL}/bin/fallbacks.sh; then
-        . <(curl -s "${GITHUB_URL}/bin/fallbacks.sh")
+        source <(curl -s "${GITHUB_URL}/bin/fallbacks.sh")
     else
         echo "${GITHUB_URL}/bin/fallbacks.sh does not exist" >/dev/stderr
         return 1
@@ -42,9 +44,9 @@ else
 fi
 # ****************************************************************************
 
-# go-jsonnet dependencies
-maybe_install_jq_as_fallback
-maybe_install_go_as_fallback
+maybe_install_asdf_as_fallback # asdf required for asdf plugins installation
+maybe_install_jq_as_fallback   # jq required for go-jsonnet installation
+maybe_install_go_as_fallback   # go required for go-jsonnet installation
 
 ASDF_ERLANG_DEPS=(
     autoconf
@@ -63,7 +65,7 @@ ASDF_ERLANG_DEPS=(
 )
 
 ASDF_NODEJS_DEPS=(
-    dirmngrn
+    dirmngr
     gpg
     curl
 )
@@ -154,10 +156,16 @@ function install_asdf_plugins() {
     done
 }
 
+function main() {
+    install_asdf_plugins
+}
+
 # shellcheck disable=SC2086
 # Cleanup
 if [[ -n "$(ls -A ${PROJECT_ROOT}/asdf-helm.* 2>/dev/null || true)" ]]; then
     rm -rf "${PROJECT_ROOT}/asdf-helm.*"
 fi
 
-install_asdf_plugins
+if [[ "$0" == "${BASH_SOURCE[0]}" ]]; then
+    main
+fi

@@ -4,7 +4,7 @@ set -eo pipefail
 
 function setup_java() {
     if [[ -e "${HOME}/.asdf/plugins/java/set-java-home.bash" ]]; then
-        . "${HOME}/.asdf/plugins/java/set-java-home.bash"
+        source "${HOME}/.asdf/plugins/java/set-java-home.bash"
     fi
 }
 

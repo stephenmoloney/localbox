@@ -32,7 +32,8 @@ function install_and_configure_if_absent() {
         echo "Executing ${PROJECT_ROOT}/bin/install/${program}.sh"
         . "${PROJECT_ROOT}/bin/install/${program}.sh" ""
         if [[ -n "$(grep "${program}" "${configure_deps}" 2>/dev/null || true)" ]]; then
-            . "${PROJECT_ROOT}/bin/configure/${program}.sh" && "setup_${program}"
+            . "${PROJECT_ROOT}/bin/configure/${program}.sh"
+            "setup_${program}"
         fi
     else
         echo "${program} is already installed, skipping..."

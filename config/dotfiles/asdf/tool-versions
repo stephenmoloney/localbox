@@ -18,7 +18,7 @@ editorconfig-checker 2.3.4
 eksctl 0.41.0
 elixir 1.11.4
 erlang 23.2
-flux2 0.10.0
+flux2 0.13.4
 fluxctl 1.22.0
 gcloud 332.0.0
 getenvoy 0.2.0

@@ -6,7 +6,7 @@ set -euo pipefail
 GITHUB_URL=https://raw.githubusercontent.com/stephenmoloney/localbox/master
 UTILS_PATH="$(dirname "${BASH_SOURCE[0]}")/utils.sh"
 if [[ -e "${UTILS_PATH}" ]]; then
-    . "${UTILS_PATH}"
+    source "${UTILS_PATH}"
 else
     if [[ -z "$(command -v curl)" ]]; then
         sudo apt update -y -qq
@@ -14,7 +14,7 @@ else
     fi
     echo "Falling back to remote script ${GITHUB_URL}/bin/utils.sh"
     if curl -sIf -o /dev/null ${GITHUB_URL}/bin/utils.sh; then
-        . <(curl -s "${GITHUB_URL}/bin/utils.sh")
+        source <(curl -s "${GITHUB_URL}/bin/utils.sh")
     else
         echo "${GITHUB_URL}/bin/utils.sh does not exist" >/dev/stderr
         return 1
@@ -30,6 +30,8 @@ JQ_INSTALL_SCRIPT="${PROJECT_ROOT}/bin/install/jq.sh"
 NODEJS_VERSION_FALLBACK=14.17.0
 YARN_VERSION_FALLBACK=1.22.10
 RUBY_VERSION_FALLBACK=2.7.2
+KUBECTL_VERSION_FALLBACK=1.20.0
+
 ASDF_RUBY_DEPS=(
     autoconf
     bison
@@ -49,14 +51,15 @@ function maybe_install_rust_as_fallback() {
     if [[ -e "${HOME}/.env/cargo" ]]; then
         source "${HOME}/.env/cargo"
     fi
+
     if [[ -z "$(command -v rustup)" ]] || [[ -z "$(command -v cargo)" ]]; then
         echo "Installing rust tools as a fallback measure"
         if [[ -e "${RUST_INSTALL_SCRIPT}" ]]; then
-            . "${RUST_INSTALL_SCRIPT}"
+            "${RUST_INSTALL_SCRIPT}"
         else
             echo "Falling back to remote script ${GITHUB_URL}/bin/install/rust.sh"
             if curl -sIf -o /dev/null ${GITHUB_URL}/bin/install/rust.sh; then
-                . <(curl -s "${GITHUB_URL}/bin/install/rust.sh")
+                source <(curl -s "${GITHUB_URL}/bin/install/rust.sh")
             else
                 echo "${GITHUB_URL}/bin/install/rust.sh does not exist" >/dev/stderr
                 return 1
@@ -74,16 +77,18 @@ function maybe_install_go_as_fallback() {
         mkdir -p "${GOPATH}"
     fi
     export GOROOT="${GOROOT:-/usr/local/go}"
-    export PATH="${PATH}:${GOROOT}/bin"
+    if [[ -z "$(grep "${GOROOT}/bin" <<<"${PATH}" 2>/dev/null || true)" ]]; then
+        export PATH="${PATH}:${GOROOT}/bin"
+    fi
 
     if [[ -z "$(command -v go)" ]]; then
         echo "Installing go as a fallback measure"
         if [[ -e "${GO_INSTALL_SCRIPT}" ]]; then
-            . "${GO_INSTALL_SCRIPT}"
+            "${GO_INSTALL_SCRIPT}"
         else
             echo "Falling back to remote script ${GITHUB_URL}/bin/install/go.sh"
             if curl -sIf -o /dev/null ${GITHUB_URL}/bin/install/go.sh; then
-                . <(curl -s "${GITHUB_URL}/bin/install/go.sh")
+                source <(curl -s "${GITHUB_URL}/bin/install/go.sh")
             else
                 echo "${GITHUB_URL}/bin/install/go.sh does not exist" >/dev/stderr
                 return 1
@@ -97,14 +102,24 @@ function maybe_install_go_as_fallback() {
 function maybe_install_asdf_as_fallback() {
     local asdf_version
 
+    if [[ -z "${ASDF_DIR:-}" ]]; then
+        if [[ -e "${HOME}/.asdf/asdf.sh" ]]; then
+            source "${HOME}/.asdf/asdf.sh"
+        fi
+    else
+        if [[ -e "${ASDF_DIR:-}/asdf.sh" ]]; then
+            source "${ASDF_DIR}/asdf.sh"
+        fi
+    fi
+
     if [[ -z "$(command -v asdf)" ]]; then
         echo "Installing asdf as a fallback measure"
         if [[ -e "${ASDF_INSTALL_SCRIPT}" ]]; then
-            . "${ASDF_INSTALL_SCRIPT}"
+            "${ASDF_INSTALL_SCRIPT}"
         else
             echo "Falling back to remote script ${GITHUB_URL}/bin/install/asdf.sh"
             if curl -sIf -o /dev/null ${GITHUB_URL}/bin/install/asdf.sh; then
-                . <(curl -s "${GITHUB_URL}/bin/install/asdf.sh")
+                source <(curl -s "${GITHUB_URL}/bin/install/asdf.sh")
             else
                 echo "${GITHUB_URL}/bin/install/asdf.sh does not exist" >/dev/stderr
                 return 1
@@ -124,6 +139,16 @@ function maybe_install_asdf_as_fallback() {
 }
 
 function maybe_install_node_as_fallback() {
+    if [[ -z "${ASDF_DIR:-}" ]]; then
+        if [[ -e "${HOME}/.asdf/asdf.sh" ]]; then
+            source "${HOME}/.asdf/asdf.sh"
+        fi
+    else
+        if [[ -e "${ASDF_DIR:-}/asdf.sh" ]]; then
+            source "${ASDF_DIR}/asdf.sh"
+        fi
+    fi
+
     if [[ -z "$(command -v node)" ]]; then
         maybe_install_apt_pkg "dirmngr" "*"
         maybe_install_apt_pkg "gpg" "*"
@@ -142,6 +167,16 @@ function maybe_install_node_as_fallback() {
 }
 
 function maybe_install_yarn_as_fallback() {
+    if [[ -z "${ASDF_DIR:-}" ]]; then
+        if [[ -e "${HOME}/.asdf/asdf.sh" ]]; then
+            source "${HOME}/.asdf/asdf.sh"
+        fi
+    else
+        if [[ -e "${ASDF_DIR:-}/asdf.sh" ]]; then
+            source "${ASDF_DIR}/asdf.sh"
+        fi
+    fi
+
     if [[ -z "$(command -v yarn)" ]]; then
         maybe_install_apt_pkg "gpg" "*"
         maybe_install_apt_pkg "curl" "*"
@@ -162,11 +197,11 @@ function maybe_install_jq_as_fallback() {
     if [[ -z "$(command -v jq)" ]]; then
         echo "Installing jq as a fallback measure"
         if [[ -e "${JQ_INSTALL_SCRIPT}" ]]; then
-            . "${JQ_INSTALL_SCRIPT}"
+            "${JQ_INSTALL_SCRIPT}"
         else
             echo "Falling back to remote script ${GITHUB_URL}/bin/install/jq.sh"
             if curl -sIf -o /dev/null ${GITHUB_URL}/bin/install/jq.sh; then
-                . <(curl -s "${GITHUB_URL}/bin/install/jq.sh")
+                source <(curl -s "${GITHUB_URL}/bin/install/jq.sh")
             else
                 echo "${GITHUB_URL}/bin/install/jq.sh does not exist" >/dev/stderr
                 return 1
@@ -178,6 +213,16 @@ function maybe_install_jq_as_fallback() {
 }
 
 function maybe_install_ruby_as_fallback() {
+    if [[ -z "${ASDF_DIR:-}" ]]; then
+        if [[ -e "${HOME}/.asdf/asdf.sh" ]]; then
+            source "${HOME}/.asdf/asdf.sh"
+        fi
+    else
+        if [[ -e "${ASDF_DIR:-}/asdf.sh" ]]; then
+            source "${ASDF_DIR}/asdf.sh"
+        fi
+    fi
+
     if [[ -z "$(command -v ruby)" ]]; then
         if [[ -z "$(command -v asdf)" ]]; then
             maybe_install_asdf_as_fallback
@@ -193,5 +238,30 @@ function maybe_install_ruby_as_fallback() {
         ruby --version
     else
         echo "ruby version $(ruby --version) is already installed"
+    fi
+}
+
+function maybe_install_kubectl_as_fallback() {
+    if [[ -z "${ASDF_DIR:-}" ]]; then
+        if [[ -e "${HOME}/.asdf/asdf.sh" ]]; then
+            source "${HOME}/.asdf/asdf.sh"
+        fi
+    else
+        if [[ -e "${ASDF_DIR:-}/asdf.sh" ]]; then
+            source "${ASDF_DIR}/asdf.sh"
+        fi
+    fi
+
+    if [[ -z "$(command -v kubectl)" ]]; then
+        if [[ -z "$(command -v asdf)" ]]; then
+            maybe_install_asdf_as_fallback
+        fi
+
+        asdf plugin add kubectl
+        asdf install kubectl "${KUBECTL_VERSION_FALLBACK}"
+        asdf global kubectl "${KUBECTL_VERSION_FALLBACK}"
+        kubectl version --short --client
+    else
+        echo "kubectl version $(kubectl version --short --client | cut -d' ' -f3) is already installed"
     fi
 }
