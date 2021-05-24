@@ -26,6 +26,7 @@ function main() {
     source "${LOCALBOX_PATH}/bin/configure/go.sh"
     source "${LOCALBOX_PATH}/bin/configure/misc.sh"
     source "${LOCALBOX_PATH}/bin/configure/rust.sh"
+    source "${LOCALBOX_PATH}/bin/configure/powerline.sh"
     source "${LOCALBOX_PATH}/bin/configure/tmux.sh"
     source "${LOCALBOX_PATH}/bin/configure/tmuxinator.sh"
     source "${LOCALBOX_PATH}/bin/configure/yamllint.sh"
@@ -42,6 +43,7 @@ function main() {
     setup_kubectl # asdf plugin
     setup_locales
     setup_timezone
+    setup_powerline
     setup_rust
     setup_starship # asdf plugin
     setup_tmux_plugin_manager
