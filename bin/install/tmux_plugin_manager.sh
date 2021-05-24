@@ -41,6 +41,10 @@ function install_tmux_plugin_manager() {
     pushd "${HOME}/.tmux/plugins/tpm" || exit
     git checkout "${version}"
     popd || exit
+
+    if [[ -d "${HOME}/.tmux/plugins" ]]; then
+        export TMUX_PLUGIN_MANAGER_PATH="${HOME}/.tmux/plugins"
+    fi
 }
 
 function main() {
