@@ -18,6 +18,7 @@ function setup_additional_completions() {
 function main() {
     source "${HOME}/.bash_aliases"
     source "${HOME}/.bash_functions"
+    source "${LOCALBOX_PATH}/bin/configure/ansible.sh"
     source "${LOCALBOX_PATH}/bin/configure/asdf.sh"
     source "${LOCALBOX_PATH}/bin/configure/asdf_plugins.sh"
     source "${LOCALBOX_PATH}/bin/configure/dotnet_core.sh"
@@ -29,6 +30,7 @@ function main() {
     source "${LOCALBOX_PATH}/bin/configure/tmuxinator.sh"
     source "${LOCALBOX_PATH}/bin/configure/yamllint.sh"
 
+    setup_ansible
     setup_asdf
     setup_dotnet_core
     setup_editors
