@@ -57,8 +57,6 @@ function install() {
     exec_with_retries "${PROJECT_ROOT}/bin/install/docker.sh" 0 2 "${DOCKER_VERSION}"
     exec_with_retries "${PROJECT_ROOT}/bin/install/docker_compose.sh" 0 2 "${DOCKER_COMPOSE_VERSION}"
     exec_with_retries "${PROJECT_ROOT}/bin/install/dotnet_core.sh" 0 2 "${DOTNET_CORE_SDK_VERSION}"
-    source "${PROJECT_ROOT}/bin/configure/asdf.sh"
-    setup_asdf
     exec_with_retries "${PROJECT_ROOT}/bin/install/krew.sh" 0 2 "${KREW_VERSION}"
     exec_with_retries "${PROJECT_ROOT}/bin/install/krew_plugins.sh" 0 2 "${KREW_VERSION}"
     exec_with_retries "${PROJECT_ROOT}/bin/install/rust.sh" 0 2 "${RUST_VERSION}"

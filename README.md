@@ -6,7 +6,10 @@ Localbox is a collection of scripts and dotfiles intended to
 - Configure various applications and tools via dotfiles
 - Setup repetitive tasks via jobber (a cronjob alternative)
 
-## Installation
+## Provisioning
+
+Process for provisioning the ubuntu desktop is taken in steps outlined
+below.
 
 ### Preparation
 
@@ -16,19 +19,19 @@ git clone https://github.com/stephenmoloney/localbox.git
 cd localbox
 ```
 
-### Installation with GUI apps
+### Provisioning with GUI apps
 
 ```bash
-make install
+make provision
 ```
 
-### Installation without GUI apps
+### Provisioning without GUI apps
 
 ```bash
-make
+make provision headless=true
 ```
 
-### Installation using environment versions
+### Provisioning using environment versions
 
 The recommended way to install particular versions of the the dependencies
 is to change the version specified in `.env`. However, it is possible to
@@ -37,13 +40,13 @@ use only the default fallback versions specified in the installation files.
 To use the versions specified in the `.env` file
 
 ```bash
-make install
+make provision
 ```
 
 To use default fallback versions and ignore `.env`
 
 ```bash
-make install fallback_versions=true
+make provision fallback_versions=true
 ```
 
 ### Emulate installation locally
@@ -67,7 +70,17 @@ docker run \
   bash -c 'sudo apt install -y make && make provision'
 ```
 
+## Installation
+
+Installation can be run as a distinct step before configuration
+
+```bash
+make install
+```
+
 ## Configuration
+
+Configuration can be run as a distinct step after installation
 
 ```bash
 make configure
@@ -86,22 +99,15 @@ recommended due to
 
 Instead, each test should be run in isolation on a new VM.
 
-Runing tests singularly
+Running tests singularly
 
 ```bash
-make test_spec spec_file=spec/bin/asdf_spec.sh use_docker=false
-make test_spec spec_file=spec/bin/debian_pkgs_spec.sh use_docker=false
-make test_spec spec_file=spec/bin/docker_compose_spec.sh use_docker=false
-make test_spec spec_file=spec/bin/docker_spec.sh use_docker=false
-make test_spec spec_file=spec/bin/go_spec.sh use_docker=false
-make test_spec spec_file=spec/bin/rust_pkgs_spec.sh use_docker=false
-make test_spec spec_file=spec/bin/rust_spec.sh use_docker=false
-make test_spec spec_file=spec/bin/shellcheck_spec.sh use_docker=false
-make test_spec spec_file=spec/bin/shfmt_spec.sh use_docker=false
-make test_spec spec_file=spec/bin/yamllint_spec.sh use_docker=false
+while IFS=' ' read -r -a specs; do
+  make test_spec spec_file=spec/bin/${specs[0]}_spec.sh use_docker=false
+done < <(ls -A ./spec/bin | sed 's/_spec//g' | sed 's/\.sh//g')
 ```
 
-### Running testC
+### Running tests on docker
 
 Running tests locally on VMS would be time-consuming to setup.
 An alternative approach which may suffice for local testing
@@ -116,16 +122,9 @@ make test_all_docker;
 Running tests singularly using docker
 
 ```bash
-make test_spec spec_file=spec/bin/asdf_spec.sh use_docker=true
-make test_spec spec_file=spec/bin/debian_pkgs_spec.sh use_docker=true
-make test_spec spec_file=spec/bin/docker_compose_spec.sh use_docker=true
-make test_spec spec_file=spec/bin/docker_spec.sh use_docker=true
-make test_spec spec_file=spec/bin/go_spec.sh use_docker=true
-make test_spec spec_file=spec/bin/rust_pkgs_spec.sh use_docker=true
-make test_spec spec_file=spec/bin/rust_spec.sh use_docker=true
-make test_spec spec_file=spec/bin/shellcheck_spec.sh use_docker=true
-make test_spec spec_file=spec/bin/shfmt_spec.sh use_docker=true
-make test_spec spec_file=spec/bin/yamllint_spec.sh use_docker=true
+while IFS=' ' read -r -a specs; do
+  make test_spec spec_file=spec/bin/${specs[0]}_spec.sh use_docker=true
+done < <(ls -A ./spec/bin | sed 's/_spec//g' | sed 's/\.sh//g')
 ```
 
 or
