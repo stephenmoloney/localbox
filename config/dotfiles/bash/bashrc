@@ -21,6 +21,7 @@ function main() {
     source "${LOCALBOX_PATH}/bin/configure/ansible.sh"
     source "${LOCALBOX_PATH}/bin/configure/asdf.sh"
     source "${LOCALBOX_PATH}/bin/configure/asdf_plugins.sh"
+    source "${LOCALBOX_PATH}/bin/configure/bpytop.sh"
     source "${LOCALBOX_PATH}/bin/configure/dotnet_core.sh"
     source "${LOCALBOX_PATH}/bin/configure/git.sh"
     source "${LOCALBOX_PATH}/bin/configure/go.sh"
@@ -33,6 +34,7 @@ function main() {
 
     setup_ansible
     setup_asdf
+    setup_bpytop
     setup_dotnet_core
     setup_editors
     setup_gcloud # asdf plugin

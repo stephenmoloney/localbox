@@ -175,9 +175,15 @@ function main() {
 
     [[ "${vim_version}" == "latest" ]] && vim_version="*"
     [[ "${terraform_ls_version}" == "latest" ]] && terraform_ls_version="*"
+
     if [[ -d "${HOME}/.tmux/plugins" ]]; then
         export TMUX_PLUGIN_MANAGER_PATH="${HOME}/.tmux/plugins"
     fi
+
+    if [[ -e "${HOME}/.cargo/env" ]]; then
+        source "${HOME}/.cargo/env"
+    fi
+
     echo "${FUNCNAME[0]} starting"
 
     install_vim_gtk3 "${vim_version}"

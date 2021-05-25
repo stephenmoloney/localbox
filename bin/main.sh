@@ -56,6 +56,7 @@ function install() {
     exec_with_retries "${PROJECT_ROOT}/bin/install/asdf.sh" 0 2 "${ASDF_VERSION}"
     exec_with_retries "${PROJECT_ROOT}/bin/install/asdf_plugins.sh" 0 2
     exec_with_retries "${PROJECT_ROOT}/bin/install/azure_cli.sh" 0 2 "${AZURE_CLI_VERSION}"
+    exec_with_retries "${PROJECT_ROOT}/bin/install/bpytop.sh" 0 2 "${BPYTOP_VERSION}"
     exec_with_retries "${PROJECT_ROOT}/bin/install/docker.sh" 0 2 "${DOCKER_VERSION}"
     exec_with_retries "${PROJECT_ROOT}/bin/install/docker_compose.sh" 0 2 "${DOCKER_COMPOSE_VERSION}"
     exec_with_retries "${PROJECT_ROOT}/bin/install/dotnet_core.sh" 0 2 "${DOTNET_CORE_SDK_VERSION}"
@@ -86,6 +87,7 @@ function setup() {
     source "${PROJECT_ROOT}/bin/configure/asdf_plugins.sh"
     source "${PROJECT_ROOT}/bin/configure/azure_cli.sh"
     source "${PROJECT_ROOT}/bin/configure/bashrc.sh"
+    source "${PROJECT_ROOT}/bin/configure/bpytop.sh"
     source "${PROJECT_ROOT}/bin/configure/docker.sh"
     source "${PROJECT_ROOT}/bin/configure/dotnet_core.sh"
     source "${PROJECT_ROOT}/bin/configure/editorconfig.sh"
@@ -112,6 +114,7 @@ function setup() {
     setup_asdf_dotfiles
     setup_azure_cli_dotfiles
     setup_bashrc
+    setup_bpytop_dotfiles
     setup_docker
     setup_editorconfig
     setup_git_dotfiles
