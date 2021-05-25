@@ -3,7 +3,7 @@ set -eu
 set -o pipefail
 set -o errtrace
 
-TMUX_PLUGIN_MANAGER_VERSION_FALLBACK=2afeff1529ec85d0c5ced5ece3714c2220b646a5
+POWERLINE_VERSION_FALLBACK=2.7
 
 # ******* Importing utils.sh as a source of common shell functions *******
 GITHUB_URL=https://raw.githubusercontent.com/stephenmoloney/localbox/master
@@ -25,32 +25,24 @@ else
 fi
 # ************************************************************************
 
-function install_tmux_plugin_manager() {
+function install_powerline() {
     local version="${1}"
 
-    maybe_install_apt_pkg "git" "*"
+    maybe_install_apt_pkg "python3-pip" "*"
+    maybe_install_apt_pkg "fonts-powerline" "*"
 
-    if [[ -d "${HOME}/.tmux/plugins/tpm" ]]; then
-        rm -rf "${HOME}/.tmux/plugins/tpm"
-    fi
+    pip3 install wheel
+    pip3 install powerline-status=="${version}"
 
-    git clone \
-        https://github.com/tmux-plugins/tpm \
-        "${HOME}/.tmux/plugins/tpm"
-
-    pushd "${HOME}/.tmux/plugins/tpm" || exit
-    git checkout "${version}"
-    popd || exit
-
-    if [[ -d "${HOME}/.tmux/plugins" ]]; then
-        export TMUX_PLUGIN_MANAGER_PATH="${HOME}/.tmux/plugins"
+    if [[ -z "$(grep "${HOME}/.local/bin" <<<"${PATH}" 2>/dev/null || true)" ]]; then
+        export PATH="${PATH}:${HOME}/.local/bin"
     fi
 }
 
 function main() {
-    local version="${1:-$TMUX_PLUGIN_MANAGER_VERSION_FALLBACK}"
+    local version="${1:-$POWERLINE_VERSION_FALLBACK}"
 
-    install_tmux_plugin_manager "${version}"
+    install_powerline "${version}"
 }
 
 if [[ "$0" == "${BASH_SOURCE[0]}" ]]; then

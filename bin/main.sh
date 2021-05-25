@@ -46,6 +46,7 @@ function install() {
     # Order of script execution does matter to avoid the fallback scripts being executed
 
     # Phase 1
+    exec_with_retries "${PROJECT_ROOT}/bin/install/debian_pkgs.sh" 0 2
     exec_with_retries "${PROJECT_ROOT}/bin/install/go.sh" 0 2 "${GO_VERSION}"
     exec_with_retries "${PROJECT_ROOT}/bin/install/jq.sh" 0 2 "${JQ_VERSION}"
 
@@ -55,12 +56,12 @@ function install() {
     exec_with_retries "${PROJECT_ROOT}/bin/install/asdf.sh" 0 2 "${ASDF_VERSION}"
     exec_with_retries "${PROJECT_ROOT}/bin/install/asdf_plugins.sh" 0 2
     exec_with_retries "${PROJECT_ROOT}/bin/install/azure_cli.sh" 0 2 "${AZURE_CLI_VERSION}"
-    exec_with_retries "${PROJECT_ROOT}/bin/install/debian_pkgs.sh" 0 2
     exec_with_retries "${PROJECT_ROOT}/bin/install/docker.sh" 0 2 "${DOCKER_VERSION}"
     exec_with_retries "${PROJECT_ROOT}/bin/install/docker_compose.sh" 0 2 "${DOCKER_COMPOSE_VERSION}"
     exec_with_retries "${PROJECT_ROOT}/bin/install/dotnet_core.sh" 0 2 "${DOTNET_CORE_SDK_VERSION}"
     exec_with_retries "${PROJECT_ROOT}/bin/install/krew.sh" 0 2 "${KREW_VERSION}"
     exec_with_retries "${PROJECT_ROOT}/bin/install/krew_plugins.sh" 0 2 "${KREW_VERSION}"
+    exec_with_retries "${PROJECT_ROOT}/bin/install/powerline.sh" 0 2 "${POWERLINE_VERSION}"
     exec_with_retries "${PROJECT_ROOT}/bin/install/rust.sh" 0 2 "${RUST_VERSION}"
     exec_with_retries "${PROJECT_ROOT}/bin/install/rust_pkgs.sh" 0 2
     exec_with_retries "${PROJECT_ROOT}/bin/install/shellcheck.sh" 0 2 "${SHELLCHECK_VERSION}"
