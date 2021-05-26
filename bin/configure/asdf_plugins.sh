@@ -60,15 +60,16 @@ function setup_gcloud() {
 }
 
 function setup_starship() {
-    local terminal_application
+    # local terminal_application
     # shellcheck disable=SC2046
-    terminal_application="$(pstree -sA $$ | awk -F "---" '{ print $3 }')"
+    # terminal_application="$(pstree -sA $$ | awk -F "---" '{ print $3 }')"
 
     # Use alternate status tool in gnome terminal (will default to powerline for example)
-    if [[ "${terminal_application}" != "gnome-terminal" ]]; then
-        if [[ -n "$(starship --version)" ]]; then
-            eval "$(starship init bash)"
-        fi
+    # if [[ "${terminal_application}" != "gnome-terminal" ]]; then
+    # fi
+
+    if [[ -n "$(starship --version)" ]]; then
+        eval "$(starship init bash)"
     fi
 }
 
