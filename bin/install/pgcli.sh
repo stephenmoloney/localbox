@@ -51,6 +51,7 @@ function install_pgcli() {
     maybe_install_apt_pkg "python3-dev" "*"
     maybe_install_apt_pkg "python3-pip" "*"
     maybe_install_apt_pkg "lsb-release" "*"
+    postgresql_client_prerequisites
     maybe_install_apt_pkg "postgresql-client-${postgresql_client_version}" "*"
 
     if [[ -z "$(get_current_version 2>/dev/null || true)" ]] ||
