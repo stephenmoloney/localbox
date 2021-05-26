@@ -71,6 +71,7 @@ function install() {
     exec_with_retries "${PROJECT_ROOT}/bin/install/shellcheck.sh" 0 2 "${SHELLCHECK_VERSION}"
     exec_with_retries "${PROJECT_ROOT}/bin/install/shfmt.sh" 0 2 "${SHFMT_VERSION}"
     exec_with_retries "${PROJECT_ROOT}/bin/install/tmuxinator.sh" 0 2 "${TMUXINATOR_VERSION}"
+    exec_with_retries "${PROJECT_ROOT}/bin/install/vint.sh" 0 2 "${VINT_VERSION}"
     exec_with_retries "${PROJECT_ROOT}/bin/install/yamllint.sh" 0 2 "${YAMLLINT_VERSION}"
 
     # Phase 3
