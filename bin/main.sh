@@ -62,6 +62,7 @@ function install() {
     exec_with_retries "${PROJECT_ROOT}/bin/install/dotnet_core.sh" 0 2 "${DOTNET_CORE_SDK_VERSION}"
     exec_with_retries "${PROJECT_ROOT}/bin/install/krew.sh" 0 2 "${KREW_VERSION}"
     exec_with_retries "${PROJECT_ROOT}/bin/install/krew_plugins.sh" 0 2 "${KREW_VERSION}"
+    "${PROJECT_ROOT}/bin/install/pgcli.sh" "${PGCLI_VERSION} ${POSTGRESQL_CLIENT_VERSION}"
     exec_with_retries "${PROJECT_ROOT}/bin/install/pipx.sh" 0 2 "${PIPX_VERSION}"
     exec_with_retries "${PROJECT_ROOT}/bin/install/powerline.sh" 0 2 "${POWERLINE_VERSION}"
     exec_with_retries "${PROJECT_ROOT}/bin/install/rust.sh" 0 2 "${RUST_VERSION}"
@@ -97,6 +98,7 @@ function setup() {
     source "${PROJECT_ROOT}/bin/configure/krew.sh"
     source "${PROJECT_ROOT}/bin/configure/misc.sh"
     source "${PROJECT_ROOT}/bin/configure/markdownlint.sh"
+    source "${PROJECT_ROOT}/bin/configure/pgcli.sh"
     source "${PROJECT_ROOT}/bin/configure/prettier.sh"
     source "${PROJECT_ROOT}/bin/configure/rust.sh"
     source "${PROJECT_ROOT}/bin/configure/tmux.sh"
@@ -123,6 +125,7 @@ function setup() {
     setup_kubectl_dotfiles
     setup_markdownlint
     setup_go
+    setup_pgcli_dotfiles
     setup_prettier
     setup_rust
     setup_rustfmt

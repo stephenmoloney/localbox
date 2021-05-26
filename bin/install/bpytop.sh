@@ -37,21 +37,21 @@ function setup_bpytop_themes() {
     maybe_install_apt_pkg "curl" "*"
 
     curl \
-        -s "https://github.com/aristocratos/bpytop/blob/v${version}/LICENSE" > \
+        -s "https://raw.githubusercontent.com/aristocratos/bpytop/v${version}/LICENSE" > \
         "${HOME}/.config/bpytop/themes/LICENSE"
 
     cat \
         <(echo '# Apache 2.0 License') \
         <(echo '# See LICENSE file') \
         <(echo '') \
-        <(curl -s "https://github.com/aristocratos/bpytop/blob/v${version}/themes/monokai.theme") > \
+        <(curl -s "https://raw.githubusercontent.com/aristocratos/bpytop/v${version}/themes/monokai.theme") > \
         "${HOME}/.config/bpytop/themes/monokai.theme"
 
     cat \
         <(echo '# Apache 2.0 License') \
         <(echo '# See LICENSE file') \
         <(echo '') \
-        <(curl -s "https://github.com/aristocratos/bpytop/blob/v${version}/themes/nord.theme") > \
+        <(curl -s "https://raw.githubusercontent.com/aristocratos/bpytop/v${version}/themes/nord.theme") > \
         "${HOME}/.config/bpytop/themes/nord.theme"
 }
 
