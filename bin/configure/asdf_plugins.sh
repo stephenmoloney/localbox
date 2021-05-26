@@ -10,6 +10,9 @@ function setup_java() {
 
 function setup_kubectl_dotfiles() {
     if [[ ! -e "${HOME}/.kube/config" ]]; then
+        if [[ ! -d "${HOME}/.kube" ]]; then
+            mkdir -p "${HOME}/.kube"
+        fi
         cp \
             "${PROJECT_ROOT}/config/dotfiles/kube/config.yml" \
             "${HOME}/.kube/config"
