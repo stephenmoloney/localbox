@@ -27,6 +27,7 @@ function main() {
     source "${LOCALBOX_PATH}/bin/configure/go.sh"
     source "${LOCALBOX_PATH}/bin/configure/misc.sh"
     source "${LOCALBOX_PATH}/bin/configure/rust.sh"
+    source "${LOCALBOX_PATH}/bin/configure/pgcli.sh"
     source "${LOCALBOX_PATH}/bin/configure/pipx.sh"
     source "${LOCALBOX_PATH}/bin/configure/powerline.sh"
     source "${LOCALBOX_PATH}/bin/configure/tmux.sh"
@@ -46,6 +47,7 @@ function main() {
     setup_kubectl # asdf plugin
     setup_locales
     setup_timezone
+    setup_pgcli
     setup_pipx
     setup_powerline
     setup_rust
