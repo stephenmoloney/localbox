@@ -62,7 +62,7 @@ function install() {
     exec_with_retries "${PROJECT_ROOT}/bin/install/dotnet_core.sh" 0 2 "${DOTNET_CORE_SDK_VERSION}"
     exec_with_retries "${PROJECT_ROOT}/bin/install/krew.sh" 0 2 "${KREW_VERSION}"
     exec_with_retries "${PROJECT_ROOT}/bin/install/krew_plugins.sh" 0 2 "${KREW_VERSION}"
-    "${PROJECT_ROOT}/bin/install/pgcli.sh" "${PGCLI_VERSION} ${POSTGRESQL_CLIENT_VERSION}"
+    "${PROJECT_ROOT}/bin/install/pgcli.sh" "${PGCLI_VERSION}" "${POSTGRESQL_CLIENT_VERSION}"
     exec_with_retries "${PROJECT_ROOT}/bin/install/pipx.sh" 0 2 "${PIPX_VERSION}"
     exec_with_retries "${PROJECT_ROOT}/bin/install/powerline.sh" 0 2 "${POWERLINE_VERSION}"
     exec_with_retries "${PROJECT_ROOT}/bin/install/rust.sh" 0 2 "${RUST_VERSION}"
