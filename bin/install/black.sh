@@ -3,7 +3,7 @@ set -eu
 set -o pipefail
 set -o errtrace
 
-BLACK_VERSION_FALLBACK=0.16.2.1
+BLACK_VERSION_FALLBACK=21.4b2
 
 # ******* Importing utils.sh as a source of common shell functions *******
 GITHUB_URL=https://raw.githubusercontent.com/stephenmoloney/localbox/master
@@ -26,13 +26,14 @@ fi
 # ************************************************************************
 
 function get_current_version() {
-    black --version
+    black --version | cut -d' ' -f3
 }
 
 function install_black() {
     local version="${1}"
 
     maybe_install_apt_pkg "python3-pip" "*"
+    pip3 install click==7.1.2
 
     if [[ -z "$(get_current_version 2>/dev/null || true)" ]] ||
         [[ "$(get_current_version 2>/dev/null || true)" != "${version}" ]]; then
