@@ -33,7 +33,7 @@ gomplate 3.9.0
 goreleaser 0.160.0
 grpcurl 1.8.0
 grype 0.8.0
-haskell system
+haskell 9.0.1
 helm 3.5.3
 helm-cr 1.2.0
 helm-ct 3.3.1
