@@ -119,6 +119,7 @@ function setup() {
     setup_editorconfig
     setup_git_dotfiles
     setup_krew
+    setup_kubectl_dotfiles
     setup_markdownlint
     setup_go
     setup_prettier
