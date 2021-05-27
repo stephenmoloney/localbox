@@ -65,6 +65,7 @@ function install() {
     exec_with_retries "${PROJECT_ROOT}/bin/install/docker_compose.sh" 0 2 "${DOCKER_COMPOSE_VERSION}"
     exec_with_retries "${PROJECT_ROOT}/bin/install/dotnet_core.sh" 0 2 "${DOTNET_CORE_SDK_VERSION}"
     exec_with_retries "${PROJECT_ROOT}/bin/install/insomnia.sh" 0 2 "${INSOMNIA_VERSION}"
+    exec_with_retries "${PROJECT_ROOT}/bin/install/gogh.sh" 0 2 "${GOGH_VERSION}"
     exec_with_retries "${PROJECT_ROOT}/bin/install/krew.sh" 0 2 "${KREW_VERSION}"
     exec_with_retries "${PROJECT_ROOT}/bin/install/krew_plugins.sh" 0 2 "${KREW_VERSION}"
     "${PROJECT_ROOT}/bin/install/pgcli.sh" "${PGCLI_VERSION}" "${POSTGRESQL_CLIENT_VERSION}"
@@ -102,6 +103,7 @@ function setup() {
     source "${PROJECT_ROOT}/bin/configure/editorconfig.sh"
     source "${PROJECT_ROOT}/bin/configure/git.sh"
     source "${PROJECT_ROOT}/bin/configure/go.sh"
+    source "${PROJECT_ROOT}/bin/configure/gogh.sh"
     source "${PROJECT_ROOT}/bin/configure/krew.sh"
     source "${PROJECT_ROOT}/bin/configure/misc.sh"
     source "${PROJECT_ROOT}/bin/configure/markdownlint.sh"
@@ -130,6 +132,7 @@ function setup() {
     setup_docker
     setup_editorconfig
     setup_git_dotfiles
+    setup_gnome_terminal_profiles
     setup_krew
     setup_kubectl_dotfiles
     setup_markdownlint

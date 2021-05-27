@@ -73,6 +73,16 @@ function setup_starship() {
     fi
 }
 
+function setup_yarn() {
+    local yarn_global_path
+    yarn_global_path="$(yarn global bin)"
+
+    if [[ -z "${yarn_global_path}" ]] &&
+        [[ -z "$(grep "${yarn_global_path}" <<<"${PATH}" 2>/dev/null || true)" ]]; then
+        export PATH="${PATH}:${yarn_global_path}"
+    fi
+}
+
 function setup_yq() {
     if [[ -z "$(command -v yq)" ]]; then
         yq shell-completion bash >"${HOME}/bash_completion.d/yq"
