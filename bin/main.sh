@@ -57,6 +57,7 @@ function install() {
     exec_with_retries "${PROJECT_ROOT}/bin/install/asdf_plugins.sh" 0 2
     exec_with_retries "${PROJECT_ROOT}/bin/install/azure_cli.sh" 0 2 "${AZURE_CLI_VERSION}"
     exec_with_retries "${PROJECT_ROOT}/bin/install/bpytop.sh" 0 2 "${BPYTOP_VERSION}"
+    exec_with_retries "${PROJECT_ROOT}/bin/install/diagrams.sh" 0 2 "${DIAGRAMS_VERSION}"
     exec_with_retries "${PROJECT_ROOT}/bin/install/docker.sh" 0 2 "${DOCKER_VERSION}"
     exec_with_retries "${PROJECT_ROOT}/bin/install/docker_compose.sh" 0 2 "${DOCKER_COMPOSE_VERSION}"
     exec_with_retries "${PROJECT_ROOT}/bin/install/dotnet_core.sh" 0 2 "${DOTNET_CORE_SDK_VERSION}"
