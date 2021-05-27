@@ -26,7 +26,7 @@ fi
 # ************************************************************************
 
 function get_current_version() {
-    vint --version
+    vint -v
 }
 
 function install_vint() {
