@@ -36,7 +36,7 @@ function install_vint() {
 
     if [[ -z "$(get_current_version 2>/dev/null || true)" ]] ||
         [[ "$(get_current_version 2>/dev/null || true)" != "${version}" ]]; then
-        pip3 install vint=="${version}"
+        pip3 install vim-vint=="${version}"
     else
         echo "vint version ${version} is already installed"
         echo "Skipping installation"
