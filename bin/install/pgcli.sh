@@ -42,6 +42,7 @@ function postgresql_client_prerequisites() {
     fi
 
     sudo apt update -y -qq
+    maybe_install_apt_pkg "libpq-dev" "*"
 }
 
 function install_pgcli() {
