@@ -134,6 +134,18 @@ function exec_with_retries() {
     fi
 }
 
+function is_docker() {
+    if [[ -e /.dockerenv ]]; then
+        echo "true"
+    fi
+}
+
+function headless_only() {
+    if [[ "${HEADLESS_ONLY}" == "true" ]]; then
+        echo "true"
+    fi
+}
+
 function exit_handler() {
     local rc="${1}"
     local type="${2}"

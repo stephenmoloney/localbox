@@ -48,4 +48,6 @@ function main() {
     install_gogh "${version}"
 }
 
-main "${@}"
+if [[ "$0" == "${BASH_SOURCE[0]}" ]]; then
+    main "${@}"
+fi

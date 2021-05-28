@@ -132,7 +132,9 @@ function setup() {
     setup_docker
     setup_editorconfig
     setup_git_dotfiles
-    setup_gnome_terminal_profiles
+    if [[ "$(is_docker)" != "true" ]] && [[ "$(headless_only)" != "true" ]]; then
+        setup_gnome_terminal_profiles
+    fi
     setup_krew
     setup_kubectl_dotfiles
     setup_markdownlint
