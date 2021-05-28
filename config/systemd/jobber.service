@@ -1,0 +1,13 @@
+[Unit]
+Description=Daemonize the [app] application
+After=syslog.target
+
+[Service]
+Type=simple
+ExecStart=/usr/local/libexec/jobbermaster
+Restart=on-failure
+RestartSec=300
+KillMode=process
+
+[Install]
+WantedBy=multi-user.target

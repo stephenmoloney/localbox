@@ -66,6 +66,7 @@ function install() {
     exec_with_retries "${PROJECT_ROOT}/bin/install/dotnet_core.sh" 0 2 "${DOTNET_CORE_SDK_VERSION}"
     exec_with_retries "${PROJECT_ROOT}/bin/install/insomnia.sh" 0 2 "${INSOMNIA_VERSION}"
     exec_with_retries "${PROJECT_ROOT}/bin/install/gogh.sh" 0 2 "${GOGH_VERSION}"
+    exec_with_retries "${PROJECT_ROOT}/bin/install/jobber.sh" 0 2 "${JOBBER_VERSION}"
     exec_with_retries "${PROJECT_ROOT}/bin/install/krew.sh" 0 2 "${KREW_VERSION}"
     exec_with_retries "${PROJECT_ROOT}/bin/install/krew_plugins.sh" 0 2 "${KREW_VERSION}"
     "${PROJECT_ROOT}/bin/install/pgcli.sh" "${PGCLI_VERSION}" "${POSTGRESQL_CLIENT_VERSION}"
@@ -105,12 +106,14 @@ function setup() {
     source "${PROJECT_ROOT}/bin/configure/git.sh"
     source "${PROJECT_ROOT}/bin/configure/go.sh"
     source "${PROJECT_ROOT}/bin/configure/gogh.sh"
+    source "${PROJECT_ROOT}/bin/configure/jobber.sh"
     source "${PROJECT_ROOT}/bin/configure/krew.sh"
     source "${PROJECT_ROOT}/bin/configure/misc.sh"
     source "${PROJECT_ROOT}/bin/configure/markdownlint.sh"
     source "${PROJECT_ROOT}/bin/configure/pgcli.sh"
     source "${PROJECT_ROOT}/bin/configure/prettier.sh"
     source "${PROJECT_ROOT}/bin/configure/rust.sh"
+    source "${PROJECT_ROOT}/bin/configure/systemctl.sh"
     source "${PROJECT_ROOT}/bin/configure/tmux.sh"
     source "${PROJECT_ROOT}/bin/configure/vim.sh"
     source "${PROJECT_ROOT}/bin/configure/yamllint.sh"
@@ -120,6 +123,7 @@ function setup() {
     setup_timezone
     setup_keyboard
     setup_directory_structure
+    if [[ "$(is_docker)" != "true" ]]; then setup_systemctl; fi
 
     # Run second
     setup_alacritty_dotfiles
@@ -136,10 +140,11 @@ function setup() {
     if [[ "$(is_docker)" != "true" ]] && [[ "$(headless_only)" != "true" ]]; then
         setup_gnome_terminal_profiles
     fi
+    setup_go
+    if [[ "$(is_docker)" != "true" ]]; then setup_jobber_dotfiles; fi
     setup_krew
     setup_kubectl_dotfiles
     setup_markdownlint
-    setup_go
     setup_pgcli_dotfiles
     setup_prettier
     setup_rust
