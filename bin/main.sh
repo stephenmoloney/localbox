@@ -51,6 +51,7 @@ function install() {
     exec_with_retries "${PROJECT_ROOT}/bin/install/jq.sh" 0 2 "${JQ_VERSION}"
 
     # Phase 2
+    exec_with_retries "${PROJECT_ROOT}/bin/install/alacritty.sh" 0 2 "${ALACRITTY_VERSION}"
     exec_with_retries "${PROJECT_ROOT}/bin/install/ansible.sh" 0 2 "${ANSIBLE_VERSION}"
     exec_with_retries "${PROJECT_ROOT}/bin/install/ansible_modules.sh" 0 2
     exec_with_retries "${PROJECT_ROOT}/bin/install/asdf.sh" 0 2 "${ASDF_VERSION}"
@@ -88,6 +89,7 @@ function install() {
 }
 
 function setup() {
+    source "${PROJECT_ROOT}/bin/configure/alacritty.sh"
     source "${PROJECT_ROOT}/bin/configure/ansible.sh"
     source "${PROJECT_ROOT}/bin/configure/asdf.sh"
     source "${PROJECT_ROOT}/bin/configure/asdf_plugins.sh"
@@ -116,6 +118,8 @@ function setup() {
     setup_directory_structure
 
     # Run second
+    setup_alacritty_dotfiles
+    setup_alacritty_desktop_file
     setup_ansible_dotfiles
     setup_asdf
     setup_asdf_dotfiles
