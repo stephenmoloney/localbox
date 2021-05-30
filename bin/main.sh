@@ -50,6 +50,7 @@ function install() {
     exec_with_retries "${PROJECT_ROOT}/bin/install/go.sh" 0 2 "${GO_VERSION}"
     exec_with_retries "${PROJECT_ROOT}/bin/install/jq.sh" 0 2 "${JQ_VERSION}"
     exec_with_retries "${PROJECT_ROOT}/bin/install/rust.sh" 0 2 "${RUST_VERSION}"
+    sudo apt autoremove --purge -y
 
     # Phase 2
     exec_with_retries "${PROJECT_ROOT}/bin/install/alacritty.sh" 0 2 "${ALACRITTY_VERSION}"
@@ -84,6 +85,7 @@ function install() {
     exec_with_retries "${PROJECT_ROOT}/bin/install/tmuxinator.sh" 0 2 "${TMUXINATOR_VERSION}"
     exec_with_retries "${PROJECT_ROOT}/bin/install/vint.sh" 0 2 "${VINT_VERSION}"
     exec_with_retries "${PROJECT_ROOT}/bin/install/yamllint.sh" 0 2 "${YAMLLINT_VERSION}"
+    sudo apt autoremove --purge -y
 
     # Phase 3
     exec_with_retries "${PROJECT_ROOT}/bin/install/tmux_plugin_manager.sh" 0 2 "${TMUX_PLUGIN_MANAGER_VERSION}"
