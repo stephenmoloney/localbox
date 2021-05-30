@@ -64,6 +64,7 @@ function install() {
     exec_with_retries "${PROJECT_ROOT}/bin/install/docker.sh" 0 2 "${DOCKER_VERSION}"
     exec_with_retries "${PROJECT_ROOT}/bin/install/docker_compose.sh" 0 2 "${DOCKER_COMPOSE_VERSION}"
     exec_with_retries "${PROJECT_ROOT}/bin/install/dotnet_core.sh" 0 2 "${DOTNET_CORE_SDK_VERSION}"
+    exec_with_retries "${PROJECT_ROOT}/bin/install/insomnia.sh" 0 2 "${INSOMNIA_VERSION}"
     exec_with_retries "${PROJECT_ROOT}/bin/install/krew.sh" 0 2 "${KREW_VERSION}"
     exec_with_retries "${PROJECT_ROOT}/bin/install/krew_plugins.sh" 0 2 "${KREW_VERSION}"
     "${PROJECT_ROOT}/bin/install/pgcli.sh" "${PGCLI_VERSION}" "${POSTGRESQL_CLIENT_VERSION}"
