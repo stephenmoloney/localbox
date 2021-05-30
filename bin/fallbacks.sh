@@ -25,6 +25,7 @@ PROJECT_ROOT="$(project_root)"
 
 ANSIBLE_INSTALL_SCRIPT="${PROJECT_ROOT}/bin/install/ansible.sh"
 ASDF_INSTALL_SCRIPT="${PROJECT_ROOT}/bin/install/asdf.sh"
+FLATPAK_INSTALL_SCRIPT="${PROJECT_ROOT}/bin/install/flatpak.sh"
 GO_INSTALL_SCRIPT="${PROJECT_ROOT}/bin/install/go.sh"
 JQ_INSTALL_SCRIPT="${PROJECT_ROOT}/bin/install/jq.sh"
 RUST_INSTALL_SCRIPT="${PROJECT_ROOT}/bin/install/rust.sh"
@@ -33,6 +34,7 @@ NODEJS_VERSION_FALLBACK=14.17.0
 YARN_VERSION_FALLBACK=1.22.10
 RUBY_VERSION_FALLBACK=2.7.2
 KUBECTL_VERSION_FALLBACK=1.20.0
+FLATPAK_VERSION_FALLBACK=latest
 
 ASDF_RUBY_DEPS=(
     autoconf
@@ -297,5 +299,24 @@ function maybe_install_ansible_as_fallback() {
         fi
     else
         echo "Ansible version $(ansible --version | cut -d ' ' -f2) already installed"
+    fi
+}
+
+function maybe_install_flatpak_as_fallback() {
+    if [[ -z "$(command -v flatpak)" ]]; then
+        echo "Installing flatpak as a fallback measure"
+        if [[ -e "${FLATPAK_INSTALL_SCRIPT}" ]]; then
+            "${FLATPAK_INSTALL_SCRIPT}" "${FLATPAK_VERSION_FALLBACK}"
+        else
+            echo "Falling back to remote script ${GITHUB_URL}/bin/install/flatpak.sh"
+            if curl -sIf -o /dev/null ${GITHUB_URL}/bin/install/flatpak.sh; then
+                source <(curl -s "${GITHUB_URL}/bin/install/flatpak.sh")
+            else
+                echo "${GITHUB_URL}/bin/install/flatpak.sh does not exist" >/dev/stderr
+                return 1
+            fi
+        fi
+    else
+        echo "Flatpak version $(flatpak --version | cut -d ' ' -f2) already installed"
     fi
 }
