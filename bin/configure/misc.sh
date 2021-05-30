@@ -26,9 +26,9 @@ EOT
 }
 
 function setup_locales() {
-    export LANG
-    export LANGUAGE
-    export LC_ALL
+    export LANG="${LANG:-}"
+    export LANGUAGE="${LANGUAGE:-}"
+    export LC_ALL="${LC_ALL:-}"
     if [[ -z "${LANG}" ]]; then
         if [[ -n "$(grep "LANG=" "${LOCALBOX_PATH}/.env" | cut -d'=' -f2 2>/dev/null || true)" ]]; then
             LANG="$(grep "LANG=" "${LOCALBOX_PATH}/.env" | cut -d'=' -f2 2>/dev/null || true)"
