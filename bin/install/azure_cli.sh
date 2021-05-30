@@ -62,4 +62,6 @@ function main() {
     install_azure_cli "${version}"
 }
 
-main "${@}"
+if [[ "$0" == "${BASH_SOURCE[0]}" ]]; then
+    main "${@}"
+fi
