@@ -37,10 +37,12 @@ function install() {
     fi
     if [[ "${SOURCE_ENV_FILE}" == "true" ]]; then
         echo "Sourcing environment variables from ${PROJECT_ROOT}/.env"
+        set -o allexport
         source "${PROJECT_ROOT}/.env"
+        set +o allexport
     else
         echo "Skipping sourcing environment variables from ${PROJECT_ROOT}/.env"
-        echo "Default fallback versions will be employed"
+        echo "Default fallback versions will be adpoted"
     fi
 
     # Order of script execution does matter to avoid the fallback scripts being executed
