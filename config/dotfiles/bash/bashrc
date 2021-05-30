@@ -55,7 +55,8 @@ function main() {
     setup_tmux_plugin_manager
     setup_tmuxinator
     setup_yamllint
-    setup_yq # asdf plugin
+    setup_yarn # asdf plugin
+    setup_yq   # asdf plugin
 
     export DEBIAN_FRONTEND=dialog
     setup_additional_completions
