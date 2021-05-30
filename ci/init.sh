@@ -6,7 +6,7 @@ set -euo pipefail
 GITHUB_URL=https://raw.githubusercontent.com/stephenmoloney/localbox/master
 UTILS_PATH="$(dirname "${BASH_SOURCE[0]}")/../bin/utils.sh"
 if [[ -e "${UTILS_PATH}" ]]; then
-    . "${UTILS_PATH}"
+    source "${UTILS_PATH}"
 else
     if [[ -z "$(command -v curl)" ]]; then
         sudo apt update -y -qq
@@ -14,7 +14,7 @@ else
     fi
     echo "Falling back to remote script ${GITHUB_URL}/bin/utils.sh"
     if curl -sIf -o /dev/null ${GITHUB_URL}/bin/utils.sh; then
-        . <(curl -s "${GITHUB_URL}/bin/utils.sh")
+        source <(curl -s "${GITHUB_URL}/bin/utils.sh")
     else
         echo "${GITHUB_URL}/bin/utils.sh does not exist" >/dev/stderr
         return 1
@@ -30,9 +30,9 @@ function install_and_configure_if_absent() {
 
     if [[ -z "$(command -v "${program}")" ]]; then
         echo "Executing ${PROJECT_ROOT}/bin/install/${program}.sh"
-        . "${PROJECT_ROOT}/bin/install/${program}.sh" ""
-        if [[ -n "$(grep "${program}" "${configure_deps}" 2>/dev/null || true)" ]]; then
-            . "${PROJECT_ROOT}/bin/configure/${program}.sh"
+        "${PROJECT_ROOT}/bin/install/${program}.sh" ""
+        if [[ -n "$(grep "${program}" <<<"${configure_deps}" 2>/dev/null || true)" ]]; then
+            source "${PROJECT_ROOT}/bin/configure/${program}.sh"
             "setup_${program}"
         fi
     else
@@ -48,7 +48,7 @@ function init() {
         install_and_configure_if_absent "${program}"
     done
 
-    . "${PROJECT_ROOT}/bin/fallbacks.sh"
+    source "${PROJECT_ROOT}/bin/fallbacks.sh"
     maybe_install_node_as_fallback
     maybe_install_yarn_as_fallback
     yarn install --no-lockfile
