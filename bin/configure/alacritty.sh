@@ -34,7 +34,7 @@ function setup_alacritty_dotfiles() {
 
 function setup_alacritty_desktop_file() {
     if [[ ! -e /usr/share/applications/alacritty.desktop ]]; then
-        touch /usr/share/applications/alacritty.desktop
+        sudo touch /usr/share/applications/alacritty.desktop
         cat <<EOF | sudo tee -a /usr/share/applications/alacritty.desktop
 [Desktop Entry]
 Name=Alacritty
