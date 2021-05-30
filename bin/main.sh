@@ -153,6 +153,7 @@ function setup() {
     setup_prettier
     setup_rust
     setup_rustfmt
+    setup_starship_dotfiles
     setup_tmux
     setup_vimrc
     setup_yamllint_dotfiles

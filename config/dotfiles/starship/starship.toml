@@ -1,0 +1,242 @@
+format = """
+$username\
+$hostname\
+$shlvl\
+$kubernetes\
+$directory\
+$git_branch\
+${custom.git_user}\
+$git_commit\
+$git_state\
+$git_status\
+$hg_branch\
+$docker_context\
+$package\
+$cmake\
+$dart\
+$dotnet\
+$elixir\
+$elm\
+$erlang\
+$golang\
+$helm\
+$java\
+$julia\
+$kotlin\
+$nim\
+$nodejs\
+$ocaml\
+$perl\
+$php\
+$purescript\
+$python\
+$ruby\
+$rust\
+$scala\
+$swift\
+$terraform\
+$vagrant\
+$zig\
+$nix_shell\
+$conda\
+$memory_usage\
+$aws\
+$gcloud\
+$openstack\
+$env_var\
+$crystal\
+$custom\
+$cmd_duration\
+$line_break\
+$lua\
+$jobs\
+$battery\
+$time\
+$status\
+$shell\
+$character"""
+
+[username]
+disabled = false
+format = "[$user]($style) "
+
+[hostname]
+disabled = true
+
+[shlvl]
+disabled = true
+
+[kubernetes]
+disabled = false
+format = "| [$symbol$context(($namespace))]($style) "
+
+[directory]
+disabled = false
+truncate_to_repo = false
+truncation_length = 5
+
+[git_branch]
+disabled = false
+format = "| [$symbol$branch]($style) "
+
+[custom.git_user]
+disabled = false
+command = "echo -n '(' && git config user.email | tr -d '\n' && echo -n ')'"
+style = "bold purple"
+when = """([[ -d .git ]] && [[ $(git config user.email) != stephen@stephenmoloney.com ]])"""
+format = "[$output]($style) "
+
+[git_commit]
+disabled = true
+
+[git_state]
+disabled = true
+
+[git_status]
+disabled = true
+
+[hg_branch]
+disabled = true
+
+[docker_context]
+disabled = false
+
+[package]
+disabled = false
+
+[cmake]
+disabled = true
+
+[dart]
+disabled = true
+
+[dotnet]
+disabled = false
+
+[elixir]
+disabled = false
+
+[elm]
+disabled = true
+
+[erlang]
+disabled = false
+
+[golang]
+disabled = false
+
+[helm]
+disabled = false
+
+[java]
+disabled = false
+
+[julia]
+disabled = true
+
+[kotlin]
+disabled = true
+
+[nim]
+disabled = true
+
+[nodejs]
+disabled = false
+format = "| [nodejs ($version )]($style)"
+
+[ocaml]
+disabled = false
+
+[perl]
+disabled = false
+
+[php]
+disabled = true
+
+[purescript]
+disabled = true
+
+[python]
+disabled = false
+
+[ruby]
+disabled = false
+
+[rust]
+disabled = false
+
+[scala]
+disabled = false
+
+[swift]
+disabled = true
+
+[terraform]
+disabled = false
+
+[vagrant]
+disabled = true
+
+[zig]
+disabled = true
+
+[nix_shell]
+disabled = false
+
+[conda]
+disabled = false
+
+[memory_usage]
+disabled = true
+
+[aws]
+disabled = false
+
+[gcloud]
+disabled = true
+
+[openstack]
+disabled = false
+
+[env_var]
+disabled = false
+
+[crystal]
+disabled = true
+
+[custom]
+disabled = false
+
+[cmd_duration]
+disabled = false
+format = "| [$duration]($style) "
+min_time = 5_000
+
+[line_break]
+disabled = false
+
+[lua]
+disabled = true
+
+[jobs]
+disabled = false
+
+[battery]
+disabled = true
+
+[time]
+disabled = true
+
+[status]
+disabled = false
+
+[shell]
+disabled = false
+
+[character]
+disabled = false
+success_symbol = "[➜](bold green) "
+error_symbol = "[✗](bold red) "
+
+
+add_newline = false
