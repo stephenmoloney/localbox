@@ -73,6 +73,16 @@ function setup_starship() {
     fi
 }
 
+function setup_starship_dotfiles() {
+    if [[ ! -d "${HOME}/.config" ]]; then
+        mkdir -p "${HOME}/.config"
+    fi
+
+    cp \
+        "$(project_root)/config/dotfiles/starship/starship.toml" \
+        "${HOME}/.config/starship.toml"
+}
+
 function setup_yarn() {
     local yarn_global_path
     yarn_global_path="$(yarn global bin)"
