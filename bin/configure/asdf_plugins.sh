@@ -35,13 +35,13 @@ function setup_kubectl() {
             if [[ "${kubeconfig_files[0]}" != *"prod"* ]]; then
                 if [[ -z "$(grep "${kubeconfig_files[0]}" <<<"${KUBECONFIG}" 2>/dev/null || true)" ]]; then
                     if [[ -z "${KUBECONFIG}" ]]; then
-                        export KUBECONFIG="${kubeconfig_files[0]}"
+                        export KUBECONFIG="${HOME}/.kube/config:${kubeconfig_files[0]}"
                     else
                         export KUBECONFIG="${KUBECONFIG}:${kubeconfig_files[0]}"
                     fi
                 fi
             fi
-        done < <(ls -A "${HOME}"/.kube/*)
+        done < <(find "${HOME}/.kube" -maxdepth 3 -type f | grep "\.conf")
     fi
 }
 
