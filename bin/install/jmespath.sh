@@ -45,8 +45,6 @@ function install_jmespath() {
     if [[ -z "$(grep "${HOME}/.local/bin" <<<"${PATH}" 2>/dev/null || true)" ]]; then
         export PATH="${PATH}:${HOME}/.local/bin"
     fi
-
-    jmespath --version
 }
 
 function main() {
