@@ -90,6 +90,14 @@ function install_alacritty() {
             "https://raw.githubusercontent.com/alacritty/alacritty/v${version}/extra/logo/alacritty-term.svg"
     fi
 
+    # Ensure alacritty is added to xterm db
+    pushd "$(mktemp -d)" || exit
+    wget \
+        "https://raw.githubusercontent.com/alacritty/alacritty/v${version}/extra/alacritty.info"
+    sudo tic -xe alacritty,alacritty-direct alacritty.info
+    rm alacritty.info
+    popd || exit
+
     alacritty --version
 }
 
