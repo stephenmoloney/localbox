@@ -72,6 +72,7 @@ function install() {
     fi
     exec_with_retries "${PROJECT_ROOT}/bin/install/insomnia.sh" 0 2 "${INSOMNIA_VERSION}"
     exec_with_retries "${PROJECT_ROOT}/bin/install/gogh.sh" 0 2 "${GOGH_VERSION}"
+    exec_with_retries "${PROJECT_ROOT}/bin/install/jmespath.sh" 0 2 "${JMESPATH_VERSION}"
     exec_with_retries "${PROJECT_ROOT}/bin/install/jobber.sh" 0 2 "${JOBBER_VERSION}"
     exec_with_retries "${PROJECT_ROOT}/bin/install/krew.sh" 0 2 "${KREW_VERSION}"
     exec_with_retries "${PROJECT_ROOT}/bin/install/krew_plugins.sh" 0 2 "${KREW_VERSION}"

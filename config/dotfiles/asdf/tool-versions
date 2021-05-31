@@ -39,7 +39,6 @@ helmfile 0.138.7
 hey 0.1.4
 istioctl 1.8.4
 java adoptopenjdk-11.0.10+9
-jmespath 0.1.3
 k3d 4.3.0
 k3sup 0.10.1
 k6 0.31.1
