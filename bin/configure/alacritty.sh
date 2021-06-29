@@ -35,20 +35,20 @@ function setup_alacritty_dotfiles() {
 function setup_alacritty_desktop_file() {
     if [[ ! -e /usr/share/applications/alacritty.desktop ]]; then
         sudo touch /usr/share/applications/alacritty.desktop
-        cat <<EOF | sudo tee -a /usr/share/applications/alacritty.desktop
+        echo """
 [Desktop Entry]
 Name=Alacritty
 GenericName=Terminal
 Type=Application
-TryExec=/home/u1/.cargo/bin/alacritty
-Exec=/home/u1/.cargo/bin/alacritty
+TryExec=${HOME}/.cargo/bin/alacritty
+Exec=${HOME}/.cargo/bin/alacritty
 Terminal=false
 Categories=System;TerminalEmulator;
 Comment=A fast, cross-platform, OpenGL terminal emulator
 StartupWMClass=Alacritty
 Icon=/usr/share/icons/alacritty.svg
 StartupNotify=true
-EOF
+""" | sudo tee -a /usr/share/applications/alacritty.desktop
         sudo desktop-file-install /usr/share/applications/alacritty.desktop
         sudo update-desktop-database
     fi

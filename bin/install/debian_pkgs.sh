@@ -44,6 +44,7 @@ DEBIAN_PKGS=(
     ["python-is-python3"]="*"
     ["python3-pip"]="*"
     ["python3-setuptools"]="*"
+    ["scdaemon"]="*"
     ["tmux"]="*"
     ["tree"]="*"
     ["unzip"]="*"
