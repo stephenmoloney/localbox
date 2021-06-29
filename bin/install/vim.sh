@@ -143,6 +143,10 @@ function install_language_servers() {
         rm -rf "${HOME}/.config/coc/extensions/node_modules"
     fi
 
+    if [[ ! -e "${HOME}/.vimrc" ]]; then
+        maybe_configure_vimrc_as_fallback
+    fi
+
     NERDTREE_CLOSED=true vim +PlugClean +qall
     NERDTREE_CLOSED=true vim +PlugInstall +qall
 
