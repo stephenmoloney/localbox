@@ -320,3 +320,24 @@ function maybe_install_flatpak_as_fallback() {
         echo "Flatpak version $(flatpak --version | cut -d ' ' -f2) already installed"
     fi
 }
+
+function maybe_configure_vimrc_as_fallback() {
+    if [[ ! -e "${HOME}/.vimrc" ]]; then
+        echo "Attempting to configure .vimrc from local files"
+        if [[ -e "${PROJECT_ROOT}/config/dotfiles/vim/vimrc" ]]; then
+            cp \
+                "${PROJECT_ROOT}/config/dotfiles/vim/vimrc" \
+                "${HOME}/.vimrc"
+        else
+            echo "Falling back to remote vimrc file ${GITHUB_URL}/config/dotfiles/vim/vimrc"
+            if curl -sIf -o /dev/null ${GITHUB_URL}/config/dotfiles/vim/vimrc; then
+                curl "${GITHUB_URL}/config/dotfiles/vim/vimrc" >"${HOME}/.vimrc"
+            else
+                echo "${GITHUB_URL}/config/dotfiles/vim/vimrc does not exist" >/dev/stderr
+                return 1
+            fi
+        fi
+    else
+        echo "${HOME}/.vimrc is already configured"
+    fi
+}
