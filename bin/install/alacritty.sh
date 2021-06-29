@@ -60,6 +60,7 @@ function install_alacritty() {
     maybe_install_apt_pkg "libfontconfig1-dev" "*"
     maybe_install_apt_pkg "libxcb-xfixes0-dev" "*"
     maybe_install_apt_pkg "python3" "*"
+    maybe_install_apt_pkg "libxkbcommon-dev" "*"
 
     if [[ -z "$(get_current_version 2>/dev/null || true)" ]] ||
         [[ "$(get_current_version 2>/dev/null || true)" != "${version}" ]]; then

@@ -41,7 +41,7 @@ istioctl 1.8.4
 java adoptopenjdk-11.0.10+9
 k3d 4.3.0
 k3sup 0.10.1
-k6 0.31.1
+k6 0.32.0
 k9s 0.24.3
 kconf 1.10.1
 kind 0.10.0
