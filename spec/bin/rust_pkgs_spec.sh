@@ -15,7 +15,6 @@ export TEST_RUST_PKGS=(
     ["nitrocli"]="NITROCLI_VERSION"
     ["ripgrep"]="RIPGREP_VERSION"
     ["procs"]="PROCS_VERSION"
-    ["spotify-tui"]="SPOTIFY_TUI_VERSION"
     ["tealdeer"]="TEALDEER_VERSION"
     ["tre"]="TRE_VERSION"
     ["viu"]="VIU_VERSION"

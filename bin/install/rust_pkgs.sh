@@ -57,7 +57,6 @@ LSD_VERSION_FALLBACK=0.20.1
 NITROCLI_VERSION_FALLBACK=0.4.0
 RIPGREP_VERSION_FALLBACK=12.1.1
 PROCS_VERSION_FALLBACK=0.11.4
-SPOTIFY_TUI_VERSION_FALLBACK=0.24.0
 TEALDEER_VERSION_FALLBACK=1.4.1
 TRE_VERSION_FALLBACK=0.1.1
 VIU_VERSION_FALLBACK=1.3.0
@@ -76,7 +75,6 @@ RUST_PKGS=(
     ["nitrocli"]="${NITROCLI_VERSION:-$NITROCLI_VERSION_FALLBACK}"
     ["ripgrep"]="${RIPGREP_VERSION:-$RIPGREP_VERSION_FALLBACK}"
     ["procs"]="${PROCS_VERSION:-$PROCS_VERSION_FALLBACK}"
-    ["spotify-tui"]="${SPOTIFY_TUI_VERSION:-$SPOTIFY_TUI_VERSION_FALLBACK}"
     ["tealdeer"]="${TEALDEER_VERSION:-$TEALDEER_VERSION_FALLBACK}"
     ["tre"]="${TRE_VERSION:-$TRE_VERSION_FALLBACK}"
     ["viu"]="${VIU_VERSION:-$VIU_VERSION_FALLBACK}"
@@ -99,16 +97,6 @@ function main() {
     for pkg in "${!RUST_PKGS[@]}"; do
         if [[ "${pkg}" == "nitrocli" ]]; then
             maybe_install_apt_pkg libhidapi-dev "*"
-        fi
-        if [[ "${pkg}" == "spotify-tui" ]]; then
-            maybe_install_apt_pkg tzdata "*"
-            sudo --preserve-env dpkg-reconfigure --frontend=noninteractive tzdata
-            maybe_install_apt_pkg pkg-config "*"
-            maybe_install_apt_pkg libssl-dev "*"
-            maybe_install_apt_pkg libxcb1-dev "*"
-            maybe_install_apt_pkg libxcb-render0-dev "*"
-            maybe_install_apt_pkg libxcb-shape0-dev "*"
-            maybe_install_apt_pkg libxcb-xfixes0-dev "*"
         fi
         install_rust_pkg "${pkg}" "${RUST_PKGS[$pkg]}"
     done

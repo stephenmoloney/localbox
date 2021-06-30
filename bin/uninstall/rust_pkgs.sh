@@ -15,7 +15,6 @@ RUST_PKGS=(
     nitrocli
     ripgrep
     procs
-    spotify-tui
     tealdeer
     tre
     viu
