@@ -56,6 +56,13 @@ $status\
 $shell\
 $character"""
 
+add_newline = true
+
+[character]
+disabled = false
+success_symbol = "[➜](bold green) "
+error_symbol = "[✗](bold red) "
+
 [username]
 disabled = false
 format = "[$user]($style) "
@@ -232,11 +239,3 @@ disabled = false
 
 [shell]
 disabled = false
-
-[character]
-disabled = false
-success_symbol = "[➜](bold green) "
-error_symbol = "[✗](bold red) "
-
-
-add_newline = false
