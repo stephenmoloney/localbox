@@ -87,7 +87,7 @@ skaffold 1.26.1
 snyk 1.650.0
 sops 3.7.1
 sqlite 3.36.0
-starship 0.53.0
+starship 0.55.0
 tanka 0.16.0
 task 3.4.3
 tekton-cli 0.19.1
