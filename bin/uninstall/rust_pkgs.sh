@@ -4,7 +4,6 @@ set -euo pipefail
 RUST_PKGS=(
     bat
     bottom
-    code-minimap
     du-dust
     exa
     fd-find
@@ -14,7 +13,6 @@ RUST_PKGS=(
     lsd
     nitrocli
     ripgrep
-    procs
     tealdeer
     tre
     viu
