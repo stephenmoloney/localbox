@@ -3,7 +3,7 @@ set -eu
 set -o pipefail
 set -o errtrace
 
-SHFMT_VERSION_FALLBACK=3.2.4
+SHFMT_VERSION_FALLBACK=3.3.1
 
 # ******* Importing utils.sh as a source of common shell functions *******
 GITHUB_URL=https://raw.githubusercontent.com/stephenmoloney/localbox/master

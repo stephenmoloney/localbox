@@ -167,7 +167,6 @@ docker run \
 
 | Key Pattern                       | Action                  | Notes                                                                          |
 | --------------------------------- | ----------------------- | ------------------------------------------------------------------------------ |
-| <kbd>\qq</kbd>                    | `Minimap`               | Toggles the code minimap                                                       |
 | <kbd>\ww</kbd>                    | `MarkdownPreviewToggle` | Toggles the markdown to be viewer in a newly opened browser window             |
 | <kbd>\ee</kbd>                    | `NERDTreeToggle`        | Toggles open and close the nerdtree vim pane                                   |
 | <kbd>\tt</kbd>                    | `NERDTreeRefreshRoot`   | Reload the nerdtree vim pane                                                   |

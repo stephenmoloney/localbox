@@ -70,7 +70,6 @@ function install() {
         "${PROJECT_ROOT}/bin/install/flatpak.sh" "${FLATPAK_VERSION}" "${FREEDESKTOP_VERSION}"
         exec_with_retries "${PROJECT_ROOT}/bin/install/flatpak_pkgs.sh" 0 2
     fi
-    exec_with_retries "${PROJECT_ROOT}/bin/install/insomnia.sh" 0 2 "${INSOMNIA_VERSION}"
     exec_with_retries "${PROJECT_ROOT}/bin/install/gogh.sh" 0 2 "${GOGH_VERSION}"
     exec_with_retries "${PROJECT_ROOT}/bin/install/jmespath.sh" 0 2 "${JMESPATH_VERSION}"
     exec_with_retries "${PROJECT_ROOT}/bin/install/jobber.sh" 0 2 "${JOBBER_VERSION}"

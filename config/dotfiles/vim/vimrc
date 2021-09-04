@@ -11,7 +11,6 @@ call plug#begin('~/.vim/autoload/plugged')
     Plug 'vim-airline/vim-airline' " powerbar at bottom of vim
     Plug 'vim-airline/vim-airline-themes' " themes for the airline status bar
     Plug 'arcticicestudio/nord-vim', {'branch' : 'master'} " theme for the vim ui
-    Plug 'wfxr/minimap.vim' " show a minimap while you scroll through the code
     Plug 'ojroques/vim-scrollstatus' " show the relative scroll progress in the horizontal status bar
     Plug 'psliwka/vim-smoothie' " smooth scrolling
     Plug 'editorconfig/editorconfig-vim' " follow editorconfig rules
@@ -217,20 +216,6 @@ let g:coc_filetype_map = {
 inoremap <silent><expr> <S-Tab> coc#refresh()
 
 " ----------------------------------------------------------------------------------
-" Minimap settings
-let g:minimap_left = 0
-let g:minimap_width = 14
-let g:minimap_highlight = 'Title'
-let g:minimap_base_highlight = 'Normal'
-let g:minimap_auto_start = 0
-let g:minimap_auto_start_win_enter = 0
-let g:minimap_block_filetypes = ['fugitive', 'nerdtree', 'tagbar' ]
-let g:minimap_block_buftypes = ['nofile', 'nowrite', 'quickfix', 'terminal', 'prompt']
-let g:minimap_close_filetypes = ['startify', 'netrw']
-let g:minimap_close_buftypes = []
-
-" Hotkeys for cycling through minimap on and off
-map <leader>qq :MinimapToggle<CR>
 
 " Undotree hotkey for visualizing undo history
 map <leader>uu :UndotreeToggle<CR>
