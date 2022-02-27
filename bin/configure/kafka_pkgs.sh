@@ -1,9 +1,6 @@
 #!/usr/bin/env bash
-set -eu
-set -o pipefail
-set -o errtrace
-
-POWERLINE_VERSION_FALLBACK=2.7
+# shellcheck disable=SC2125
+set -eo pipefail
 
 # ******* Importing utils.sh as a source of common shell functions *******
 GITHUB_URL=https://raw.githubusercontent.com/stephenmoloney/localbox/master
@@ -24,27 +21,23 @@ else
     fi
 fi
 # ************************************************************************
+PROJECT_ROOT="$(project_root)"
 
-function install_powerline() {
-    local version="${1}"
-
-    maybe_install_apt_pkg "python3-pip" "*"
-    maybe_install_apt_pkg "fonts-powerline" "*"
-
-    pip3 install wheel
-    pip3 install powerline-status=="${version}"
-
-    if [[ -z "$(grep "${HOME}/.local/bin" <<<"${PATH}" 2>/dev/null || true)" ]]; then
-        export PATH="${PATH}:${HOME}/.local/bin"
+function setup_kcctl() {
+    if [[ ! -e "${HOME}/.kcctl" ]]; then
+        cp \
+            "${PROJECT_ROOT}/config/dotfiles/kafka_pkgs/kcctl.json" \
+            "${HOME}/.kcctl"
     fi
 }
 
-function main() {
-    local version="${1:-$POWERLINE_VERSION_FALLBACK}"
-
-    install_powerline "${version}"
+function setup_kaf() {
+    if [[ ! -d "${HOME}/.kaf" ]]; then
+        mkdir "${HOME}/.kaf"
+    fi
+    if [[ ! -e "${HOME}/.kaf/config" ]]; then
+        cp \
+            "${PROJECT_ROOT}/config/dotfiles/kafka_pkgs/kaf.yaml" \
+            "${HOME}/.kaf/config"
+    fi
 }
-
-if [[ "$0" == "${BASH_SOURCE[0]}" ]]; then
-    main "${@}"
-fi

@@ -17,6 +17,8 @@ function run_job() {
     docker run \
         --rm \
         -i \
+        --kernel-memory=8g \
+        --cpus=4 \
         -v "${PWD}":/localbox \
         --user ubuntu \
         local/shellspec-ubuntu:latest \

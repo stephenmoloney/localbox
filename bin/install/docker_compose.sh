@@ -3,7 +3,7 @@ set -eu
 set -o pipefail
 set -o errtrace
 
-DOCKER_COMPOSE_VERSION_FALLBACK=1.28.5
+DOCKER_COMPOSE_VERSION_FALLBACK=2.2.3
 BASE_URL=https://github.com/docker/compose/releases/download
 
 # ******* Importing utils.sh as a source of common shell functions *******
@@ -38,11 +38,10 @@ function install_docker_compose() {
 
     maybe_install_apt_pkg "curl" "*"
 
-    if [[ "$(get_current_version 2>/dev/null || true)" != "${version}" ]] ||
-        [[ "$(get_current_version 2>/dev/null || true)" != "${version}" ]]; then
+    if [[ "$(get_current_version 2>/dev/null || true)" != "${version}" ]]; then
         pushd "$(mktemp --directory)" || exit
         sudo curl -L \
-            "${BASE_URL}/${version}/docker-compose-$(uname -s)-$(uname -m)" \
+            "${BASE_URL}/v${version}/docker-compose-$(uname -s)-$(uname -m)" \
             -o /usr/local/bin/docker-compose
         sudo chmod +x /usr/local/bin/docker-compose
         popd || exit

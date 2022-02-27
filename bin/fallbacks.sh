@@ -108,7 +108,7 @@ function maybe_install_asdf_as_fallback() {
 
     if [[ -z "${ASDF_DIR:-}" ]]; then
         if [[ -e "${HOME}/.asdf/asdf.sh" ]]; then
-            source "${HOME}/.asdf/asdf.sh"
+            ASDF_DIR="${HOME}/.asdf" source "${HOME}/.asdf/asdf.sh"
         fi
     else
         if [[ -e "${ASDF_DIR:-}/asdf.sh" ]]; then
@@ -145,7 +145,7 @@ function maybe_install_asdf_as_fallback() {
 function maybe_install_node_as_fallback() {
     if [[ -z "${ASDF_DIR:-}" ]]; then
         if [[ -e "${HOME}/.asdf/asdf.sh" ]]; then
-            source "${HOME}/.asdf/asdf.sh"
+            ASDF_DIR="${HOME}/.asdf" source "${HOME}/.asdf/asdf.sh"
         else
             maybe_install_asdf_as_fallback
         fi
@@ -175,7 +175,7 @@ function maybe_install_node_as_fallback() {
 function maybe_install_yarn_as_fallback() {
     if [[ -z "${ASDF_DIR:-}" ]]; then
         if [[ -e "${HOME}/.asdf/asdf.sh" ]]; then
-            source "${HOME}/.asdf/asdf.sh"
+            ASDF_DIR="${HOME}/.asdf" source "${HOME}/.asdf/asdf.sh"
         else
             maybe_install_asdf_as_fallback
         fi
@@ -223,7 +223,7 @@ function maybe_install_jq_as_fallback() {
 function maybe_install_ruby_as_fallback() {
     if [[ -z "${ASDF_DIR:-}" ]]; then
         if [[ -e "${HOME}/.asdf/asdf.sh" ]]; then
-            source "${HOME}/.asdf/asdf.sh"
+            ASDF_DIR="${HOME}/.asdf" source "${HOME}/.asdf/asdf.sh"
         else
             maybe_install_asdf_as_fallback
         fi
@@ -254,7 +254,7 @@ function maybe_install_ruby_as_fallback() {
 function maybe_install_kubectl_as_fallback() {
     if [[ -z "${ASDF_DIR:-}" ]]; then
         if [[ -e "${HOME}/.asdf/asdf.sh" ]]; then
-            source "${HOME}/.asdf/asdf.sh"
+            ASDF_DIR="${HOME}/.asdf" source "${HOME}/.asdf/asdf.sh"
         else
             maybe_install_asdf_as_fallback
         fi

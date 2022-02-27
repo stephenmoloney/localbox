@@ -94,6 +94,8 @@ function emulate_ci() {
         # Start the new container and keep it alive
         docker run \
             -d \
+            --kernel-memory=4g \
+            --cpus=4 \
             --name localbox \
             --dns 1.1.1.1 \
             "${image_name}" \

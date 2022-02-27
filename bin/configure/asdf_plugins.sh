@@ -8,6 +8,34 @@ function setup_java() {
     fi
 }
 
+function setup_kafka() {
+    # Setup bash completion for kafka shell scripts
+    if [[ ! -e "${HOME}"/.bash_completion.d/kafkaAdmin ]] || [[ ! -e "${HOME}"/.bash_completion.d/kafkaBin ]]; then
+        pushd "$(mktemp -d)"
+        git clone https://github.com/Kafka-In-Action-Book/kafka_tools_completion.git ./
+        git checkout 62ba192e65f4494a100a98f9a37720f343b3d868
+        cp ./0.10.2/kafkaAdmin "${HOME}"/.bash_completion.d/kafkaAdmin
+        cp ./0.10.2/kafkaBin "${HOME}"/.bash_completion.d/kafkaBin
+        popd
+    fi
+    source "${HOME}"/.bash_completion.d/kafkaAdmin
+    source "${HOME}"/.bash_completion.d/kafkaBin
+}
+
+function setup_kaf() {
+    if [[ ! -e "${HOME}"/.bash_completion.d/kaf ]] && [[ -n "$(command -v kaf || true)" ]]; then
+        kaf completion bash >"${HOME}"/.bash_completion.d/kaf
+    fi
+    source "${HOME}"/.bash_completion.d/kaf
+}
+
+function setup_k3d() {
+    if [[ ! -e "${HOME}"/.bash_completion.d/k3d ]] && [[ -n "$(command -v k3d || true)" ]]; then
+        k3d completion bash >"${HOME}"/.bash_completion.d/k3d
+    fi
+    source "${HOME}"/.bash_completion.d/k3d
+}
+
 function setup_kubectl_dotfiles() {
     if [[ ! -e "${HOME}/.kube/config" ]]; then
         if [[ ! -d "${HOME}/.kube" ]]; then
@@ -64,7 +92,7 @@ function setup_starship() {
     # shellcheck disable=SC2046
     # terminal_application="$(pstree -sA $$ | awk -F "---" '{ print $3 }')"
 
-    # Use alternate status tool in gnome terminal (will default to powerline for example)
+    # Use alternate status tool in gnome terminal
     # if [[ "${terminal_application}" != "gnome-terminal" ]]; then
     # fi
 

@@ -3,7 +3,7 @@ set -eu
 set -o pipefail
 set -o errtrace
 
-ASDF_VERSION_FALLBACK=0.8.0
+ASDF_VERSION_FALLBACK=0.9.0
 
 # ******* Importing utils.sh as a source of common shell functions *******
 GITHUB_URL=https://raw.githubusercontent.com/stephenmoloney/localbox/master
@@ -42,7 +42,15 @@ function install_asdf() {
             "${HOME}/.asdf"
     fi
 
-    source "${HOME}/.asdf/asdf.sh"
+    # Workaround for bug in version 0.9.0, remove workaround in next release
+    # https://github.com/asdf-vm/asdf/pull/1158
+    if [[ -z "${ASDF_DIR:-}" ]]; then
+        if [[ -e "${HOME}/.asdf/asdf.sh" ]]; then
+            ASDF_DIR="${HOME}/.asdf" source "${HOME}/.asdf/asdf.sh"
+        fi
+    else
+        source "${ASDF_DIR}/asdf.sh"
+    fi
 
     asdf --version
 }

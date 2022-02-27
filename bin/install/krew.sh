@@ -3,7 +3,7 @@ set -eu
 set -o pipefail
 set -o errtrace
 
-KREW_VERSION_FALLBACK=0.4.0
+KREW_VERSION_FALLBACK=0.4.3
 
 # ******* Importing utils.sh as a source of common shell functions *******
 GITHUB_URL=https://raw.githubusercontent.com/stephenmoloney/localbox/master
@@ -47,28 +47,48 @@ fi
 
 maybe_install_kubectl_as_fallback
 
-function install_krew() {
-    local version="${1}"
-    set -eu
-
-    maybe_install_apt_pkg "curl" "*"
-
-    pushd "$(mktemp -d)" || exit
-    curl -fsSLO "https://github.com/kubernetes-sigs/krew/releases/download/v${version}/krew.tar.gz"
-    tar zxvf krew.tar.gz
-    KREW=./krew-"$(
-        uname |
-            tr '[:upper:]' '[:lower:]'
-    )_$(
-        uname -m | sed -e 's/x86_64/amd64/' -e 's/arm.*$/arm/' -e 's/aarch64$/arm64/'
-    )"
-    "${KREW}" install krew
-    rm krew.tar.gz
-    popd || exit
-
+function get_current_krew_version() {
     if [[ -e "${HOME}/.krew/bin" ]] &&
         [[ -z "$(grep "${HOME}/.krew/bin" <<<"${PATH}" 2>/dev/null || true)" ]]; then
         export PATH="${PATH}:${HOME}/.krew/bin"
+    fi
+    kubectl krew version |
+        awk NR==2 |
+        awk '{print $2}' 2>/dev/null || true
+}
+
+function install_krew() {
+    local version="${1}"
+    local suffix
+    set -eu
+
+    if [[ "$(get_current_krew_version)" != "${version}" ]]; then
+        rm -rf "${HOME}"/.krew 2>/dev/null || true
+        suffix="$(
+            uname |
+                tr '[:upper:]' '[:lower:]'
+        )_$(
+            uname -m | sed -e 's/x86_64/amd64/' -e 's/arm.*$/arm/' -e 's/aarch64$/arm64/'
+        )"
+
+        maybe_install_apt_pkg "curl" "*"
+
+        pushd "$(mktemp -d)" || exit
+
+        curl -fsSLO "https://github.com/kubernetes-sigs/krew/releases/download/v${version}/krew-${suffix}.tar.gz"
+        tar zxvf "krew-${suffix}.tar.gz"
+        KREW=./krew-"${suffix}"
+        "${KREW}" install krew
+        rm "krew-${suffix}.tar.gz"
+        popd || exit
+
+        if [[ -e "${HOME}/.krew/bin" ]] &&
+            [[ -z "$(grep "${HOME}/.krew/bin" <<<"${PATH}" 2>/dev/null || true)" ]]; then
+            export PATH="${PATH}:${HOME}/.krew/bin"
+        fi
+    else
+        echo "krew version ${version} is already installed"
+        echo "Skipping installation"
     fi
 
     kubectl krew version

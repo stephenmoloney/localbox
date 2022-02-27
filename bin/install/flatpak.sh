@@ -4,7 +4,7 @@ set -o pipefail
 set -o errtrace
 
 FLATPAK_VERSION_FALLBACK="*"
-FREEDESKTOP_VERSION_FALLBACK=20.08
+FREEDESKTOP_VERSION_FALLBACK=21.08
 
 # ******* Importing utils.sh as a source of common shell functions *******
 GITHUB_URL=https://raw.githubusercontent.com/stephenmoloney/localbox/master

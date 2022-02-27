@@ -4,6 +4,7 @@ env:
   TERM: alacritty
 
 window:
+  opacity: 0.999
   padding:
     x: 8
     y: 8
@@ -104,7 +105,6 @@ colors:
 # License: MIT (https://github.com/aaron-williamson/base16-alacritty/blob/025688c7158eb8a3421cb2b3612e77915dce8c2a/LICENSE)
 # yamllint disable rule:line-length
 
-background_opacity: 0.999
 live_config_reload: true
 
 key_bindings:
