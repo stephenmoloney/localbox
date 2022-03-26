@@ -62,8 +62,13 @@ make provision_emulate
 or alternatively
 
 ```bash
+docker build \
+  --tag local/shellspec-ubuntu:latest \
+  -f shellspec.Dockerfile ./ &&
 docker run \
   -ti \
+  --kernel-memory=8g \
+  --cpus=4 \
   -v $PWD:/localbox \
   --user ubuntu \
   local/shellspec-ubuntu:latest \
@@ -130,8 +135,13 @@ done < <(ls -A ./spec/bin | sed 's/_spec//g' | sed 's/\.sh//g')
 or
 
 ```bash
+docker build \
+  --tag local/shellspec-ubuntu:latest \
+  -f shellspec.Dockerfile ./ &&
 docker run \
   -ti \
+  --kernel-memory=8g \
+  --cpus=4 \
   -v $PWD:/localbox \
   --user ubuntu \
   local/shellspec-ubuntu:latest \

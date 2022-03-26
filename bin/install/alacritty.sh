@@ -3,7 +3,7 @@ set -eu
 set -o pipefail
 set -o errtrace
 
-ALACRITTY_VERSION_FALLBACK=0.9.0
+ALACRITTY_VERSION_FALLBACK=0.10.1
 
 # ******* Importing utils.sh as a source of common shell functions *******
 GITHUB_URL=https://raw.githubusercontent.com/stephenmoloney/localbox/master

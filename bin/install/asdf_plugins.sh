@@ -137,6 +137,8 @@ function install_asdf_plugins() {
             # Waiting on merge https://github.com/vaynerx/asdf-linkerd/pull/4
             if [[ "${plugin}" == "linkerd" ]]; then
                 asdf plugin add "${plugin}" "https://github.com/stephenmoloney/asdf-linkerd"
+            elif [[ "${plugin}" == "kcctl" ]]; then
+                asdf plugin add "${plugin}" "https://github.com/joschi/asdf-kcctl"
             else
                 asdf plugin add "${plugin}"
             fi
@@ -157,6 +159,15 @@ function install_asdf_plugins() {
 }
 
 function main() {
+    # Workaround for bug in version 0.9.0, remove workaround in next release
+    # https://github.com/asdf-vm/asdf/pull/1158
+    if [[ -z "${ASDF_DIR:-}" ]]; then
+        if [[ -e "${HOME}/.asdf/asdf.sh" ]]; then
+            ASDF_DIR="${HOME}/.asdf" source "${HOME}/.asdf/asdf.sh"
+        fi
+    else
+        source "${ASDF_DIR}/asdf.sh"
+    fi
     install_asdf_plugins
 }
 

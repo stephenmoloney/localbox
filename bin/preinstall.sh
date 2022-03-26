@@ -60,4 +60,5 @@ function preinstall() {
     sudo --preserve-env dpkg-reconfigure --frontend=noninteractive locales
     sudo --preserve-env update-locale LANG="${LANG}"
     locale
+    export GIT_TERMINAL_PROMPT=0
 }

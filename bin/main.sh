@@ -74,12 +74,10 @@ function install() {
     exec_with_retries "${PROJECT_ROOT}/bin/install/jmespath.sh" 0 2 "${JMESPATH_VERSION}"
     exec_with_retries "${PROJECT_ROOT}/bin/install/jobber.sh" 0 2 "${JOBBER_VERSION}"
     exec_with_retries "${PROJECT_ROOT}/bin/install/krew.sh" 0 2 "${KREW_VERSION}"
-    exec_with_retries "${PROJECT_ROOT}/bin/install/krew_plugins.sh" 0 2 "${KREW_VERSION}"
     "${PROJECT_ROOT}/bin/install/pgcli.sh" "${PGCLI_VERSION}" "${POSTGRESQL_CLIENT_VERSION}"
     exec_with_retries "${PROJECT_ROOT}/bin/install/nerd_fonts.sh" 0 2 "${NERDFONTS_VERSION}"
     exec_with_retries "${PROJECT_ROOT}/bin/install/pencil.sh" 0 2 "${PENCIL_VERSION}"
     exec_with_retries "${PROJECT_ROOT}/bin/install/pipx.sh" 0 2 "${PIPX_VERSION}"
-    exec_with_retries "${PROJECT_ROOT}/bin/install/powerline.sh" 0 2 "${POWERLINE_VERSION}"
     exec_with_retries "${PROJECT_ROOT}/bin/install/rust_pkgs.sh" 0 2
     exec_with_retries "${PROJECT_ROOT}/bin/install/shellcheck.sh" 0 2 "${SHELLCHECK_VERSION}"
     exec_with_retries "${PROJECT_ROOT}/bin/install/shfmt.sh" 0 2 "${SHFMT_VERSION}"
@@ -91,10 +89,10 @@ function install() {
     exec_with_retries "${PROJECT_ROOT}/bin/install/tmux_plugin_manager.sh" 0 2 "${TMUX_PLUGIN_MANAGER_VERSION}"
     "${PROJECT_ROOT}/bin/install/vim.sh" \
         "${VIM_GTK3_VERSION:-latest}" \
-        "${VIM_PLUG_VERSION:-0.10.0}" \
+        "${VIM_PLUG_VERSION:-0.11.0}" \
         "${TERRAFORM_LS_VERSION:-latest}" \
-        "${GO_PLS_VERSION:-0.6.9}" \
-        "${BASH_LANGUAGE_SERVER_VERSION:-1.17.0}" \
+        "${GO_PLS_VERSION:-0.7.5}" \
+        "${BASH_LANGUAGE_SERVER_VERSION:-2.0.0}" \
         "${GRAPHQL_LANGUAGE_SERVER_VERSION:-3.1.13}"
 }
 
@@ -113,6 +111,7 @@ function setup() {
     source "${PROJECT_ROOT}/bin/configure/go.sh"
     source "${PROJECT_ROOT}/bin/configure/gogh.sh"
     source "${PROJECT_ROOT}/bin/configure/jobber.sh"
+    source "${PROJECT_ROOT}/bin/configure/kafka_pkgs.sh"
     source "${PROJECT_ROOT}/bin/configure/krew.sh"
     source "${PROJECT_ROOT}/bin/configure/misc.sh"
     source "${PROJECT_ROOT}/bin/configure/markdownlint.sh"
@@ -148,6 +147,8 @@ function setup() {
     fi
     setup_go
     if [[ "$(is_docker)" != "true" ]]; then setup_jobber_dotfiles; fi
+    setup_kcctl
+    setup_kaf
     setup_krew
     setup_kubectl_dotfiles
     setup_markdownlint

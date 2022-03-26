@@ -44,11 +44,11 @@ else
 fi
 # ****************************************************************************
 
-ANSIBLE_KUBERNETES_VERSION_FALLBACK=2.0.0
+ANSIBLE_KUBERNETES_VERSION_FALLBACK=2.2.3
 
 declare -A ANSIBLE_MODULES
 ANSIBLE_MODULES=(
-    ["community.kubernetes"]="${ANSIBLE_KUBERNETES_VERSION:-$ANSIBLE_KUBERNETES_VERSION_FALLBACK}"
+    ["kubernetes.core"]="${ANSIBLE_KUBERNETES_VERSION:-$ANSIBLE_KUBERNETES_VERSION_FALLBACK}"
 )
 
 maybe_install_ansible_as_fallback
