@@ -91,7 +91,7 @@ rebar 3.17.0
 redis 6.2.4
 reg 0.16.1
 rke v1.2.14
-ruby 3.0.2
+ruby 3.0.1
 scaleway-cli 2.4.0
 semver 3.3.0
 shellspec 0.28.1
