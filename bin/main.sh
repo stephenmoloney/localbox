@@ -55,6 +55,7 @@ function install() {
 
     # Phase 2
     exec_with_retries "${PROJECT_ROOT}/bin/install/alacritty.sh" 0 2 "${ALACRITTY_VERSION}"
+    exec_with_retries "${PROJECT_ROOT}/bin/install/argos_translate.sh" 0 2 "${ARGOS_TRANSLATE_GUI_VERSION}"
     exec_with_retries "${PROJECT_ROOT}/bin/install/ansible.sh" 0 2 "${ANSIBLE_VERSION}"
     exec_with_retries "${PROJECT_ROOT}/bin/install/ansible_modules.sh" 0 2
     exec_with_retries "${PROJECT_ROOT}/bin/install/asdf.sh" 0 2 "${ASDF_VERSION}"
