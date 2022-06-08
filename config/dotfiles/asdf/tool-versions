@@ -19,7 +19,7 @@ dive 0.10.0
 docker-slim 1.24
 dotenv-linter 3.2.0
 editorconfig-checker 2.4.0
-eksctl v0.86.0
+eksctl 0.100.0
 elixir 1.13.3 1.12.3 1.11.4
 erlang 24.2.2
 flux2 0.27.2
