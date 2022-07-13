@@ -40,6 +40,7 @@ function install_flatpak() {
         [[ "$(get_current_version 2>/dev/null || true)" != "${flatpak_version}" ]]; then
         sudo add-apt-repository -y ppa:alexlarsson/flatpak
         maybe_install_apt_pkg "flatpak" "${flatpak_version}"
+        apt_hold_pkg "flatpak"
 
         sudo flatpak remote-add \
             --if-not-exists \

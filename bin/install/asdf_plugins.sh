@@ -163,7 +163,7 @@ function main() {
     # https://github.com/asdf-vm/asdf/pull/1158
     if [[ -z "${ASDF_DIR:-}" ]]; then
         if [[ -e "${HOME}/.asdf/asdf.sh" ]]; then
-            ASDF_DIR="${HOME}/.asdf" source "${HOME}/.asdf/asdf.sh"
+            source "${HOME}/.asdf/asdf.sh"
         fi
     else
         source "${ASDF_DIR}/asdf.sh"

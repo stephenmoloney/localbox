@@ -25,21 +25,23 @@ PROJECT_ROOT="$(project_root)"
 function setup_systemctl() {
     pushd "${PROJECT_ROOT}/config/systemd" || exit
 
-    sudo systemctl daemon-reload
+    if [[ -n "$(find . -type f -name "*.service")" ]]; then
+        for service in *.service; do
+            echo "Creating ${service} at /etc/systemd/system/${service}"
 
-    for service in *.service; do
-        echo "Creating ${service} at /etc/systemd/system/${service}"
+            sudo cp \
+                "${service}" \
+                "/etc/systemd/system/${service}"
 
-        sudo cp \
-            "${service}" \
-            "/etc/systemd/system/${service}"
+            sudo chmod 644 "/etc/systemd/system/${service}"
 
-        sudo chmod 644 "/etc/systemd/system/${service}"
+            sudo systemctl enable --no-pager "${service}"
+            sudo systemctl start --no-pager "${service}"
+            sudo systemctl status --no-pager "${service}"
+        done
 
-        sudo systemctl enable --no-pager "${service}"
-        sudo systemctl start --no-pager "${service}"
-        sudo systemctl status --no-pager "${service}"
-    done
+        sudo systemctl daemon-reload
+    fi
 
     popd || exit
 }

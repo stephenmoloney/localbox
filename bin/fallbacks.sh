@@ -21,6 +21,7 @@ else
     fi
 fi
 # ************************************************************************
+export PROJECT_ROOT
 PROJECT_ROOT="$(project_root)"
 
 ANSIBLE_INSTALL_SCRIPT="${PROJECT_ROOT}/bin/install/ansible.sh"
@@ -108,7 +109,7 @@ function maybe_install_asdf_as_fallback() {
 
     if [[ -z "${ASDF_DIR:-}" ]]; then
         if [[ -e "${HOME}/.asdf/asdf.sh" ]]; then
-            ASDF_DIR="${HOME}/.asdf" source "${HOME}/.asdf/asdf.sh"
+            source "${HOME}/.asdf/asdf.sh"
         fi
     else
         if [[ -e "${ASDF_DIR:-}/asdf.sh" ]]; then
@@ -145,7 +146,7 @@ function maybe_install_asdf_as_fallback() {
 function maybe_install_node_as_fallback() {
     if [[ -z "${ASDF_DIR:-}" ]]; then
         if [[ -e "${HOME}/.asdf/asdf.sh" ]]; then
-            ASDF_DIR="${HOME}/.asdf" source "${HOME}/.asdf/asdf.sh"
+            source "${HOME}/.asdf/asdf.sh"
         else
             maybe_install_asdf_as_fallback
         fi
@@ -175,7 +176,7 @@ function maybe_install_node_as_fallback() {
 function maybe_install_yarn_as_fallback() {
     if [[ -z "${ASDF_DIR:-}" ]]; then
         if [[ -e "${HOME}/.asdf/asdf.sh" ]]; then
-            ASDF_DIR="${HOME}/.asdf" source "${HOME}/.asdf/asdf.sh"
+            source "${HOME}/.asdf/asdf.sh"
         else
             maybe_install_asdf_as_fallback
         fi
@@ -223,7 +224,7 @@ function maybe_install_jq_as_fallback() {
 function maybe_install_ruby_as_fallback() {
     if [[ -z "${ASDF_DIR:-}" ]]; then
         if [[ -e "${HOME}/.asdf/asdf.sh" ]]; then
-            ASDF_DIR="${HOME}/.asdf" source "${HOME}/.asdf/asdf.sh"
+            source "${HOME}/.asdf/asdf.sh"
         else
             maybe_install_asdf_as_fallback
         fi
@@ -254,7 +255,7 @@ function maybe_install_ruby_as_fallback() {
 function maybe_install_kubectl_as_fallback() {
     if [[ -z "${ASDF_DIR:-}" ]]; then
         if [[ -e "${HOME}/.asdf/asdf.sh" ]]; then
-            ASDF_DIR="${HOME}/.asdf" source "${HOME}/.asdf/asdf.sh"
+            source "${HOME}/.asdf/asdf.sh"
         else
             maybe_install_asdf_as_fallback
         fi

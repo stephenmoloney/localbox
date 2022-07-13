@@ -1,13 +1,15 @@
 SHELL = bash
 
-install_args := --headless=false
-ifeq ($(headless), "true")
+ifeq ($(headless), true)
 	install_args := --headless=true
+else
+	install_args := --headless=false
 endif
 
-preinstall_args := --use-fallback-versions=false
-ifeq ($(fallback_versions), "true")
+ifeq ($(fallback_versions), true)
 	preinstall_args := --use-fallback-versions=true
+else
+	preinstall_args := --use-fallback-versions=false
 endif
 
 ifndef spec_file
@@ -66,6 +68,7 @@ install:
 	source ./bin/preinstall.sh
 	preinstall $(preinstall_args)
 	source ./bin/main.sh
+	@echo "preinstall_args: $(preinstall_args), install_args: $(install_args)"
 	install $(preinstall_args) $(install_args)
 
 .ONESHELL:
@@ -73,7 +76,8 @@ configure:
 	sudo echo "starting $@ process using $(SHELL) as user $$(whoami)"
 	set -eu; set -o pipefail;
 	source ./bin/main.sh
-	setup
+	@echo "preinstall_args: $(preinstall_args), install_args: $(install_args)"
+	setup $(preinstall_args) $(install_args)
 
 .ONESHELL:
 provision:
@@ -82,8 +86,9 @@ provision:
 	source ./bin/preinstall.sh
 	preinstall $(preinstall_args)
 	source ./bin/main.sh
+	@echo "preinstall_args: $(preinstall_args), install_args: $(install_args)"
 	install $(preinstall_args) $(install_args)
-	setup
+	setup $(preinstall_args) $(install_args)
 
 .ONESHELL:
 provision_emulate:

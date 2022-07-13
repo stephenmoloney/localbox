@@ -41,9 +41,10 @@ function install_dotnet_core_sdk() {
         "https://packages.microsoft.com/config/ubuntu/${ubuntu_version}/packages-microsoft-prod.deb" \
         -O packages-microsoft-prod.deb &&
         sudo dpkg -i packages-microsoft-prod.deb &&
-        rm packages-microsoft-prod.deb &&
-        sudo apt update -y -qq &&
-        sudo apt install -y "dotnet-sdk-${version}"
+        rm packages-microsoft-prod.deb
+
+    sudo apt update -y -qq
+    maybe_install_apt_pkg "dotnet-sdk-${version}" "*"
 
     dotnet --version
 }
