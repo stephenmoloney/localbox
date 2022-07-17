@@ -41,6 +41,15 @@ function preinstall() {
         echo "Default fallback versions will be adpoted"
     fi
 
+    # Setting vars common regardless of fallbacks
+    if [[ -z "${XKBLAYOUT}" ]]; then export XKBLAYOUT=us; fi
+    if [[ -z "${BACKSPACE}" ]]; then export BACKSPACE=guess; fi
+    if [[ -z "${XKBMODEL}" ]]; then export XKBMODEL=pc105; fi
+    if [[ -z "${TZ}" ]]; then export TZ=Europe/Zurich; fi
+    if [[ -z "${LANG}" ]]; then export LANG=en_US.UTF-8; fi
+    if [[ -z "${LANGUAGE}" ]]; then export LANGUAGE=en_US.UTF-8; fi
+    if [[ -z "${LC_ALL}" ]]; then export LC_ALL=en_US.UTF-8; fi
+
     source "${PROJECT_ROOT}/bin/configure/misc.sh"
     setup_locales
     setup_timezone
