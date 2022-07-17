@@ -10,7 +10,19 @@ services:
 stages:
   - lint
   - test
-  - provision
+
+  # Run the build process inside a docker container (somewhat different process)
+  - provision-in-docker:ubuntu-20-04
+
+  # Run the build process on a clean VM (fallbacks off)
+  - spawn-gitlab-runner:provision-in-vm-no-fallbacks
+  - provision-in-vm-no-fallbacks:ubuntu-20-04
+  - destroy-gitlab-runner:provision-in-vm-no-fallbacks
+
+  # Run the build process on a clean VM (fallbacks on)
+  - spawn-gitlab-runner:provision-in-vm-with-fallbacks
+  - provision-in-vm-with-fallbacks:ubuntu-20-04
+  - destroy-gitlab-runner:provision-in-vm-with-fallbacks
 
 variables:
   DEBIAN_FRONTEND: noninteractive
@@ -68,10 +80,10 @@ tests:
       - TEST_SPEC: yamllint
   allow_failure: true
 
-.provision_base: &provision_base
+.provision_emulate: &provision_emulate
   variables:
     WORKDIR: /home/ubuntu/Documents/repos/dotfiles
-  stage: provision
+  stage: provision-in-docker:ubuntu-20-04
   needs: ["tests"]
   image: ubuntu:20.04
   timeout: 12h
@@ -80,11 +92,124 @@ tests:
       source ./ci/provision_emulate.sh
       create_user
 
-provision:ubuntu_20_04:
-  <<: *provision_base
+provision_in_docker:
+  <<: *provision_emulate
   script:
-    - su ubuntu -c "make provision fallback_versions=${FALLBACK_VERSIONS}"
+    - >
+      su ubuntu -c "make provision
+        fallback_versions=${FALLBACK_VERSIONS}
+        headless=${HEADLESS_ONLY}"
+
   parallel:
     matrix:
       - FALLBACK_VERSIONS: "true"
       - FALLBACK_VERSIONS: "false"
+  allow_failure: true
+
+.gitlab_runner_action: &gitlab_runner_action
+  needs: []
+  image: ghcr.io/eirenauts/super-ops:2.0.0
+  variables:
+    OPS_REPO: ""
+    OPS_REPO_PROJECT_ID: ""
+    OPS_REPO_BRANCH: ""
+    OPS_TRIGGER_TOKEN: ""
+    GITLAB_RUNNER_ACTION: ""
+  script:
+    - |
+      if [[ -z "${OPS_REPO}" ]]; then echo "OPS_REPO not set"; exit 1; fi
+      if [[ -z "${OPS_REPO_PROJECT_ID}" ]]; then echo "OPS_REPO_PROJECT_ID not set"; exit 1; fi
+      if [[ -z "${OPS_REPO_BRANCH}" ]]; then echo "OPS_REPO_BRANCH not set"; exit 1; fi
+      if [[ -z "${OPS_TRIGGER_TOKEN}" ]]; then echo "OPS_TRIGGER_TOKEN not set"; exit 1; fi
+      if [[ -z "${GITLAB_RUNNER_ACTION}" ]]; then echo "GITLAB_RUNNER_ACTION not set"; exit 1; fi
+
+      echo "Triggering the build of infra-envs/scw-vm-gitlab-runner in ${OPS_REPO}"
+      curl -s \
+        --request POST \
+        --form ref="${OPS_REPO_BRANCH}" \
+        --form token="${OPS_TRIGGER_TOKEN}" \
+        --form "variables[GITLAB_RUNNER_ACTION]=${GITLAB_RUNNER_ACTION}" \
+        "${OPS_REPO}/api/v4/projects/${OPS_REPO_PROJECT_ID}/trigger/pipeline" | \
+      jq -r .
+
+      # Crude method for waiting for the vm to be ready
+      # Change to wait for pipeline to finish + 2mins later
+      # 2 mins to allow cloud-init to complete which is outside terrform scope
+      seq_array=( $(seq 1 7 | tac) );
+      for i in "${seq_array[@]}"; do
+        echo "$((60 * i)) seconds of delay remain"
+        sleep 60s
+      done
+  allow_failure: false
+
+spawn_gitlab_runner_provision_in_vm_no_fallbacks:
+  <<: *gitlab_runner_action
+  variables:
+    GITLAB_RUNNER_ACTION: gitlab-runner-deploy
+  stage: spawn-gitlab-runner:provision-in-vm-no-fallbacks
+
+provision_in_vm_no_fallbacks:
+  needs: ["spawn_gitlab_runner_provision_in_vm_no_fallbacks"]
+  stage: provision-in-vm-no-fallbacks:ubuntu-20-04
+  variables:
+    USER: gitlab-runner
+    FALLBACK_VERSIONS: "false"
+    HEADLESS_ONLY: "true"
+  script:
+    - |
+      sudo apt update -y -qq
+      sudo apt install -y build-essential
+      make install \
+        fallback_versions="${FALLBACK_VERSIONS}" \
+        headless="${HEADLESS_ONLY}"
+      make configure \
+        fallback_versions="${FALLBACK_VERSIONS}" \
+        headless="${HEADLESS_ONLY}"
+
+  tags:
+    - vm
+    - ubuntu20.04
+  allow_failure: true
+
+destroy_gitlab_runner_provision_in_vm_no_fallbacks:
+  <<: *gitlab_runner_action
+  needs: ["provision_in_vm_no_fallbacks"]
+  variables:
+    GITLAB_RUNNER_ACTION: gitlab-runner-destroy
+  stage: destroy-gitlab-runner:provision-in-vm-no-fallbacks
+
+spawn_gitlab_runner_provision_in_vm_with_fallbacks:
+  <<: *gitlab_runner_action
+  needs: ["destroy_gitlab_runner_provision_in_vm_no_fallbacks"]
+  variables:
+    GITLAB_RUNNER_ACTION: gitlab-runner-deploy
+  stage: spawn-gitlab-runner:provision-in-vm-with-fallbacks
+
+provision_in_vm_with_fallbacks:
+  needs: ["spawn_gitlab_runner_provision_in_vm_with_fallbacks"]
+  stage: provision-in-vm-with-fallbacks:ubuntu-20-04
+  variables:
+    USER: gitlab-runner
+    FALLBACK_VERSIONS: "true"
+    HEADLESS_ONLY: "true"
+  script:
+    - |
+      sudo apt update -y -qq
+      sudo apt install -y build-essential
+      make install \
+        fallback_versions="${FALLBACK_VERSIONS}" \
+        headless="${HEADLESS_ONLY}"
+      make configure \
+        fallback_versions="${FALLBACK_VERSIONS}" \
+        headless="${HEADLESS_ONLY}"
+  tags:
+    - vm
+    - ubuntu20.04
+  allow_failure: true
+
+destroy_gitlab_runner_provision_in_vm_with_fallbacks:
+  <<: *gitlab_runner_action
+  needs: ["provision_in_vm_with_fallbacks"]
+  variables:
+    GITLAB_RUNNER_ACTION: gitlab-runner-destroy
+  stage: destroy-gitlab-runner:provision-in-vm-with-fallbacks

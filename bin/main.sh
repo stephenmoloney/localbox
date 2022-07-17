@@ -23,19 +23,20 @@ else
     fi
 fi
 # ************************************************************************
+export PROJECT_ROOT
 PROJECT_ROOT="$(project_root)"
 trap 'exit_code=$?; [[ "${exit_code}" -ne 0 ]] && exit_handler "${exit_code}" "EXIT"' EXIT
 trap 'exit_code=$?; exit_handler "${exit_code}" "ERR"' ERR
 
-function install() {
+function opts_handling() {
     opts_handler "${@}"
 
-    if [[ "${HEADLESS_ONLY}" == "true" ]]; then
+    if [[ "${HEADLESS_ONLY:-false}" == "true" ]]; then
         echo "installing in headless mode"
     else
         echo "installing in standard mode"
     fi
-    if [[ "${SOURCE_ENV_FILE}" == "true" ]]; then
+    if [[ "${SOURCE_ENV_FILE:-true}" == "true" ]]; then
         echo "Sourcing environment variables from ${PROJECT_ROOT}/.env"
         set -o allexport
         source "${PROJECT_ROOT}/.env"
@@ -44,8 +45,15 @@ function install() {
         echo "Skipping sourcing environment variables from ${PROJECT_ROOT}/.env"
         echo "Default fallback versions will be adpoted"
     fi
+}
 
-    # Order of script execution does matter to avoid the fallback scripts being executed
+function install() {
+    # Perform a dist upgrade by default as first action
+    sudo apt update -y
+    sudo apt dist-upgrade -y
+
+    # shellcheck disable=SC2068
+    opts_handling $@
 
     # Phase 1
     exec_with_retries "${PROJECT_ROOT}/bin/install/debian_pkgs.sh" 0 2
@@ -73,7 +81,6 @@ function install() {
     fi
     exec_with_retries "${PROJECT_ROOT}/bin/install/gogh.sh" 0 2 "${GOGH_VERSION}"
     exec_with_retries "${PROJECT_ROOT}/bin/install/jmespath.sh" 0 2 "${JMESPATH_VERSION}"
-    exec_with_retries "${PROJECT_ROOT}/bin/install/jobber.sh" 0 2 "${JOBBER_VERSION}"
     exec_with_retries "${PROJECT_ROOT}/bin/install/krew.sh" 0 2 "${KREW_VERSION}"
     "${PROJECT_ROOT}/bin/install/pgcli.sh" "${PGCLI_VERSION}" "${POSTGRESQL_CLIENT_VERSION}"
     exec_with_retries "${PROJECT_ROOT}/bin/install/nerd_fonts.sh" 0 2 "${NERDFONTS_VERSION}"
@@ -98,6 +105,9 @@ function install() {
 }
 
 function setup() {
+    # shellcheck disable=SC2068
+    opts_handling $@
+
     source "${PROJECT_ROOT}/bin/configure/alacritty.sh"
     source "${PROJECT_ROOT}/bin/configure/ansible.sh"
     source "${PROJECT_ROOT}/bin/configure/asdf.sh"
@@ -111,7 +121,6 @@ function setup() {
     source "${PROJECT_ROOT}/bin/configure/git.sh"
     source "${PROJECT_ROOT}/bin/configure/go.sh"
     source "${PROJECT_ROOT}/bin/configure/gogh.sh"
-    source "${PROJECT_ROOT}/bin/configure/jobber.sh"
     source "${PROJECT_ROOT}/bin/configure/kafka_pkgs.sh"
     source "${PROJECT_ROOT}/bin/configure/krew.sh"
     source "${PROJECT_ROOT}/bin/configure/misc.sh"
@@ -147,7 +156,6 @@ function setup() {
         setup_gnome_terminal_profiles
     fi
     setup_go
-    if [[ "$(is_docker)" != "true" ]]; then setup_jobber_dotfiles; fi
     setup_kcctl
     setup_kaf
     setup_krew

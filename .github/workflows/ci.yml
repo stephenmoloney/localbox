@@ -123,5 +123,7 @@ jobs:
           source ./ci/provision_emulate.sh &&
           create_user &&
           sudo chown -R ubuntu:ubuntu /__w/localbox/localbox &&
-          su ubuntu -c 'make provision fallback_versions=${{ matrix.fallback_version}}'
+          su ubuntu -c 'make provision
+            fallback_versions=${{ matrix.fallback_version}}
+            headless=true'
     timeout-minutes: 720

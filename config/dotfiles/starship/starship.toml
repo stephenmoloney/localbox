@@ -45,7 +45,6 @@ $gcloud\
 $openstack\
 $env_var\
 $crystal\
-$custom\
 $cmd_duration\
 $line_break\
 $lua\
@@ -210,9 +209,6 @@ disabled = false
 
 [crystal]
 disabled = true
-
-[custom]
-disabled = false
 
 [cmd_duration]
 disabled = false

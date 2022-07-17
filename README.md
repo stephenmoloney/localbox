@@ -4,7 +4,6 @@ Localbox is a collection of scripts and dotfiles intended to
 
 - Install various formatters, linters, devops tools and apps
 - Configure various applications and tools via dotfiles
-- Setup repetitive tasks via jobber (a cronjob alternative)
 
 ## Provisioning
 
@@ -46,7 +45,7 @@ make provision
 To use default fallback versions and ignore `.env`
 
 ```bash
-make provision fallback_versions=true
+make provision fallback_versions=true headless=false
 ```
 
 ### Emulate installation locally
@@ -72,7 +71,7 @@ docker run \
   -v $PWD:/localbox \
   --user ubuntu \
   local/shellspec-ubuntu:latest \
-  bash -c 'sudo apt install -y make && make provision'
+  bash -c 'sudo apt install -y make && make provision headless=true'
 ```
 
 ## Installation

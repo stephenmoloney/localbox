@@ -1,6 +1,10 @@
 #!/usr/bin/env bash
 # shellcheck disable=SC2125
-set -eo pipefail
+set -eu
+set -o errtrace
+set -o pipefail
+
+export LOCALBOX_PATH="${HOME}/src/open/localbox"
 
 function setup_directory_structure() {
     if [[ ! -d "${HOME}/src/open/localbox" ]]; then

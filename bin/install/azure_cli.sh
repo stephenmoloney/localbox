@@ -52,6 +52,7 @@ function install_azure_cli() {
         sudo tee /etc/apt/sources.list.d/azure-cli.list
 
     maybe_install_apt_pkg azure-cli "${version}"
+    apt_hold_pkg azure-cli
 
     az --version
 }

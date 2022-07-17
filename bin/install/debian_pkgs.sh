@@ -65,23 +65,43 @@ function requires_gui() {
 }
 
 function main() {
-    HEADLESS_ONLY="${HEADLESS_ONLY:-}"
-    if [[ "${HEADLESS_ONLY}" == "true" ]]; then
+    export HEADLESS_ONLY="${HEADLESS_ONLY:-false}"
+
+    if [[ "${HEADLESS_ONLY:-false}" == "true" ]]; then
         echo "Installing packages classified as not requiring a gui"
     fi
+
     for pkg in "${!DEBIAN_PKGS[@]}"; do
         local is_gui_app
+
         is_gui_app="$(requires_gui "${pkg}")"
-        if [[ "${HEADLESS_ONLY}" != "true" ]]; then
+
+        if [[ "${HEADLESS_ONLY:-false}" != "true" ]]; then
+
             maybe_install_apt_pkg \
                 "${pkg}" \
                 "${DEBIAN_PKGS[$pkg]}"
-        elif [[ "${HEADLESS_ONLY}" == "true" ]] && [[ "${is_gui_app}" == "no" ]]; then
+
+            # Pin the package to the given version (if not *)
+            if [[ "${pkg}" != "*" ]]; then
+                apt_hold_pkg "${pkg}"
+            fi
+
+        elif [[ "${HEADLESS_ONLY:-false}" == "true" ]] && [[ "${is_gui_app}" == "no" ]]; then
+
             maybe_install_apt_pkg \
                 "${pkg}" \
                 "${DEBIAN_PKGS[$pkg]}"
+
+            # Pin the package to the given version (if not *)
+            if [[ "${pkg}" != "*" ]]; then
+                apt_hold_pkg "${pkg}"
+            fi
+
         fi
     done
+
+    sudo apt-mark showhold
 }
 
 if [[ "$0" == "${BASH_SOURCE[0]}" ]]; then

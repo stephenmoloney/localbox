@@ -36,6 +36,34 @@ function install_pkg() {
     fi
 }
 
+function apt_hold_pkg() {
+    local pkg="${1}"
+    local apt_installed
+    apt_installed="$(sudo apt list --installed 2>/dev/null)"
+
+    if [[ -z "${pkg}" ]]; then
+        echo "pkg must be set as the first variable"
+    fi
+
+    if [[ -z "$(grep "${pkg}/" <<<"${apt_installed}" 2>/dev/null || true)" ]]; then
+        sudo apt hold "${pkg}"
+    fi
+}
+
+function apt_unhold_pkg() {
+    local pkg="${1}"
+    local apt_installed
+    apt_installed="$(sudo apt list --installed 2>/dev/null)"
+
+    if [[ -z "${pkg}" ]]; then
+        echo "pkg must be set as the first variable"
+    fi
+
+    if [[ -z "$(grep "${pkg}/" <<<"${apt_installed}" 2>/dev/null || true)" ]]; then
+        sudo apt unhold "${pkg}"
+    fi
+}
+
 function maybe_install_apt_pkg() {
     local pkg="${1}"
     local pkg_version="${2}"
@@ -53,6 +81,7 @@ function maybe_install_apt_pkg() {
     if [[ -z "$(grep "${pkg}/" <<<"${apt_installed}" 2>/dev/null || true)" ]]; then
         install_pkg "${pkg}" "${pkg_version}"
     elif [[ -z "$(grep "${pkg}/" <<<"${apt_installed}" | grep "${pkg_version}" 2>/dev/null || true)" ]]; then
+        apt_unhold_pkg "${pkg}"
         install_pkg "${pkg}" "${pkg_version}"
     else
         echo "package ${pkg} version ${pkg_version} is already installed"
@@ -100,6 +129,8 @@ function opts_handler() {
             ;;
         esac
     done
+    echo "HEADLESS_ONLY: ${HEADLESS_ONLY:-false}"
+    echo "SOURCE_ENV_FILE: ${SOURCE_ENV_FILE:-true}"
 }
 
 function exec_with_retries() {
@@ -141,7 +172,7 @@ function is_docker() {
 }
 
 function headless_only() {
-    if [[ "${HEADLESS_ONLY}" == "true" ]]; then
+    if [[ "${HEADLESS_ONLY:-false}" == "true" ]]; then
         echo "true"
     fi
 }

@@ -58,6 +58,8 @@ function install_vim_gtk3() {
     local version="${1}"
 
     maybe_install_apt_pkg vim-gtk3 "${version}"
+    apt_hold_pkg vim-gtk3
+
     echo "${FUNCNAME[0]} complete"
 }
 
@@ -85,6 +87,7 @@ function install_terraform_ls() {
         "deb [arch=amd64] https://apt.releases.hashicorp.com $(lsb_release -cs) main"
     sudo apt update -y -qq
     maybe_install_apt_pkg "terraform-ls" "${version}"
+    apt_hold_pkg terraform-ls
     echo "${FUNCNAME[0]} complete"
 }
 
@@ -147,23 +150,54 @@ function install_language_servers() {
         maybe_configure_vimrc_as_fallback
     fi
 
-    NERDTREE_CLOSED=true vim +PlugClean +qall
-    NERDTREE_CLOSED=true vim +PlugInstall +qall
+    export NERDTREE_CLOSED=true
 
-    yarn install \
-        --silent \
-        --ignore-engines \
-        --ignore-platform \
-        --no-lockfile \
-        --no-bin-links \
-        --ignore-optional \
-        --production=true \
-        --ignore-scripts \
-        --non-interactive \
-        --modules-folder "${HOME}/.config/coc/extensions/node_modules"
+    # shellcheck disable=SC2015
+    tty -s &&
+        (
+            echo "Shell running interactively"
+            vim +'PlugClean|qa' +qall
+            vim +'PlugInstall|qa' +qall
 
-    NERDTREE_CLOSED=true vim +':call mkdp#util#install()|qa' +qall
-    NERDTREE_CLOSED=true vim +'CocInstall -sync coc-yaml@1.3.0|qa' +qall
+            yarn install \
+                --silent \
+                --ignore-engines \
+                --ignore-platform \
+                --no-lockfile \
+                --no-bin-links \
+                --ignore-optional \
+                --production=true \
+                --ignore-scripts \
+                --non-interactive \
+                --ignore-scripts \
+                --modules-folder "${HOME}/.config/coc/extensions/node_modules"
+
+            vim +'silent call mkdp#util#install()|qa' +qall
+            vim +'CocInstall -sync coc-yaml@0.3.0|qa' +qall
+        ) ||
+        (
+            # Do not attempt to install vim plugins in non-interactive mode
+            echo "Shell running non-interactively"
+
+            vim --ttyfail +'PlugClean|qa' +qall || true
+            vim --ttyfail +'PlugInstall|qa' +qall || true
+
+            yarn install \
+                --silent \
+                --ignore-engines \
+                --ignore-platform \
+                --no-lockfile \
+                --no-bin-links \
+                --ignore-optional \
+                --production=true \
+                --ignore-scripts \
+                --non-interactive \
+                --ignore-scripts \
+                --modules-folder "${HOME}/.config/coc/extensions/node_modules"
+
+            vim --ttyfail +'silent call mkdp#util#install()|qa' +qall || true
+            vim --ttyfail +'CocInstall -sync coc-yaml@0.3.0|qa' +qall || true
+        )
 
     popd || exit
     echo "${FUNCNAME[0]} complete"

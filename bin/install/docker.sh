@@ -45,7 +45,9 @@ function install_docker() {
 
     maybe_install_apt_pkg "containerd.io" "*"
     maybe_install_apt_pkg "docker-ce" "${version}"
+    apt_hold_pkg "docker-ce"
     maybe_install_apt_pkg "docker-ce-cli" "${version}"
+    apt_hold_pkg "docker-ce-cli"
     if [[ -n "${USER:-}" ]]; then
         sudo usermod -aG docker "${USER}"
     fi

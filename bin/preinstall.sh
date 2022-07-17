@@ -23,6 +23,7 @@ else
     fi
 fi
 # ************************************************************************
+export PROJECT_ROOT
 PROJECT_ROOT="$(project_root)"
 trap 'exit_code=$?; [[ "${exit_code}" -ne 0 ]] && exit_handler "${exit_code}" "EXIT"' EXIT
 trap 'exit_code=$?; exit_handler "${exit_code}" "ERR"' ERR
@@ -30,7 +31,7 @@ trap 'exit_code=$?; exit_handler "${exit_code}" "ERR"' ERR
 function preinstall() {
     opts_handler "${@}"
 
-    if [[ "${SOURCE_ENV_FILE}" == "true" ]]; then
+    if [[ "${SOURCE_ENV_FILE:-true}" == "true" ]]; then
         echo "Sourcing environment variables from ${PROJECT_ROOT}/.env"
         set -o allexport
         source "${PROJECT_ROOT}/.env"
