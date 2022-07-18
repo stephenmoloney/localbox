@@ -57,44 +57,44 @@ function install() {
 
     # Phase 1
     exec_with_retries "${PROJECT_ROOT}/bin/install/debian_pkgs.sh" 0 2
-    exec_with_retries "${PROJECT_ROOT}/bin/install/go.sh" 0 2 "${GO_VERSION}"
-    exec_with_retries "${PROJECT_ROOT}/bin/install/jq.sh" 0 2 "${JQ_VERSION}"
-    exec_with_retries "${PROJECT_ROOT}/bin/install/rust.sh" 0 2 "${RUST_VERSION}"
+    exec_with_retries "${PROJECT_ROOT}/bin/install/go.sh" 0 2 "${GO_VERSION:-}"
+    exec_with_retries "${PROJECT_ROOT}/bin/install/jq.sh" 0 2 "${JQ_VERSION:-}"
+    exec_with_retries "${PROJECT_ROOT}/bin/install/rust.sh" 0 2 "${RUST_VERSION:-}"
 
     # Phase 2
-    exec_with_retries "${PROJECT_ROOT}/bin/install/alacritty.sh" 0 2 "${ALACRITTY_VERSION}"
-    exec_with_retries "${PROJECT_ROOT}/bin/install/argos_translate.sh" 0 2 "${ARGOS_TRANSLATE_GUI_VERSION}"
-    exec_with_retries "${PROJECT_ROOT}/bin/install/ansible.sh" 0 2 "${ANSIBLE_VERSION}"
+    exec_with_retries "${PROJECT_ROOT}/bin/install/alacritty.sh" 0 2 "${ALACRITTY_VERSION:-}"
+    exec_with_retries "${PROJECT_ROOT}/bin/install/argos_translate.sh" 0 2 "${ARGOS_TRANSLATE_GUI_VERSION:-}"
+    exec_with_retries "${PROJECT_ROOT}/bin/install/ansible.sh" 0 2 "${ANSIBLE_VERSION:-}"
     exec_with_retries "${PROJECT_ROOT}/bin/install/ansible_modules.sh" 0 2
-    exec_with_retries "${PROJECT_ROOT}/bin/install/asdf.sh" 0 2 "${ASDF_VERSION}"
+    exec_with_retries "${PROJECT_ROOT}/bin/install/asdf.sh" 0 2 "${ASDF_VERSION:-}"
     exec_with_retries "${PROJECT_ROOT}/bin/install/asdf_plugins.sh" 0 2
-    exec_with_retries "${PROJECT_ROOT}/bin/install/azure_cli.sh" 0 2 "${AZURE_CLI_VERSION}"
-    exec_with_retries "${PROJECT_ROOT}/bin/install/black.sh" 0 2 "${BLACK_VERSION}"
-    exec_with_retries "${PROJECT_ROOT}/bin/install/bpytop.sh" 0 2 "${BPYTOP_VERSION}"
-    exec_with_retries "${PROJECT_ROOT}/bin/install/diagrams.sh" 0 2 "${DIAGRAMS_VERSION}"
-    exec_with_retries "${PROJECT_ROOT}/bin/install/docker.sh" 0 2 "${DOCKER_VERSION}"
-    exec_with_retries "${PROJECT_ROOT}/bin/install/docker_compose.sh" 0 2 "${DOCKER_COMPOSE_VERSION}"
-    exec_with_retries "${PROJECT_ROOT}/bin/install/dotnet_core.sh" 0 2 "${DOTNET_CORE_SDK_VERSION}"
+    exec_with_retries "${PROJECT_ROOT}/bin/install/azure_cli.sh" 0 2 "${AZURE_CLI_VERSION:-}"
+    exec_with_retries "${PROJECT_ROOT}/bin/install/black.sh" 0 2 "${BLACK_VERSION:-}"
+    exec_with_retries "${PROJECT_ROOT}/bin/install/bpytop.sh" 0 2 "${BPYTOP_VERSION:-}"
+    exec_with_retries "${PROJECT_ROOT}/bin/install/diagrams.sh" 0 2 "${DIAGRAMS_VERSION:-}"
+    exec_with_retries "${PROJECT_ROOT}/bin/install/docker.sh" 0 2 "${DOCKER_VERSION:-}"
+    exec_with_retries "${PROJECT_ROOT}/bin/install/docker_compose.sh" 0 2 "${DOCKER_COMPOSE_VERSION:-}"
+    exec_with_retries "${PROJECT_ROOT}/bin/install/dotnet_core.sh" 0 2 "${DOTNET_CORE_SDK_VERSION:-}"
     if [[ "$(is_docker)" != "true" ]] && [[ "$(headless_only)" != "true" ]]; then
-        "${PROJECT_ROOT}/bin/install/flatpak.sh" "${FLATPAK_VERSION}" "${FREEDESKTOP_VERSION}"
+        "${PROJECT_ROOT}/bin/install/flatpak.sh" "${FLATPAK_VERSION:-}" "${FREEDESKTOP_VERSION:-}"
         exec_with_retries "${PROJECT_ROOT}/bin/install/flatpak_pkgs.sh" 0 2
     fi
-    exec_with_retries "${PROJECT_ROOT}/bin/install/gogh.sh" 0 2 "${GOGH_VERSION}"
-    exec_with_retries "${PROJECT_ROOT}/bin/install/jmespath.sh" 0 2 "${JMESPATH_VERSION}"
-    exec_with_retries "${PROJECT_ROOT}/bin/install/krew.sh" 0 2 "${KREW_VERSION}"
-    "${PROJECT_ROOT}/bin/install/pgcli.sh" "${PGCLI_VERSION}" "${POSTGRESQL_CLIENT_VERSION}"
-    exec_with_retries "${PROJECT_ROOT}/bin/install/nerd_fonts.sh" 0 2 "${NERDFONTS_VERSION}"
-    exec_with_retries "${PROJECT_ROOT}/bin/install/pencil.sh" 0 2 "${PENCIL_VERSION}"
-    exec_with_retries "${PROJECT_ROOT}/bin/install/pipx.sh" 0 2 "${PIPX_VERSION}"
+    exec_with_retries "${PROJECT_ROOT}/bin/install/gogh.sh" 0 2 "${GOGH_VERSION:-}"
+    exec_with_retries "${PROJECT_ROOT}/bin/install/jmespath.sh" 0 2 "${JMESPATH_VERSION:-}"
+    exec_with_retries "${PROJECT_ROOT}/bin/install/krew.sh" 0 2 "${KREW_VERSION:-}"
+    "${PROJECT_ROOT}/bin/install/pgcli.sh" "${PGCLI_VERSION:-}" "${POSTGRESQL_CLIENT_VERSION:-}"
+    exec_with_retries "${PROJECT_ROOT}/bin/install/nerd_fonts.sh" 0 2 "${NERDFONTS_VERSION:-}"
+    exec_with_retries "${PROJECT_ROOT}/bin/install/pencil.sh" 0 2 "${PENCIL_VERSION:-}"
+    exec_with_retries "${PROJECT_ROOT}/bin/install/pipx.sh" 0 2 "${PIPX_VERSION:-}"
     exec_with_retries "${PROJECT_ROOT}/bin/install/rust_pkgs.sh" 0 2
-    exec_with_retries "${PROJECT_ROOT}/bin/install/shellcheck.sh" 0 2 "${SHELLCHECK_VERSION}"
-    exec_with_retries "${PROJECT_ROOT}/bin/install/shfmt.sh" 0 2 "${SHFMT_VERSION}"
-    exec_with_retries "${PROJECT_ROOT}/bin/install/tmuxinator.sh" 0 2 "${TMUXINATOR_VERSION}"
-    exec_with_retries "${PROJECT_ROOT}/bin/install/vint.sh" 0 2 "${VINT_VERSION}"
-    exec_with_retries "${PROJECT_ROOT}/bin/install/yamllint.sh" 0 2 "${YAMLLINT_VERSION}"
+    exec_with_retries "${PROJECT_ROOT}/bin/install/shellcheck.sh" 0 2 "${SHELLCHECK_VERSION:-}"
+    exec_with_retries "${PROJECT_ROOT}/bin/install/shfmt.sh" 0 2 "${SHFMT_VERSION:-}"
+    exec_with_retries "${PROJECT_ROOT}/bin/install/tmuxinator.sh" 0 2 "${TMUXINATOR_VERSION:-}"
+    exec_with_retries "${PROJECT_ROOT}/bin/install/vint.sh" 0 2 "${VINT_VERSION:-}"
+    exec_with_retries "${PROJECT_ROOT}/bin/install/yamllint.sh" 0 2 "${YAMLLINT_VERSION:-}"
 
     # Phase 3
-    exec_with_retries "${PROJECT_ROOT}/bin/install/tmux_plugin_manager.sh" 0 2 "${TMUX_PLUGIN_MANAGER_VERSION}"
+    exec_with_retries "${PROJECT_ROOT}/bin/install/tmux_plugin_manager.sh" 0 2 "${TMUX_PLUGIN_MANAGER_VERSION:-}"
     "${PROJECT_ROOT}/bin/install/vim.sh" \
         "${VIM_GTK3_VERSION:-latest}" \
         "${VIM_PLUG_VERSION:-0.11.0}" \

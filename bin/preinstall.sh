@@ -41,6 +41,45 @@ function preinstall() {
         echo "Default fallback versions will be adpoted"
     fi
 
+    # Setting vars common regardless of fallbacks
+    if [[ -z "${XKBLAYOUT:-}" ]]; then export XKBLAYOUT=us; fi
+    if [[ -z "${BACKSPACE:-}" ]]; then export BACKSPACE=guess; fi
+    if [[ -z "${XKBMODEL:-}" ]]; then export XKBMODEL=pc105; fi
+    if [[ -z "${TZ:-}" ]]; then export TZ=Etc/UTC; fi
+    if [[ -z "${LANG:-}" ]]; then export LANG=en_US.UTF-8; fi
+    if [[ -z "${LANGUAGE:-}" ]]; then export LANGUAGE=en_US.UTF-8; fi
+    if [[ -z "${LC_ALL:-}" ]]; then export LC_ALL=en_US.UTF-8; fi
+
+    # Override 'C.UTF-8' due to error
+    # Error: 'C.UTF-8' is not a supported language or locale
+    if [[ "${LANG}" == "C.UTF-8" ]]; then
+        if [[ "${SOURCE_ENV_FILE}" == "true" ]]; then
+            echo "LANG set to 'C.UTF-8'" >&2
+            echo "This may not work" >&2
+            echo "The LANG can be changed in the .env file" >&2
+        else
+            echo "Overriding 'C.UTF-8' due to error" >&2
+            echo "Error: 'C.UTF-8' is not a supported language or locale" >&2
+            echo "Setting LANG to en_US.UTF-8 instead." >&2
+            echo "Alternatively, set LANG as required in the environment" >&2
+            export LANG=en_US.UTF-8
+        fi
+    fi
+    sleep 5s
+
+    echo """
+Variables set as follows:
+XKBLAYOUT: ${XKBLAYOUT}
+BACKSPACE: ${BACKSPACE}
+XKBMODEL: ${XKBMODEL}
+TZ: ${TZ}
+LANG: ${LANG}
+LANGUAGE: ${LANGUAGE}
+LC_ALL: ${LC_ALL}
+"""
+
+    sleep 5s
+
     source "${PROJECT_ROOT}/bin/configure/misc.sh"
     setup_locales
     setup_timezone
