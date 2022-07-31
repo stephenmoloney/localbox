@@ -69,7 +69,6 @@ mc 2022-02-26T03-58-31Z
 mdbook 0.4.15
 mdbook-linkcheck 0.7.6
 mkcert 1.4.3
-neovim 0.6.1
 nomad 1.2.6
 nodejs 17.6.0 14.17.1
 oc 4.9.23
