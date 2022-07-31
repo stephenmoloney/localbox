@@ -112,7 +112,7 @@ trdsql 0.9.1
 trivy 0.24.1
 vault 1.9.3
 velero v1.8.0
-websocat 1.10.1
+websocat 1.10.0
 yarn 1.22.17
 yor 0.1.139
 yq 4.25.3
