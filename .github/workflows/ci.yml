@@ -18,6 +18,8 @@ env:
   DEBIAN_FRONTEND: noninteractive
   TZ: Europe/Zurich
   USER: runner
+  # GOPATH: ${{ github.workspace }}
+  GOROOT: /usr/local/go
 
 jobs:
   # Lint codebase
@@ -25,18 +27,20 @@ jobs:
     name: lint
     continue-on-error: false
     runs-on: ubuntu-20.04
-    env:
-      GOROOT: "/opt/hostedtoolcache/go/1.15.12/x64"
     steps:
       - name: git checkout
         uses: actions/checkout@v2
       - name: prepare
-        run: >
-          sudo apt update -y -qq &&
-          sudo apt install -y -qq make &&
+        run: |
+          sudo apt update -y -qq
+          sudo apt install -y -qq make curl
+          sudo rm -rf /usr/local/go
+          sudo rm -rf /usr/bin/go
+          sudo mkdir -p /usr/local/go
           make init
       - name: lint
-        run: >
+        run: |
+          export PATH="${PATH}:/usr/local/go/bin"
           make lint
   # Create test variables for matrix dynamically
   set-test-matrix-vars:

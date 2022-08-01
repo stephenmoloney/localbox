@@ -26,7 +26,9 @@ fi
 declare -A DEBIAN_PKGS
 DEBIAN_PKGS=(
     ["adb"]="*"
+    ["atool"]="*"
     ["bash-completion"]="*"
+    ["cloc"]="*"
     ["dialog"]="*"
     ["converseen"]="*"
     ["exuberant-ctags"]="*"
