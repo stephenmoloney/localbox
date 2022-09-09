@@ -48,6 +48,9 @@ maybe_install_asdf_as_fallback # asdf required for asdf plugins installation
 maybe_install_jq_as_fallback   # jq required for go-jsonnet installation
 maybe_install_go_as_fallback   # go required for go-jsonnet installation
 
+# shellcheck disable=SC2034
+export ASDF_WEBSOCAT_DISTRO=websocat.x86_64-unknown-linux-musl
+
 ASDF_ERLANG_DEPS=(
     autoconf
     build-essential
