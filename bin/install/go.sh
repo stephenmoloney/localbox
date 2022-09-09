@@ -37,6 +37,10 @@ function install_go() {
         mkdir -p "${GOPATH}"
     fi
 
+    if [[ ! -d "${GOROOT}" ]]; then
+        mkdir -p "${GOROOT}" || sudo mkdir -p "${GOROOT}"
+    fi
+
     if [[ "$(go version 2>/dev/null || true)" != *"${version}"* ]]; then
         echo "The current version of go does not match the required version"
         echo "Installing go version ${version}"

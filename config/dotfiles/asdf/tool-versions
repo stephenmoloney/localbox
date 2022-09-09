@@ -69,7 +69,6 @@ mc 2022-02-26T03-58-31Z
 mdbook 0.4.15
 mdbook-linkcheck 0.7.6
 mkcert 1.4.3
-neovim 0.6.1
 nomad 1.2.6
 nodejs 17.6.0 14.17.1
 oc 4.9.23
@@ -113,7 +112,7 @@ trdsql 0.9.1
 trivy 0.24.1
 vault 1.9.3
 velero v1.8.0
-websocat 1.8.0
+websocat 1.10.0
 yarn 1.22.17
 yor 0.1.139
 yq 4.25.3

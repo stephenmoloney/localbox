@@ -97,7 +97,7 @@ function install_go_pls_server() {
     GOOS="$(go env GOOS)" \
     GOARCH="$(go env GOARCH)" \
     GO111MODULE=on \
-        go get "golang.org/x/tools/gopls@v${version}"
+        go install "golang.org/x/tools/gopls@v${version}"
     echo "${FUNCNAME[0]} complete"
 }
 

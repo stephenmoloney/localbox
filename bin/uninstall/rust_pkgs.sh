@@ -16,6 +16,7 @@ RUST_PKGS=(
     tealdeer
     tre
     viu
+    xplr
 )
 
 if [[ -e "${HOME}/.cargo/.env" ]]; then

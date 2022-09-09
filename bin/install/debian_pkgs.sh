@@ -26,8 +26,11 @@ fi
 declare -A DEBIAN_PKGS
 DEBIAN_PKGS=(
     ["adb"]="*"
+    ["atool"]="*"
     ["bash-completion"]="*"
+    ["cloc"]="*"
     ["dialog"]="*"
+    ["converseen"]="*"
     ["exuberant-ctags"]="*"
     ["git"]="*"
     ["gitk"]="*"
@@ -35,6 +38,7 @@ DEBIAN_PKGS=(
     ["gnome-tweak-tool"]="*"
     ["gnupg"]="*"
     ["httpie"]="*"
+    ["inxi"]="*"
     ["libarchive-tools"]="*"
     ["libhidapi-dev"]="*"
     ["lsb-release"]="*"
@@ -45,6 +49,7 @@ DEBIAN_PKGS=(
     ["python-is-python3"]="*"
     ["python3-pip"]="*"
     ["python3-setuptools"]="*"
+    ["qrencode"]="*"
     ["scdaemon"]="*"
     ["tmux"]="*"
     ["tree"]="*"

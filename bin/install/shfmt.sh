@@ -61,7 +61,7 @@ function install_shfmt() {
         GOOS="$(go env GOOS)" \
         GOARCH="$(go env GOARCH)" \
         GO111MODULE=on \
-            go get "mvdan.cc/sh/v3/cmd/shfmt@v${version}"
+            go install "mvdan.cc/sh/v3/cmd/shfmt@v${version}"
         sudo mv "${GOPATH}/bin/shfmt" /usr/local/bin/shfmt
     else
         echo "shfmt version ${version} is already installed"
