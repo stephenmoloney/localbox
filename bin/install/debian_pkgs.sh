@@ -51,6 +51,7 @@ DEBIAN_PKGS=(
     ["python3-setuptools"]="*"
     ["qrencode"]="*"
     ["scdaemon"]="*"
+    ["scrcpy"]="*"
     ["tmux"]="*"
     ["tree"]="*"
     ["unzip"]="*"
