@@ -38,8 +38,9 @@ function install_flatpak() {
 
     if [[ -z "$(get_current_version 2>/dev/null || true)" ]] ||
         [[ "$(get_current_version 2>/dev/null || true)" != "${flatpak_version}" ]]; then
-        sudo add-apt-repository -y ppa:alexlarsson/flatpak
-        maybe_install_apt_pkg "flatpak" "${flatpak_version}"
+        # Temp fix: while jammy is not in the repository
+        # maybe_install_apt_pkg "flatpak" "${flatpak_version}"
+        sudo apt-get install -y flatpak
         apt_hold_pkg "flatpak"
 
         sudo flatpak remote-add \
