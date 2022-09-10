@@ -29,13 +29,13 @@ function uninstall_dotnet_core_sdk() {
     if [[ -z "${version}" ]]; then
         version="$(
             sudo apt list --installed 2>/dev/null |
-                grep dotnet-sdk |
+                grep dotnet |
                 cut -d'/' -f1 |
-                sed 's/dotnet-sdk-//g'
+                sed 's/dotnet//g'
         )"
     fi
 
-    maybe_uninstall_apt_pkg "dotnet-sdk-${version}"
+    maybe_uninstall_apt_pkg "dotnet${version}"
     sudo apt autoremove -y
 }
 

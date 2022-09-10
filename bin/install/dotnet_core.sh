@@ -44,9 +44,9 @@ function install_dotnet_core_sdk() {
         rm packages-microsoft-prod.deb
 
     sudo apt update -y -qq
-    maybe_install_apt_pkg "dotnet-sdk-${version}" "*"
+    maybe_install_apt_pkg "dotnet${version}" "*"
 
-    dotnet --version
+    dotnet --info
 }
 
 function main() {
