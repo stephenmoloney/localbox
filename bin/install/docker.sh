@@ -3,7 +3,7 @@ set -eu
 set -o pipefail
 set -o errtrace
 
-DOCKER_VERSION_FALLBACK=5:20.10.12~3-0~ubuntu-focal
+DOCKER_VERSION_FALLBACK=5:20.10.18~3-0~ubuntu-jammy
 
 # ******* Importing utils.sh as a source of common shell functions *******
 GITHUB_URL=https://raw.githubusercontent.com/stephenmoloney/localbox/master
