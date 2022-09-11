@@ -117,6 +117,12 @@ function main() {
     for pkg in "${!FLATPAK_PKGS[@]}"; do
         install_flatpak_pkg "${pkg}" "${FLATPAK_PKGS[$pkg]}"
     done
+    # Install tenacity nightly
+    sudo flatpak install \
+        -y \
+        --noninteractive \
+        --system \
+        tenacity org.tenacityaudio.Tenacity
 }
 
 if [[ "$0" == "${BASH_SOURCE[0]}" ]]; then
