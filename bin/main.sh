@@ -77,7 +77,6 @@ function install() {
     exec_with_retries "${PROJECT_ROOT}/bin/install/dotnet_core.sh" 0 2 "${DOTNET_CORE_SDK_VERSION:-}"
     if [[ "$(is_docker)" != "true" ]] && [[ "$(headless_only)" != "true" ]]; then
         "${PROJECT_ROOT}/bin/install/flatpak.sh" "${FLATPAK_VERSION:-}" "${FREEDESKTOP_VERSION:-}"
-        exec_with_retries "${PROJECT_ROOT}/bin/install/flatpak_pkgs.sh" 0 2
     fi
     exec_with_retries "${PROJECT_ROOT}/bin/install/gogh.sh" 0 2 "${GOGH_VERSION:-}"
     exec_with_retries "${PROJECT_ROOT}/bin/install/jmespath.sh" 0 2 "${JMESPATH_VERSION:-}"
