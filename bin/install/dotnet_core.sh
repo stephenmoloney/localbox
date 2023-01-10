@@ -43,6 +43,17 @@ function install_dotnet_core_sdk() {
         sudo dpkg -i packages-microsoft-prod.deb &&
         rm packages-microsoft-prod.deb
 
+    if [[ ! -e /etc/apt/preferences.d/99-dotnet.pref ]]; then
+        sudo mkdir -p /etc/apt/preferences.d || true
+        sudo touch /etc/apt/preferences.d/99-dotnet.pref
+    fi
+
+    echo """
+Package: *
+Pin: origin \"packages.microsoft.com\"
+Pin-Priority: 1001
+""" | sudo tee /etc/apt/preferences.d/99-dotnet.pref
+
     sudo apt update -y -qq
     maybe_install_apt_pkg "dotnet${version}" "*"
 

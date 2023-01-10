@@ -66,10 +66,18 @@ install:
 	sudo echo "starting $@ process using $(SHELL) as user $$(whoami)"
 	set -eu; set -o pipefail;
 	source ./bin/preinstall.sh
+	if [[ -z "${CI}" ]]; then
+		@read -p "Set Timezone, defaults to Europe/Dublin: " timezone;
+		cp .env .env-bak
+		sed -i "s|TZ=Europe/Dublin|TZ=$$timezone|g" .env
+	fi
 	preinstall $(preinstall_args)
 	source ./bin/main.sh
 	@echo "preinstall_args: $(preinstall_args), install_args: $(install_args)"
 	install $(preinstall_args) $(install_args)
+	if [[ -z "${CI}" ]]; then
+		cp .env-bak .env
+	fi
 
 .ONESHELL:
 configure:

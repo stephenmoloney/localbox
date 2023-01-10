@@ -121,7 +121,6 @@ function setup() {
     source "${PROJECT_ROOT}/bin/configure/git.sh"
     source "${PROJECT_ROOT}/bin/configure/go.sh"
     source "${PROJECT_ROOT}/bin/configure/gogh.sh"
-    source "${PROJECT_ROOT}/bin/configure/kafka_pkgs.sh"
     source "${PROJECT_ROOT}/bin/configure/krew.sh"
     source "${PROJECT_ROOT}/bin/configure/misc.sh"
     source "${PROJECT_ROOT}/bin/configure/markdownlint.sh"

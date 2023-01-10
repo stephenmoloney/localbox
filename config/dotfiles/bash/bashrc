@@ -25,7 +25,6 @@ function main() {
     source "${LOCALBOX_PATH}/bin/configure/dotnet_core.sh"
     source "${LOCALBOX_PATH}/bin/configure/git.sh"
     source "${LOCALBOX_PATH}/bin/configure/go.sh"
-    source "${LOCALBOX_PATH}/bin/configure/kafka_pkgs.sh"
     source "${LOCALBOX_PATH}/bin/configure/krew.sh"
     source "${LOCALBOX_PATH}/bin/configure/misc.sh"
     source "${LOCALBOX_PATH}/bin/configure/rust.sh"
