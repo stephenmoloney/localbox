@@ -119,7 +119,7 @@ function install_asdf_plugins() {
     fi
     cp \
         "${PROJECT_ROOT}/config/dotfiles/gcloud/default-cloud-sdk-components" \
-        "${HOME}/.config/gcloud/.default-cloud-sdk-componentsi"
+        "${HOME}/.config/gcloud/.default-cloud-sdk-components"
 
     #  Required for ruby
     for dep in "${ASDF_RUBY_DEPS[@]}"; do
@@ -137,14 +137,7 @@ function install_asdf_plugins() {
             asdf plugin list | grep -w "${plugin}" >/dev/null 2>&1
             echo $?
         )" -gt 0 ]]; then
-            # Waiting on merge https://github.com/vaynerx/asdf-linkerd/pull/4
-            if [[ "${plugin}" == "linkerd" ]]; then
-                asdf plugin add "${plugin}" "https://github.com/stephenmoloney/asdf-linkerd"
-            elif [[ "${plugin}" == "kcctl" ]]; then
-                asdf plugin add "${plugin}" "https://github.com/joschi/asdf-kcctl"
-            else
-                asdf plugin add "${plugin}"
-            fi
+            asdf plugin add "${plugin}"
         fi
 
         for plugin_version in "${plugin_versions[@]}"; do
