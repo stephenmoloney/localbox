@@ -35,7 +35,7 @@ DEBIAN_PKGS=(
     ["git"]="*"
     ["gitk"]="*"
     ["git-cola"]="*"
-    ["gnome-tweak-tool"]="*"
+    ["gnome-tweaks"]="*"
     ["gnupg"]="*"
     ["httpie"]="*"
     ["inxi"]="*"
@@ -58,7 +58,7 @@ DEBIAN_PKGS=(
     ["wget"]="*"
     ["xsel"]="*"
 )
-GUI_APPS="git-cola gitk gnome-tweak-tool xsel"
+GUI_APPS="git-cola gitk gnome-tweaks xsel"
 
 function requires_gui() {
     local pkg="${1}"
