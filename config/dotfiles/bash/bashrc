@@ -40,9 +40,6 @@ function main() {
     setup_bpytop
     setup_dotnet_core
     setup_editors
-    setup_k3d
-    setup_kaf
-    setup_kafka
     setup_gcloud # asdf plugin
     setup_git
     setup_go

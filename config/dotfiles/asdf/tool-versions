@@ -1,40 +1,20 @@
 argo 3.3.9
 argocd 2.4.12
 argo-rollouts 1.2.2
-awscli 2.7.33
 bats 1.8.0
-bazel 5.3.0
 bitwarden v1.22.1
 boundary 0.10.5
 cfssl 1.6.2
 checkov 2.1.210
-clusterctl 1.2.2
 conftest v0.34.0
-consul 1.13.1
 container-diff 0.17.0
-dasel 1.26.1
-dhall 1.41.2
-devspace 6.1.0
-dive 0.10.0
-docker-slim 1.24
 dotenv-linter 3.2.0
 editorconfig-checker 2.6.0
-eksctl v0.86.0 v0.111.0
 elixir 1.14.0 1.13.4 1.12.3 1.13.3 1.11.4
 erlang 24.2.2 25.0.4
-flux2 0.34.0
-fluxctl 1.25.4
 gcloud 374.0.0 402.0.0
-git-chglog 0.15.1
-github-markdown-toc 1.2.0
 gitui 0.20.1 0.21.0
-gleam 0.22.1
-go-jsonnet 0.18.0
 golangci-lint 1.49.0
-gomplate 3.9.0
-goreleaser 1.11.3
-grpcurl 1.8.7
-grype 0.50.1
 haskell 9.4.2
 helm 3.9.4
 helm-cr 1.4.0
@@ -43,74 +23,24 @@ helmfile 0.144.0
 hey 0.1.4
 istioctl 1.15.0
 java adoptopenjdk-17.0.2+8 adoptopenjdk-18.0.2+101
-jless 0.7.2
-k3d 5.3.0
-k3sup 0.12.3
-k9s 0.25.18
-kcctl 1.0.0.Alpha5
-kind 0.15.0
-ktlint 0.47.1
-kubebuilder 3.6.0
-kubeconform 0.4.14
 kubectl 1.25.1 1.24.5 1.23.4 1.22.7 1.21.2 1.20.8
-kubectx 0.9.4
-kubefedctl 0.10.0
-kubeseal 0.18.2 0.16.0
-kubesec 0.9.2
-kubespy 0.6.1
-kubie 0.19.0
 kustomize 4.5.7
-linkerd 2.12.0 2.11.1 2.10.2 2.9.5
-loki-logcli 2.6.1
 lua 5.4.3
-mark 8.3
-mc 2022-09-16T09-16-47Z
-mdbook 0.4.21
-mdbook-linkcheck 0.7.6
-mkcert 1.4.4
-nomad 1.3.5
 nodejs 18.9.0 17.6.0 14.17.1
-oc 4.11.5
-opa 0.44.0
-opam 2.1.3
-operator-sdk 1.23.0
-osm v1.2.1
 packer 1.8.3
-peco 0.5.10
-pluto 5.10.7
-pnpm 7.11.0
 poetry 1.2.1
-polaris 7.0.2
 protoc 3.20.2
-pulumi 3.40.0
-rbac-lookup 0.9.1
 rclone 1.59.2
 rebar 3.18.0
-redis 7.0.4
-reg 0.16.1
-rke v1.2.20
 ruby 3.0.1
 scaleway-cli 2.4.0
-semver 3.3.0
 shellspec 0.28.1
-sinker 0.17.0
 skaffold 1.39.2
-snyk 1.1006.0
 sops 3.7.3
-sqlite 3.39.3
 starship 1.10.3
-task 3.15.2
-tekton-cli 0.26.0
-telepresence 2.7.6
 terraform 1.2.9 1.1.6 0.15.5 0.14.8 0.13.6 0.12.30
 tflint 0.40.0
-tfsec 1.4.2
-tilt 0.25.2
-trdsql 0.9.1
-trivy 0.32.0
 vault 1.11.3
-velero v1.9.1
 websocat 1.10.0
 yarn 1.22.19
-yor 0.1.151
 yq 4.27.5

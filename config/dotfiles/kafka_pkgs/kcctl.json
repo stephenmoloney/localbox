@@ -1,8 +1,0 @@
-{
-  "currentContext": "local",
-  "local": {
-    "cluster": "http://localhost:9093",
-    "username": "",
-    "password": ""
-  }
-}

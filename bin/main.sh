@@ -156,8 +156,6 @@ function setup() {
         setup_gnome_terminal_profiles
     fi
     setup_go
-    setup_kcctl
-    setup_kaf
     setup_krew
     setup_kubectl_dotfiles
     setup_markdownlint
