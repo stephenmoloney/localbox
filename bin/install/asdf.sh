@@ -3,7 +3,7 @@ set -eu
 set -o pipefail
 set -o errtrace
 
-ASDF_VERSION_FALLBACK=0.10.1
+ASDF_VERSION_FALLBACK=0.11.3
 
 # ******* Importing utils.sh as a source of common shell functions *******
 GITHUB_URL=https://raw.githubusercontent.com/stephenmoloney/localbox/master
@@ -28,7 +28,11 @@ fi
 function install_asdf() {
     local version="${1}"
 
+    maybe_install_apt_pkg "curl" "*"
+    maybe_install_apt_pkg "dirmngr" "*"
+    maybe_install_apt_pkg "gawk" "*"
     maybe_install_apt_pkg "git" "*"
+    maybe_install_apt_pkg "gpg" "*"
 
     if [[ -d "${HOME}/.asdf" ]]; then
         pushd "${HOME}/.asdf" || exit
