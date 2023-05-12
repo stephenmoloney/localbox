@@ -15,6 +15,7 @@ erlang 24.2.2 25.0.4
 gcloud 374.0.0 402.0.0
 gitui 0.20.1 0.21.0
 golangci-lint 1.49.0
+groovy 4.0.12
 haskell 9.4.2
 helm 3.9.4
 helm-cr 1.4.0
