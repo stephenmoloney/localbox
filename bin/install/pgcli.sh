@@ -33,10 +33,11 @@ function get_current_version() {
 function postgresql_client_prerequisites() {
     maybe_install_apt_pkg "wget" "*"
 
+    # shellcheck shell=bash disable=SC1078,SC1079
     sudo bash -c """\
-    curl https://www.postgresql.org/media/keys/ACCC4CF8.asc | \
-        gpg --dearmor \
-        >/usr/share/keyrings/postgresql.gpg
+        curl https://www.postgresql.org/media/keys/ACCC4CF8.asc | \
+            gpg --dearmor \
+            >/usr/share/keyrings/postgresql.gpg
     """
 
     if [[ ! -e /etc/apt/sources.list.d/pgdg.list ]]; then

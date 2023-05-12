@@ -80,10 +80,11 @@ function install_terraform_ls() {
     maybe_install_apt_pkg lsb-release "*"
     maybe_install_apt_pkg software-properties-common "*"
 
+    # shellcheck shell=bash disable=SC1078,SC1079
     sudo bash -c """\
-    curl https://apt.releases.hashicorp.com/gpg | \
-        gpg --dearmor \
-        >/usr/share/keyrings/hashicorp.gpg
+        curl https://apt.releases.hashicorp.com/gpg | \
+            gpg --dearmor \
+            >/usr/share/keyrings/hashicorp.gpg
     """
 
     if [[ ! -e /etc/apt/sources.list.d/hashicorp.list ]]; then
