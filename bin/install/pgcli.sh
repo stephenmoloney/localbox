@@ -33,11 +33,14 @@ function get_current_version() {
 function postgresql_client_prerequisites() {
     maybe_install_apt_pkg "wget" "*"
 
-    wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc |
-        sudo apt-key add -
+    sudo bash -c """\
+    curl https://www.postgresql.org/media/keys/ACCC4CF8.asc | \
+        gpg --dearmor \
+        >/usr/share/keyrings/postgresql.gpg
+    """
 
     if [[ ! -e /etc/apt/sources.list.d/pgdg.list ]]; then
-        echo "deb http://apt.postgresql.org/pub/repos/apt/ $(lsb_release -cs)-pgdg main" |
+        echo "deb [arch=amd64 signed-by=/usr/share/keyrings/postgresql.gpg] http://apt.postgresql.org/pub/repos/apt/ $(lsb_release -cs)-pgdg main" |
             sudo tee /etc/apt/sources.list.d/pgdg.list
     fi
 

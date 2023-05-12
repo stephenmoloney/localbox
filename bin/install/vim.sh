@@ -80,11 +80,17 @@ function install_terraform_ls() {
     maybe_install_apt_pkg lsb-release "*"
     maybe_install_apt_pkg software-properties-common "*"
 
-    curl -fsSL https://apt.releases.hashicorp.com/gpg |
-        sudo apt-key add -
-    sudo \
-        apt-add-repository \
-        "deb [arch=amd64] https://apt.releases.hashicorp.com $(lsb_release -cs) main"
+    sudo bash -c """\
+    curl https://apt.releases.hashicorp.com/gpg | \
+        gpg --dearmor \
+        >/usr/share/keyrings/hashicorp.gpg
+    """
+
+    if [[ ! -e /etc/apt/sources.list.d/hashicorp.list ]]; then
+        echo "deb [arch=amd64 signed-by=/usr/share/keyrings/hashicorp.gpg] https://apt.releases.hashicorp.com $(lsb_release -cs) main" |
+            sudo tee /etc/apt/sources.list.d/hashicorp.list
+    fi
+
     sudo apt update -y -qq
     maybe_install_apt_pkg "terraform-ls" "${version}"
     apt_hold_pkg terraform-ls

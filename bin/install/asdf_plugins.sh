@@ -148,6 +148,9 @@ function install_asdf_plugins() {
 
         # Set the global version to the first one in the array
         if [[ "${plugin_versions[0]:-}" != "system" ]]; then
+            if [[ ! -e "${HOME}"/.tool-versions ]]; then
+                touch "${HOME}"/.tool-versions
+            fi
             echo "Setting ${plugin} to version ${plugin_versions[0]}"
             asdf global "${plugin}" "${plugin_versions[0]}"
         fi
@@ -155,15 +158,7 @@ function install_asdf_plugins() {
 }
 
 function main() {
-    # Workaround for bug in version 0.9.0, remove workaround in next release
-    # https://github.com/asdf-vm/asdf/pull/1158
-    if [[ -z "${ASDF_DIR:-}" ]]; then
-        if [[ -e "${HOME}/.asdf/asdf.sh" ]]; then
-            source "${HOME}/.asdf/asdf.sh"
-        fi
-    else
-        source "${ASDF_DIR}/asdf.sh"
-    fi
+    source "${HOME}/.asdf/asdf.sh"
     install_asdf_plugins
 }
 

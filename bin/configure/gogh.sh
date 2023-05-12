@@ -24,7 +24,7 @@ DARK_PROFILES=(
 
 ALL_PROFILES=("${LIGHT_PROFILES[@]}" "${DARK_PROFILES[@]}")
 
-SELECTED_THEME="${1:-Azu}"
+SELECTED_THEME="${1:-Zenburn}"
 
 function get_name_from_uuid() {
     local uuid="${1}"
