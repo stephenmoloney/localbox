@@ -87,6 +87,7 @@ ASDF_RUBY_DEPS=(
     libgdbm-dev
     libdb-dev
 )
+ASDF_GROOVY_DISABLE_JAVA_HOME_EXPORT=true
 
 function install_asdf_plugins() {
     local plugins
