@@ -87,6 +87,7 @@ ASDF_RUBY_DEPS=(
     libgdbm-dev
     libdb-dev
 )
+# shellcheck shell=bash disable=SC2034
 ASDF_GROOVY_DISABLE_JAVA_HOME_EXPORT=true
 
 function install_asdf_plugins() {
