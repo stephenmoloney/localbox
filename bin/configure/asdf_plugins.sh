@@ -78,7 +78,7 @@ function setup_starship() {
 
         tmp_dir=$(mktemp --directory)
         # Ignore unbound variable
-        # preexec_functions: unbound variable:w
+        # preexec_functions: unbound variable
         echo "set +u" >>"$tmp_dir/starship.sh"
         starship init --print-full-init bash >>"$tmp_dir/starship.sh"
         source "$tmp_dir/starship.sh"
@@ -86,9 +86,9 @@ function setup_starship() {
     fi
     #eval "$(cat "$tmp_dir/starship.sh")"
 
-    # if [[ -n "$(starship --version)" ]]; then
-    #     eval "$(starship init bash)"
-    # fi
+    if [[ -n "$(starship --version)" ]]; then
+        eval "$(starship init bash)"
+    fi
 }
 
 function setup_starship_dotfiles() {
@@ -113,7 +113,7 @@ function setup_yarn() {
 
 function setup_yq() {
     if [[ -z "$(command -v yq)" ]]; then
-        yq shell-completion bash >"${HOME}/bash_completion.d/yq"
-        source"${HOME}/bash_completion.d/yq"
+        yq shell-completion bash >"${HOME}"/.bash_completion.d/yq
+        source "${HOME}"/.bash_completion.d/yq
     fi
 }

@@ -24,13 +24,9 @@ fi
 PROJECT_ROOT="$(project_root)"
 
 function setup_asdf() {
-    export ASDF_CONFIG_FILE="${HOME}/.asdfrc"
-    export ASDF_DEFAULT_TOOL_VERSIONS_FILENAME="${HOME}/.tool-versions"
-    export ASDF_DIR="${HOME}/.asdf"
-    export ASDF_DATA_DIR="${HOME}/.asdf"
     if [[ -d "${HOME}/.asdf" ]]; then
-        source "${HOME}/.asdf/asdf.sh"
-        source "${HOME}/.asdf/completions/asdf.bash"
+        . "${HOME}"/.asdf/asdf.sh
+        . "${HOME}"/.asdf/completions/asdf.bash
     fi
 }
 
@@ -38,7 +34,4 @@ function setup_asdf_dotfiles() {
     cp \
         "${PROJECT_ROOT}/config/dotfiles/asdf/asdfrc" \
         "${HOME}/.asdfrc"
-    cp \
-        "${PROJECT_ROOT}/config/dotfiles/asdf/tool-versions" \
-        "${HOME}/.tool-versions"
 }
