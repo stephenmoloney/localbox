@@ -42,17 +42,30 @@ function install_nerd_fonts() {
             --branch "v${version}" \
             --depth 1 \
             "${HOME}/.nerd_fonts"
+    else
+        pushd "${HOME}/.nerd_fonts" || exit
+        git checkout "v${version}" ||
+            (
+                popd || true
+                rm -rf "${HOME}/.nerd_fonts"
+                git clone \
+                    https://github.com/ryanoasis/nerd-fonts.git \
+                    --branch "v${version}" \
+                    --depth 1 \
+                    "${HOME}/.nerd_fonts"
+            ) &&
+            (
+                echo "Nerdfonts version v${version}already checked out"
+            )
+        popd || true
+        pushd "${HOME}/.nerd_fonts" || exit
     fi
-
-    pushd "${HOME}/.nerd_fonts" || exit
-    git fetch origin refs/tags/v"${version}"
-    git checkout "v${version}"
     chmod +x install.sh
     for font in "${NERD_FONTS_FOR_INSTALLATION[@]}"; do
         sudo ./install.sh \
             --copy \
             --ttf \
-            --complete \
+            --clean \
             --install-to-system-path \
             "${font}"
     done
