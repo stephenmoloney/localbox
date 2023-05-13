@@ -98,9 +98,9 @@ function install() {
         "${VIM_GTK3_VERSION:-latest}" \
         "${VIM_PLUG_VERSION:-0.11.0}" \
         "${TERRAFORM_LS_VERSION:-latest}" \
-        "${GO_PLS_VERSION:-0.7.5}" \
+        "${GO_PLS_VERSION:-0.11.0}" \
         "${BASH_LANGUAGE_SERVER_VERSION:-2.0.0}" \
-        "${GRAPHQL_LANGUAGE_SERVER_VERSION:-3.1.13}"
+        "${GRAPHQL_LANGUAGE_SERVER_VERSION:-3.3.22}"
 }
 
 function setup() {

@@ -3,7 +3,7 @@ set -eu
 set -o pipefail
 set -o errtrace
 
-PENCIL_VERSION_FALLBACK=3.1.0
+PENCIL_VERSION_FALLBACK=3.1.1
 
 # ******* Importing utils.sh as a source of common shell functions *******
 GITHUB_URL=https://raw.githubusercontent.com/stephenmoloney/localbox/master

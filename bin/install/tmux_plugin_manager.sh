@@ -3,7 +3,7 @@ set -eu
 set -o pipefail
 set -o errtrace
 
-TMUX_PLUGIN_MANAGER_VERSION_FALLBACK=2afeff1529ec85d0c5ced5ece3714c2220b646a5
+TMUX_PLUGIN_MANAGER_VERSION_FALLBACK=v3.1.0
 
 # ******* Importing utils.sh as a source of common shell functions *******
 GITHUB_URL=https://raw.githubusercontent.com/stephenmoloney/localbox/master

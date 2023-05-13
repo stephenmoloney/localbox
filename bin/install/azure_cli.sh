@@ -3,7 +3,7 @@ set -eu
 set -o pipefail
 set -o errtrace
 
-AZURE_CLI_VERSION_FALLBACK="2.40.0-1~jammy"
+AZURE_CLI_VERSION_FALLBACK="2.48.1-1~jammy"
 
 # ******* Importing utils.sh as a source of common shell functions *******
 GITHUB_URL=https://raw.githubusercontent.com/stephenmoloney/localbox/master
