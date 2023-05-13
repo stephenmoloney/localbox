@@ -3,7 +3,7 @@ set -eu
 set -o pipefail
 set -o errtrace
 
-NERDFONTS_VERSION_FALLBACK=2.1.0
+NERDFONTS_VERSION_FALLBACK=2.3.3
 
 NERD_FONTS_FOR_INSTALLATION=(
     UbuntuMono
@@ -45,7 +45,7 @@ function install_nerd_fonts() {
     fi
 
     pushd "${HOME}/.nerd_fonts" || exit
-    git fetch origin
+    git fetch origin refs/tags/v"${version}"
     git checkout "v${version}"
     chmod +x install.sh
     for font in "${NERD_FONTS_FOR_INSTALLATION[@]}"; do

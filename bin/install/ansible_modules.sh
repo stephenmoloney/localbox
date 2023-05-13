@@ -44,7 +44,7 @@ else
 fi
 # ****************************************************************************
 
-ANSIBLE_KUBERNETES_VERSION_FALLBACK=2.2.3
+ANSIBLE_KUBERNETES_VERSION_FALLBACK=2.4.0
 
 declare -A ANSIBLE_MODULES
 ANSIBLE_MODULES=(

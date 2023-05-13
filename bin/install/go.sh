@@ -3,7 +3,7 @@ set -eu
 set -o pipefail
 set -o errtrace
 
-GO_VERSION_FALLBACK=1.17.7
+GO_VERSION_FALLBACK=1.20.4
 export GOPATH="${GOPATH:-${HOME}/src/go}"
 export GOROOT="${GOROOT:-/usr/local/go}"
 export PATH="${PATH}:/usr/local/go/bin"

@@ -3,7 +3,7 @@ set -eu
 set -o pipefail
 set -o errtrace
 
-GOGH_VERSION_FALLBACK=v219
+GOGH_VERSION_FALLBACK=v242
 
 # ******* Importing utils.sh as a source of common shell functions *******
 GITHUB_URL=https://raw.githubusercontent.com/stephenmoloney/localbox/master
@@ -37,7 +37,7 @@ function install_gogh() {
             "${HOME}/src/open/gogh"
     fi
     pushd "${HOME}/src/open/gogh" || exit
-    git fetch origin
+    git fetch origin --tags
     git checkout "${version}"
 
     popd || exit

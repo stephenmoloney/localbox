@@ -3,7 +3,7 @@ set -eu
 set -o pipefail
 set -o errtrace
 
-JMESPATH_VERSION_FALLBACK=0.10.0
+JMESPATH_VERSION_FALLBACK=1.0.1
 
 # ******* Importing utils.sh as a source of common shell functions *******
 GITHUB_URL=https://raw.githubusercontent.com/stephenmoloney/localbox/master

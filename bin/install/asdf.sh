@@ -36,7 +36,7 @@ function install_asdf() {
 
     if [[ -d "${HOME}/.asdf" ]]; then
         pushd "${HOME}/.asdf" || exit
-        git fetch origin
+        git fetch origin --tags
         git checkout "v${version}"
         popd || exit
     else

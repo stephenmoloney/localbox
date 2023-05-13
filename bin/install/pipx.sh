@@ -3,7 +3,7 @@ set -eu
 set -o pipefail
 set -o errtrace
 
-PIPX_VERSION_FALLBACK=1.0.0
+PIPX_VERSION_FALLBACK=1.2.0
 
 # ******* Importing utils.sh as a source of common shell functions *******
 GITHUB_URL=https://raw.githubusercontent.com/stephenmoloney/localbox/master
