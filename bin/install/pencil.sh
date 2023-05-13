@@ -39,7 +39,7 @@ function install_pencil() {
 
     pushd "$(mktemp -d)" || exit
     wget \
-        "https://pencil.evolus.vn/dl/V${version}.ga/pencil_${version}.ga_amd64.deb" \
+        "https://pencil.evolus.vn/dl/V${version}.ga/Pencil_${version}.ga_amd64.deb" \
         -O "pencil_${version}.ga_amd64.deb"
 
     sudo dpkg --install "pencil_${version}.ga_amd64.deb"
