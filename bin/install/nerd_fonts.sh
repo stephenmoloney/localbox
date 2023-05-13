@@ -45,7 +45,7 @@ function install_nerd_fonts() {
     fi
 
     pushd "${HOME}/.nerd_fonts" || exit
-    git fetch origin --tags
+    git fetch origin refs/tags/v"${version}"
     git checkout "v${version}"
     chmod +x install.sh
     for font in "${NERD_FONTS_FOR_INSTALLATION[@]}"; do
