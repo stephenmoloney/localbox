@@ -109,6 +109,8 @@ function setup_yarn() {
         [[ -z "$(grep "${yarn_global_path}" <<<"${PATH}" 2>/dev/null || true)" ]]; then
         export PATH="${PATH}:${yarn_global_path}"
     fi
+
+    yarn config set registry https://registry.npmjs.org -g >/dev/null
 }
 
 function setup_yq() {

@@ -33,12 +33,14 @@ export -f run_job
 
 function serial_execution() {
     local spec_files
+    local exit_code
 
     while IFS=' ' read -r -a spec_files; do
         echo "Executing test ${spec_files[0]}"
         run_job "${spec_files[0]}"
+        exit_code=$?
         echo "Finished executing test ${spec_files[0]}"
-        echo "Exit code: $?"
+        echo "Exit code: ${exit_code}"
     done < <(ls -A ./spec/bin/*.sh)
 }
 

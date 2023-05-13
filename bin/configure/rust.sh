@@ -22,7 +22,7 @@ fi
 PROJECT_ROOT="$(project_root)"
 
 function calc_io_threads() {
-    echo "$(((($(nproc --all) / 4)) * 3))"
+    echo "$((($(nproc --all) / 4) * 3))"
 }
 
 function calc_unpack_ram() {
