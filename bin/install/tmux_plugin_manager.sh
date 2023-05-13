@@ -39,7 +39,7 @@ function install_tmux_plugin_manager() {
         "${HOME}/.tmux/plugins/tpm"
 
     pushd "${HOME}/.tmux/plugins/tpm" || exit
-    git fetch origin
+    git fetch origin --tags
     git checkout "${version}"
     popd || exit
 

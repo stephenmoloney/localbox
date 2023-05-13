@@ -37,7 +37,7 @@ function install_gogh() {
             "${HOME}/src/open/gogh"
     fi
     pushd "${HOME}/src/open/gogh" || exit
-    git fetch origin
+    git fetch origin --tags
     git checkout "${version}"
 
     popd || exit
