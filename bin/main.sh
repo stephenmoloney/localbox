@@ -99,7 +99,7 @@ function install() {
         "${VIM_PLUG_VERSION:-0.11.0}" \
         "${TERRAFORM_LS_VERSION:-latest}" \
         "${GO_PLS_VERSION:-0.11.0}" \
-        "${BASH_LANGUAGE_SERVER_VERSION:-2.0.0}" \
+        "${BASH_LANGUAGE_SERVER_VERSION:-3.3.1}" \
         "${GRAPHQL_LANGUAGE_SERVER_VERSION:-3.3.22}"
 }
 
