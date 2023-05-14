@@ -56,6 +56,7 @@ function install_rust() {
         rust-analysis \
         rust-src
     rustup override set "${version}"
+    rustup default "${version}"
 }
 
 function main() {

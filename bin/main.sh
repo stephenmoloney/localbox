@@ -151,7 +151,7 @@ function setup() {
     setup_editorconfig
     setup_git_dotfiles
     if [[ "$(is_docker)" != "true" ]] && [[ "$(headless_only)" != "true" ]]; then
-        setup_gnome_terminal_profiles
+        setup_gnome_terminal_profiles "${SELECTED_THEME:-}"
     fi
     setup_go
     setup_krew

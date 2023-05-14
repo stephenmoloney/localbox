@@ -24,8 +24,6 @@ DARK_PROFILES=(
 
 ALL_PROFILES=("${LIGHT_PROFILES[@]}" "${DARK_PROFILES[@]}")
 
-SELECTED_THEME="${1:-Zenburn}"
-
 function get_name_from_uuid() {
     local uuid="${1}"
 
@@ -50,7 +48,7 @@ function find_uuid_from_name() {
 }
 
 function setup_gnome_terminal_profiles() {
-    local selected_theme="${1:-$SELECTED_THEME}"
+    local selected_theme="${1:-Zenburn}"
     local profile
 
     # local selected_theme_uuid
@@ -80,7 +78,7 @@ Name=Terminal
 Comment=Use the command line
 Keywords=shell;prompt;command;commandline;cmd;
 TryExec=gnome-terminal
-Exec=gnome-terminal
+Exec=/usr/bin/gnome-terminal --tab-with-profile=${selected_theme} --tab-with-profile=${selected_theme} --tab-with-profile=${selected_theme}
 Icon=org.gnome.Terminal
 Type=Application
 Categories=GNOME;GTK;System;TerminalEmulator;
@@ -92,7 +90,7 @@ X-Ubuntu-Gettext-Domain=gnome-terminal
 
 [Desktop Action new-window]
 Name=New Window
-Exec=gnome-terminal --tab-with-profile=${selected_theme} --tab-with-profile=${selected_theme} --tab-with-profile=${selected_theme}
+Exec=/usr/bin/gnome-terminal --tab-with-profile=${selected_theme} --tab-with-profile=${selected_theme} --tab-with-profile=${selected_theme}
 
 [Desktop Action preferences]
 Name=Preferences
