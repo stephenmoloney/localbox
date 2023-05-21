@@ -1,6 +1,7 @@
 {
   "private": true,
   "dependencies": {
+    "@yaegassy/coc-ansible": "0.13.6",
     "coc-diagnostic": "0.23.9",
     "coc-elixir": "0.7.0",
     "coc-eslint": "1.6.0",
