@@ -4,6 +4,7 @@ set -o pipefail
 set -o errtrace
 
 ANSIBLE_VERSION_FALLBACK=7.5.0
+ANSIBLE_LINT_VERSION_FALLBACK=6.16.2
 
 # ******* Importing utils.sh as a source of common shell functions *******
 GITHUB_URL=https://raw.githubusercontent.com/stephenmoloney/localbox/master
@@ -29,6 +30,10 @@ function get_current_version() {
     ansible --version | cut -d ' ' -f2
 }
 
+function get_current_lint_version() {
+    ansible-lint --version | cut -d ' ' -f2
+}
+
 function install_ansible() {
     local version="${1}"
 
@@ -49,10 +54,26 @@ function install_ansible() {
     ansible --version
 }
 
+function install_ansible_lint() {
+    local version="${1}"
+
+    if [[ -z "$(get_current_version 2>/dev/null || true)" ]] ||
+        [[ "$(get_current_version 2>/dev/null || true)" != "${version}" ]]; then
+        pip3 install ansible-lint=="${version}"
+    else
+        echo "ansible-lint version ${version} is already installed"
+        echo "Skipping installation"
+    fi
+
+    ansible-lint --version
+}
+
 function main() {
     local version="${1:-$ANSIBLE_VERSION_FALLBACK}"
+    local lint_version="${2:-$ANSIBLE_LINT_VERSION_FALLBACK}"
 
     install_ansible "${version}"
+    install_ansible_lint "${lint_version}"
 }
 
 if [[ "$0" == "${BASH_SOURCE[0]}" ]]; then
