@@ -167,17 +167,16 @@ function install_language_servers() {
             vim +'PlugInstall|qa' +qall
 
             yarn install \
-                --silent \
                 --ignore-engines \
-                --ignore-platform \
-                --no-lockfile \
-                --no-bin-links \
                 --ignore-optional \
-                --production=true \
+                --ignore-platform \
                 --ignore-scripts \
+                --modules-folder "${HOME}/.config/coc/extensions/node_modules" \
+                --no-bin-links \
                 --non-interactive \
-                --ignore-scripts \
-                --modules-folder "${HOME}/.config/coc/extensions/node_modules"
+                --production=true \
+                --pure-lockfile \
+                --silent
 
             vim +'silent call mkdp#util#install()|qa' +qall
             vim +'CocInstall -sync coc-yaml@0.3.0|qa' +qall
@@ -190,17 +189,16 @@ function install_language_servers() {
             vim --ttyfail +'PlugInstall|qa' +qall || true
 
             yarn install \
-                --silent \
                 --ignore-engines \
-                --ignore-platform \
-                --no-lockfile \
-                --no-bin-links \
                 --ignore-optional \
-                --production=true \
+                --ignore-platform \
                 --ignore-scripts \
+                --modules-folder "${HOME}/.config/coc/extensions/node_modules" \
+                --no-bin-links \
                 --non-interactive \
-                --ignore-scripts \
-                --modules-folder "${HOME}/.config/coc/extensions/node_modules"
+                --production=true \
+                --pure-lockfile \
+                --silent
 
             vim --ttyfail +'silent call mkdp#util#install()|qa' +qall || true
             vim --ttyfail +'CocInstall -sync coc-yaml@0.3.0|qa' +qall || true

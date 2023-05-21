@@ -203,7 +203,7 @@ nmap <leader>` <Plug>AirlineSelectNextTab
 " ----------------------------------------------------------------------------------
 " Coc.nvim settings
 let g:coc_filetype_map = {
-    \ 'yaml.ansible': 'yaml',
+    \ 'yaml.ansible': 'ansible',
     \ 'Dockerfile.*': 'dockerfile',
     \ '*.Dockerfile': 'dockerfile',
     \ '*.dockerfile': 'dockerfile'
