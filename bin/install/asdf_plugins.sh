@@ -159,9 +159,21 @@ function install_asdf_plugins() {
     done
 }
 
+function install_gcloud_components() {
+    local gcloud_components
+
+    mapfile -t gcloud_components <"${PROJECT_ROOT}/config/dotfiles/gcloud/default-cloud-sdk-components"
+
+    for component in "${gcloud_components[@]}"; do
+        gcloud components install "${component}"
+    done
+}
+
 function main() {
     source "${HOME}/.asdf/asdf.sh"
     install_asdf_plugins
+    install_gcloud_components
+    gcloud components update
 }
 
 # shellcheck disable=SC2086
