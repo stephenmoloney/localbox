@@ -8,6 +8,7 @@ cfssl 1.6.4 1.6.2
 checkov 2.3.239 2.1.210
 conftest v0.34.0
 container-diff 0.17.0
+dyff 1.5.7
 dotenv-linter 3.3.0 3.2.0
 editorconfig-checker 2.7.0 2.6.0
 elixir 1.14.4 1.14.0 1.13.4 1.12.3 1.13.3 1.11.4
@@ -22,8 +23,10 @@ helm-cr 1.5.0 1.4.0
 helm-ct 3.8.0 3.7.0
 helmfile 0.153.1 0.144.0
 hey 0.1.4
+imgpkg 0.36.2
 istioctl 1.17.2 1.15.0
 java adoptopenjdk-17.0.2+8 adoptopenjdk-18.0.2+101
+kbld 0.37.1
 kubectl 1.27.1 1.25.1 1.24.5 1.23.4 1.22.7 1.21.2 1.20.8
 kustomize 5.0.3 4.5.7
 lua 5.4.4 5.4.3
@@ -44,4 +47,5 @@ tflint 0.46.1 0.40.0
 vault 1.13.2 1.11.3
 websocat 1.11.0 1.10.0
 yarn 1.22.19
+ytt 0.45.1
 yq 4.33.3 4.27.5
