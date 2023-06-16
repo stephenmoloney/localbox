@@ -76,9 +76,13 @@ function setup_editors() {
 
 function setup_gpg_ssh_agent() {
     unset SSH_AGENT_PID
-    export GPG_TTY
-    GPG_TTY="$(tty)"
+
     export SSH_AUTH_SOCK
     SSH_AUTH_SOCK="$(gpgconf --list-dirs agent-ssh-socket)"
+
+    export GPG_TTY
+    GPG_TTY="$(tty)"
+
+    gpg-connect-agent /bye
     gpgconf --launch gpg-agent
 }
