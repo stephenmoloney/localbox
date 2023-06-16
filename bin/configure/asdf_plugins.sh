@@ -61,6 +61,7 @@ function setup_gcloud() {
             source "${HOME}/.asdf/installs/gcloud/${gcloud_version}/path.bash.inc"
         fi
     fi
+    export USE_GKE_GCLOUD_AUTH_PLUGIN=True
 }
 
 function setup_starship() {

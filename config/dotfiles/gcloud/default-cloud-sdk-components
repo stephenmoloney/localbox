@@ -3,6 +3,7 @@ beta
 cloud-build-local
 config-connector
 docker-credential-gcr
+gke-gcloud-auth-plugin
 kpt
 kubectl-oidc
 nomos
