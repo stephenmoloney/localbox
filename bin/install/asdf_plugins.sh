@@ -164,8 +164,11 @@ function install_gcloud_components() {
 
     mapfile -t gcloud_components <"${PROJECT_ROOT}/config/dotfiles/gcloud/default-cloud-sdk-components"
 
+    export CLOUDSDK_CORE_DISABLE_PROMPTS=1
+    gcloud config set disable_usage_reporting true
+
     for component in "${gcloud_components[@]}"; do
-        gcloud components install "${component}"
+        gcloud --quiet components install "${component}"
     done
 }
 
