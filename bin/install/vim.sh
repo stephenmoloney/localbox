@@ -46,7 +46,7 @@ maybe_install_go_as_fallback
 maybe_install_node_as_fallback
 maybe_install_yarn_as_fallback
 
-VIM_GTK3_VERSION_FALLBACK="*"
+VIM_VERSION_FALLBACK=8.2.5172
 VIM_PLUG_VERSION_FALLBACK=0.11.0
 GO_PLS_VERSION_FALLBACK=0.11.0
 TERRAFORM_LS_VERSION_FALLBACK="*"
@@ -54,11 +54,12 @@ BASH_LANGUAGE_SERVER_VERSION_FALLBACK=3.3.1
 GRAPHQL_LANGUAGE_SERVER_VERSION_FALLBACK=3.3.22
 VIM_PLUG_URL=https://raw.githubusercontent.com/junegunn/vim-plug
 
-function install_vim_gtk3() {
+function install_vim() {
     local version="${1}"
 
-    maybe_install_apt_pkg vim-gtk3 "${version}"
-    apt_hold_pkg vim-gtk3
+    asdf plugin-add vim https://github.com/stephenmoloney/asdf-vim.giti || true
+    asdf install vim "${version}"
+    asdf global vim "${version}"
 
     echo "${FUNCNAME[0]} complete"
 }
@@ -209,14 +210,13 @@ function install_language_servers() {
 }
 
 function main() {
-    local vim_version="${1:-$VIM_GTK3_VERSION_FALLBACK}"
+    local vim_version="${1:-$VIM_VERSION_FALLBACK}"
     local vim_plug_version="${2:-$VIM_PLUG_VERSION_FALLBACK}"
     local terraform_ls_version="${3:-$TERRAFORM_LS_VERSION_FALLBACK}"
     local go_pls_version="${4:-$GO_PLS_VERSION_FALLBACK}"
     local bash_ls_version="${5:-$BASH_LANGUAGE_SERVER_VERSION_FALLBACK}"
     local graphql_ls_version="${6:-$GRAPHQL_LANGUAGE_SERVER_VERSION_FALLBACK}"
 
-    [[ "${vim_version}" == "latest" ]] && vim_version="*"
     [[ "${terraform_ls_version}" == "latest" ]] && terraform_ls_version="*"
 
     if [[ -d "${HOME}/.tmux/plugins" ]]; then
@@ -229,7 +229,7 @@ function main() {
 
     echo "${FUNCNAME[0]} starting"
 
-    install_vim_gtk3 "${vim_version}"
+    install_vim "${vim_version}"
     install_vim_plug "${vim_plug_version}"
     install_terraform_ls "${terraform_ls_version}"
     install_go_pls_server "${go_pls_version}"

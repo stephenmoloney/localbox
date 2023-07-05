@@ -95,7 +95,7 @@ function install() {
     # Phase 3
     exec_with_retries "${PROJECT_ROOT}/bin/install/tmux_plugin_manager.sh" 0 2 "${TMUX_PLUGIN_MANAGER_VERSION:-}"
     "${PROJECT_ROOT}/bin/install/vim.sh" \
-        "${VIM_GTK3_VERSION:-latest}" \
+        "${VIM_VERSION:-8.2.5172}" \
         "${VIM_PLUG_VERSION:-0.11.0}" \
         "${TERRAFORM_LS_VERSION:-latest}" \
         "${GO_PLS_VERSION:-0.11.0}" \
