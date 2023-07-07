@@ -27,27 +27,21 @@ function setup_kubectl() {
     fi
 
     # Concatenate the kubeconfig files into the ~/.kube/config file
-    # Exclude files with the string prod in the name
-    if [[ -d "${HOME}/.kube" ]]; then
-        if [[ ! -e "${HOME}/.kube/config" ]]; then
-            setup_kubectl_dotfiles
-        fi
-
-        # Concatenate the kubeconfig files into the ~/.kube/config file
-        if [[ -d "${HOME}/.kube" ]]; then
-            # Ensure that KUBECONFIG is set
-            if [[ -z "${KUBECONFIG:-}" ]]; then
-                export KUBECONFIG="${HOME}/.kube/config"
-            fi
-
-            # Append all the discovered kubeconfig files into the KUBECONFIG variable
-            while IFS=' ' read -r -a kubeconfig_files; do
-                if [[ -z "$(grep "${kubeconfig_files[0]}" <<<"${KUBECONFIG:-}" 2>/dev/null || true)" ]]; then
-                    export KUBECONFIG="${KUBECONFIG}:${kubeconfig_files[0]}"
-                fi
-            done < <(find "${HOME}/.kube" -maxdepth 3 -type f | grep "\.conf")
-        fi
+    if [[ ! -e "${HOME}/.kube/config" ]]; then
+        setup_kubectl_dotfiles
     fi
+
+    # Ensure that KUBECONFIG is set
+    if [[ -z "${KUBECONFIG:-}" ]]; then
+        export KUBECONFIG="${HOME}/.kube/config"
+    fi
+
+    # Append all the discovered kubeconfig files into the KUBECONFIG variable
+    while IFS=' ' read -r -a kubeconfig_files; do
+        if [[ -z "$(grep "${kubeconfig_files[0]}" <<<"${KUBECONFIG:-}" 2>/dev/null || true)" ]]; then
+            export KUBECONFIG="${KUBECONFIG}:${kubeconfig_files[0]}"
+        fi
+    done < <(find "${HOME}/.kube" -maxdepth 3 -type f | grep "\.conf")
 }
 
 function setup_gcloud() {
