@@ -57,7 +57,9 @@ VIM_PLUG_URL=https://raw.githubusercontent.com/junegunn/vim-plug
 function install_vim() {
     local version="${1}"
 
-    asdf plugin-add vim https://github.com/stephenmoloney/asdf-vim.giti || true
+    if [[ -z "$(asdf plugin-list vim 2>/dev/null || true)" ]]; then
+        asdf plugin-add vim https://github.com/stephenmoloney/asdf-vim.git
+    fi
     asdf install vim "${version}"
     asdf global vim "${version}"
 
@@ -65,12 +67,14 @@ function install_vim() {
 }
 
 function install_vim_plug() {
+    local vim_plug_url
     local version="${1}"
+    vim_plug_url="${VIM_PLUG_URL:-https://raw.githubusercontent.com/junegunn/vim-plug}"
 
     if [[ ! -e "${HOME}/.vim/autoload/plug.vim" ]]; then
         curl -fLo "${HOME}/.vim/autoload/plug.vim" \
             --create-dirs \
-            "${VIM_PLUG_URL}/${version}/plug.vim"
+            "${vim_plug_url}/${version}/plug.vim"
     fi
     echo "${FUNCNAME[0]} complete"
 }
