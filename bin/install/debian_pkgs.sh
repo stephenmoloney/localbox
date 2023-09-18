@@ -44,6 +44,7 @@ DEBIAN_PKGS=(
     ["libhidapi-dev"]="*"
     ["lsb-release"]="*"
     ["libssl-dev"]="*"
+    ["nautilus-image-converter"]="*"
     ["neofetch"]="*"
     ["nnn"]="*"
     ["openvpn"]="*"
