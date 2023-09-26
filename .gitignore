@@ -10,3 +10,4 @@ coverage
 core
 asdf-helm.*
 .env-bak
+jq-*

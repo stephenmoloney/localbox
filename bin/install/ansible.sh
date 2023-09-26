@@ -3,8 +3,8 @@ set -eu
 set -o pipefail
 set -o errtrace
 
-ANSIBLE_VERSION_FALLBACK=7.5.0
-ANSIBLE_LINT_VERSION_FALLBACK=6.16.2
+ANSIBLE_VERSION_FALLBACK=8.4.0
+ANSIBLE_LINT_VERSION_FALLBACK=6.20.0
 
 # ******* Importing utils.sh as a source of common shell functions *******
 GITHUB_URL=https://raw.githubusercontent.com/stephenmoloney/localbox/master

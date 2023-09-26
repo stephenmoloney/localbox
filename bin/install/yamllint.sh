@@ -3,7 +3,7 @@ set -eu
 set -o pipefail
 set -o errtrace
 
-YAMLLINT_VERSION_FALLBACK=1.31.0
+YAMLLINT_VERSION_FALLBACK=1.32.0
 
 # ******* Importing utils.sh as a source of common shell functions *******
 GITHUB_URL=https://raw.githubusercontent.com/stephenmoloney/localbox/master
