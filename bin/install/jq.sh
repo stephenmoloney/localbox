@@ -3,7 +3,7 @@ set -eu
 set -o pipefail
 set -o errtrace
 
-JQ_VERSION_FALLBACK=1.6
+JQ_VERSION_FALLBACK=1.7
 
 # ******* Importing utils.sh as a source of common shell functions *******
 GITHUB_URL=https://raw.githubusercontent.com/stephenmoloney/localbox/master
@@ -37,9 +37,9 @@ function install_jq() {
     if [[ -z "$(get_current_version 2>/dev/null || true)" ]] ||
         [[ "$(get_current_version 2>/dev/null || true)" != "${version}" ]]; then
         wget \
-            "https://github.com/stedolan/jq/releases/download/jq-${version}/jq-linux64"
-        sudo chmod +x jq-linux64
-        sudo mv jq-linux64 /usr/local/bin/jq
+            "https://github.com/jqlang/jq/releases/download/jq-${version}/jq-linux-amd64"
+        sudo chmod +x jq-linux-amd64
+        sudo mv jq-linux-amd64 /usr/local/bin/jq
     else
         echo "jq version ${version} is already installed"
         echo "Skipping installation"

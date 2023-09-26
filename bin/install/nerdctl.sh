@@ -48,6 +48,7 @@ function install_nerdctl_containerd() {
 function main() {
     local version="${1:-$NERDCTL_VERSION_FALLBACK}"
 
+    maybe_install_apt_pkg "containerd.io" "*"
     install_nerdctl_containerd "${version}"
 }
 

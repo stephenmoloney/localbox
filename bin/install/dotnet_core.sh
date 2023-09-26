@@ -3,7 +3,7 @@ set -eu
 set -o pipefail
 set -o errtrace
 
-DOTNET_CORE_SDK_VERSION_FALLBACK=6
+DOTNET_CORE_SDK_VERSION_FALLBACK=7
 
 # ******* Importing utils.sh as a source of common shell functions *******
 GITHUB_URL=https://raw.githubusercontent.com/stephenmoloney/localbox/master
