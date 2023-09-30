@@ -159,6 +159,11 @@ function install_asdf_plugins() {
     done
 }
 
+function update_asdf_plugins() {
+    asdf plugin update --all || true
+}
+
+
 function install_gcloud_components() {
     local gcloud_components
 
@@ -175,6 +180,7 @@ function install_gcloud_components() {
 function main() {
     source "${HOME}/.asdf/asdf.sh"
     install_asdf_plugins
+    update_asdf_plugins
     install_gcloud_components
     gcloud components update
 }
