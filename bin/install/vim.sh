@@ -57,7 +57,7 @@ VIM_PLUG_URL=https://raw.githubusercontent.com/junegunn/vim-plug
 function install_vim() {
     local version="${1}"
 
-    if [[ -z "$(asdf plugin-list vim 2>/dev/null || true)" ]]; then
+    if [[ -z "$(asdf plugin-list | grep vim 2>/dev/null || true)" ]]; then
         asdf plugin-add vim https://github.com/stephenmoloney/asdf-vim.git
     fi
     asdf install vim "${version}"
