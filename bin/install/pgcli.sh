@@ -40,12 +40,14 @@ function postgresql_client_prerequisites() {
             >/usr/share/keyrings/postgresql.gpg
     """
 
-    if [[ ! -e /etc/apt/sources.list.d/pgdg.list ]]; then
-        echo "deb [arch=amd64 signed-by=/usr/share/keyrings/postgresql.gpg] http://apt.postgresql.org/pub/repos/apt/ $(lsb_release -cs)-pgdg main" |
-            sudo tee /etc/apt/sources.list.d/pgdg.list
+    if [[ -e /etc/apt/sources.list.d/pgdg.list ]]; then
+        sudo rm /etc/apt/sources.list.d/pgdg.list
     fi
 
-    sudo apt update -y -qq
+    echo "deb [arch=amd64 signed-by=/usr/share/keyrings/postgresql.gpg] http://apt.postgresql.org/pub/repos/apt/ $(lsb_release -cs)-pgdg main" |
+        sudo tee /etc/apt/sources.list.d/pgdg.list
+
+    sudo apt-get update -y -qq
     maybe_install_apt_pkg "libpq-dev" "*"
 }
 
@@ -71,7 +73,7 @@ function install_pgcli() {
         export PATH="${PATH}:${HOME}/.local/bin"
     fi
 
-    pgcli --version
+    echo "pgli version: $(pgcli --version)"
 }
 
 function main() {
