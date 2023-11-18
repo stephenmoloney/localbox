@@ -2,30 +2,42 @@
 
 declare -A DEBIAN_PKGS_TEST
 DEBIAN_PKGS_TEST=(
+    ["adb"]="*"
+    ["atool"]="*"
     ["bash-completion"]="*"
+    ["cloc"]="*"
     ["dialog"]="*"
+    ["converseen"]="*"
     ["exuberant-ctags"]="*"
+    ["jdupes"]="*"
     ["git"]="*"
     ["gitk"]="*"
     ["git-cola"]="*"
-	["gnome-tweaks"]="*"
-	["gnupg"]="*"
-	["httpie"]="*"
+    ["gnome-tweaks"]="*"
+    ["gnupg"]="*"
+    ["httpie"]="*"
+    ["inxi"]="*"
     ["libarchive-tools"]="*"
-	["libhidapi-dev"]="*"
-	["lsb-release"]="*"
-	["libssl-dev"]="*"
-	["nnn"]="*"
-	["openvpn"]="*"
-	["openssl"]="*"
-	["python-is-python3"]="*"
-	["python3-pip"]="*"
-	["python3-setuptools"]="*"
-	["tmux"]="*"
-	["tree"]="*"
-	["unzip"]="*"
-	["wget"]="*"
-	["xsel"]="*"
+    ["libhidapi-dev"]="*"
+    ["lsb-release"]="*"
+    ["libssl-dev"]="*"
+    ["nautilus-image-converter"]="*"
+    ["neofetch"]="*"
+    ["nnn"]="*"
+    ["openvpn"]="*"
+    ["openssl"]="*"
+    ["python-is-python3"]="*"
+    ["python3-pip"]="*"
+    ["python3-setuptools"]="*"
+    ["python3-venv"]="*"
+    ["qrencode"]="*"
+    ["scdaemon"]="*"
+    ["scrcpy"]="*"
+    ["tmux"]="*"
+    ["tree"]="*"
+    ["unzip"]="*"
+    ["wget"]="*"
+    ["xsel"]="*"
 )
 
 function setup_install() {
@@ -43,7 +55,7 @@ function verify_package_installed() {
     local installed_pkgs
     installed_pkgs="$(sudo apt list --installed 2>/dev/null)"
 
-    grep "${pkg}/" <<< "${installed_pkgs}"
+    grep "${pkg}/" <<<"${installed_pkgs}"
 }
 
 function verify_package_uninstalled() {
@@ -52,32 +64,32 @@ function verify_package_uninstalled() {
 }
 
 Describe 'Debian packages are installed'
-    BeforeAll "setup_install"
+BeforeAll "setup_install"
 
-    Parameters:dynamic
-        for pkg in "${!DEBIAN_PKGS_TEST[@]}"; do
-            %data "${pkg}"
-        done
-    End
+Parameters:dynamic
+for pkg in "${!DEBIAN_PKGS_TEST[@]}"; do
+    %data "${pkg}"
+done
+End
 
-    It "Verify presence of ${1}"
-        When call verify_package_installed "${1}"
-        The stdout should not be blank
-        The status should be success
-    End
+It "Verify presence of ${1}"
+When call verify_package_installed "${1}"
+The stdout should not be blank
+The status should be success
+End
 End
 
 Describe 'Debian packages are uninstalled'
-	BeforeAll "setup_uninstall"
+BeforeAll "setup_uninstall"
 
-    Parameters:dynamic
-        for pkg in "${!DEBIAN_PKGS_TEST[@]}"; do
-            %data "${pkg}"
-        done
-    End
+Parameters:dynamic
+for pkg in "${!DEBIAN_PKGS_TEST[@]}"; do
+    %data "${pkg}"
+done
+End
 
-    It "Verify absence of ${1}"
-        When call verify_package_uninstalled "${1}"
-        The status should be failure
-    End
+It "Verify absence of ${1}"
+When call verify_package_uninstalled "${1}"
+The status should be failure
+End
 End
