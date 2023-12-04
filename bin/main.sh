@@ -50,7 +50,7 @@ function opts_handling() {
 function install() {
     # Perform a dist upgrade by default as first action
     sudo apt update -y
-    sudo apt dist-upgrade -y
+    sudo apt dist-upgrade -y --allow-downgrades
 
     # shellcheck disable=SC2068
     opts_handling $@
