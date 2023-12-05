@@ -64,6 +64,3 @@ function main() {
 }
 
 main
-
-neofetch
-curl wttr.in/limerick?1ApFQ

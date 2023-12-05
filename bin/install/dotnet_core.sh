@@ -3,7 +3,7 @@ set -eu
 set -o pipefail
 set -o errtrace
 
-DOTNET_CORE_SDK_VERSION_FALLBACK=7
+DOTNET_CORE_SDK_VERSION_FALLBACK=8.0
 
 # ******* Importing utils.sh as a source of common shell functions *******
 GITHUB_URL=https://raw.githubusercontent.com/stephenmoloney/localbox/master
@@ -28,17 +28,21 @@ fi
 function install_dotnet_core_sdk() {
     local version="${1}"
     local ubuntu_version
+    local repo_url
 
     [[ "${version}" == "latest" ]] && version="*"
 
     maybe_install_apt_pkg "wget" "*"
     maybe_install_apt_pkg "lsb-release" "*"
     maybe_install_apt_pkg "apt-transport-https" "*"
+    maybe_install_apt_pkg "zlib1g" "*"
 
     ubuntu_version="$(lsb_release -cas 2>/dev/stdout | awk NR==4)"
+    repo_url="https://packages.microsoft.com/config/ubuntu/${ubuntu_version}/packages-microsoft-prod.deb"
 
+    echo "Downloading key from ${repo_url}"
     wget \
-        "https://packages.microsoft.com/config/ubuntu/${ubuntu_version}/packages-microsoft-prod.deb" \
+        "${repo_url}" \
         -O packages-microsoft-prod.deb &&
         sudo dpkg -i packages-microsoft-prod.deb &&
         rm packages-microsoft-prod.deb
@@ -49,13 +53,13 @@ function install_dotnet_core_sdk() {
     fi
 
     echo """
-Package: *
+Package: dotnet* aspnet* netstandard*
 Pin: origin \"packages.microsoft.com\"
 Pin-Priority: 1001
 """ | sudo tee /etc/apt/preferences.d/99-dotnet.pref
 
-    sudo apt update -y -qq
-    maybe_install_apt_pkg "dotnet${version}" "*"
+    sudo apt-get update -y -q
+    maybe_install_apt_pkg "dotnet-sdk-${version}" "*"
 
     dotnet --info
 }
@@ -63,6 +67,10 @@ Pin-Priority: 1001
 function main() {
     local version="${1:-$DOTNET_CORE_SDK_VERSION_FALLBACK}"
 
+    # Remove pre-existing packages
+    sudo apt-get remove -y 'dotnet*' 'aspnet*' 'netstandard*' || true
+
+    # Install dotnet core sdk
     install_dotnet_core_sdk "${version}"
 }
 
