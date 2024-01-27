@@ -71,6 +71,7 @@ function install() {
     exec_with_retries "${PROJECT_ROOT}/bin/install/azure_cli.sh" 0 2 "${AZURE_CLI_VERSION:-}"
     exec_with_retries "${PROJECT_ROOT}/bin/install/black.sh" 0 2 "${BLACK_VERSION:-}"
     exec_with_retries "${PROJECT_ROOT}/bin/install/bpytop.sh" 0 2 "${BPYTOP_VERSION:-}"
+    exec_with_retries "${PROJECT_ROOT}/bin/install/cosign.sh" 0 2 "${COSIGN_VERSION:-}"
     exec_with_retries "${PROJECT_ROOT}/bin/install/diagrams.sh" 0 2 "${DIAGRAMS_VERSION:-}"
     exec_with_retries "${PROJECT_ROOT}/bin/install/docker.sh" 0 2 "${DOCKER_VERSION:-}"
     exec_with_retries "${PROJECT_ROOT}/bin/install/docker_compose.sh" 0 2 "${DOCKER_COMPOSE_VERSION:-}"
