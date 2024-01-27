@@ -32,6 +32,7 @@ kubectl 1.28.4
 kustomize 5.2.1
 lua 5.4.6
 nodejs 21.3.0
+opentofu 1.6.1
 packer 1.9.4
 poetry 1.7.1
 protoc 3.20.3
