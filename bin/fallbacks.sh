@@ -64,7 +64,7 @@ function maybe_install_rust_as_fallback() {
         else
             echo "Falling back to remote script ${GITHUB_URL}/bin/install/rust.sh"
             if curl -sIf -o /dev/null ${GITHUB_URL}/bin/install/rust.sh; then
-                source <(curl -s "${GITHUB_URL}/bin/install/rust.sh")
+                bash <(curl -s "${GITHUB_URL}/bin/install/rust.sh")
             else
                 echo "${GITHUB_URL}/bin/install/rust.sh does not exist" >/dev/stderr
                 return 1
@@ -93,7 +93,7 @@ function maybe_install_go_as_fallback() {
         else
             echo "Falling back to remote script ${GITHUB_URL}/bin/install/go.sh"
             if curl -sIf -o /dev/null ${GITHUB_URL}/bin/install/go.sh; then
-                source <(curl -s "${GITHUB_URL}/bin/install/go.sh")
+                bash <(curl -s "${GITHUB_URL}/bin/install/go.sh")
             else
                 echo "${GITHUB_URL}/bin/install/go.sh does not exist" >/dev/stderr
                 return 1
@@ -124,7 +124,7 @@ function maybe_install_asdf_as_fallback() {
         else
             echo "Falling back to remote script ${GITHUB_URL}/bin/install/asdf.sh"
             if curl -sIf -o /dev/null ${GITHUB_URL}/bin/install/asdf.sh; then
-                source <(curl -s "${GITHUB_URL}/bin/install/asdf.sh")
+                bash <(curl -s "${GITHUB_URL}/bin/install/asdf.sh")
             else
                 echo "${GITHUB_URL}/bin/install/asdf.sh does not exist" >/dev/stderr
                 return 1
@@ -210,7 +210,7 @@ function maybe_install_jq_as_fallback() {
         else
             echo "Falling back to remote script ${GITHUB_URL}/bin/install/jq.sh"
             if curl -sIf -o /dev/null ${GITHUB_URL}/bin/install/jq.sh; then
-                source <(curl -s "${GITHUB_URL}/bin/install/jq.sh")
+                bash <(curl -s "${GITHUB_URL}/bin/install/jq.sh")
             else
                 echo "${GITHUB_URL}/bin/install/jq.sh does not exist" >/dev/stderr
                 return 1
@@ -292,7 +292,7 @@ function maybe_install_ansible_as_fallback() {
         else
             echo "Falling back to remote script ${GITHUB_URL}/bin/install/ansible.sh"
             if curl -sIf -o /dev/null ${GITHUB_URL}/bin/install/ansible.sh; then
-                source <(curl -s "${GITHUB_URL}/bin/install/ansible.sh")
+                bash <(curl -s "${GITHUB_URL}/bin/install/ansible.sh")
             else
                 echo "${GITHUB_URL}/bin/install/ansible.sh does not exist" >/dev/stderr
                 return 1
@@ -311,7 +311,7 @@ function maybe_install_flatpak_as_fallback() {
         else
             echo "Falling back to remote script ${GITHUB_URL}/bin/install/flatpak.sh"
             if curl -sIf -o /dev/null ${GITHUB_URL}/bin/install/flatpak.sh; then
-                source <(curl -s "${GITHUB_URL}/bin/install/flatpak.sh")
+                bash <(curl -s "${GITHUB_URL}/bin/install/flatpak.sh")
             else
                 echo "${GITHUB_URL}/bin/install/flatpak.sh does not exist" >/dev/stderr
                 return 1
