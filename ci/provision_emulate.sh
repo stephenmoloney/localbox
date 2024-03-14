@@ -69,7 +69,7 @@ function emulate_ci() {
     local new_image_hash
 
     docker_status="$(get_image_status)"
-    image_name=ubuntu:20.04
+    image_name=ubuntu:22.04
 
     echo "Current state of localbox docker container: ${docker_status}"
     if [[ "${docker_status}" == "removing" ]]; then
@@ -88,7 +88,7 @@ function emulate_ci() {
         docker commit \
             "$(docker ps -a --filter=name=localbox --latest -q 2>/dev/null || true)" \
             "${image_name}" 2>/dev/null ||
-            docker tag ubuntu:20.04 "${image_name}"
+            docker tag ubuntu:22.04 "${image_name}"
         # Remove the previous container (if any)
         docker rm -f localbox 2>/dev/null || true
         # Start the new container and keep it alive

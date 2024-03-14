@@ -62,7 +62,6 @@ function install() {
     exec_with_retries "${PROJECT_ROOT}/bin/install/rust.sh" 0 2 "${RUST_VERSION:-}"
 
     # Phase 2
-    exec_with_retries "${PROJECT_ROOT}/bin/install/alacritty.sh" 0 2 "${ALACRITTY_VERSION:-}"
     exec_with_retries "${PROJECT_ROOT}/bin/install/argos_translate.sh" 0 2 "${ARGOS_TRANSLATE_GUI_VERSION:-}"
     exec_with_retries "${PROJECT_ROOT}/bin/install/ansible.sh" 0 2 "${ANSIBLE_VERSION:-}" "${ANSIBLE_LINT_VERSION}"
     exec_with_retries "${PROJECT_ROOT}/bin/install/ansible_modules.sh" 0 2
@@ -109,7 +108,6 @@ function setup() {
     # shellcheck disable=SC2068
     opts_handling $@
 
-    source "${PROJECT_ROOT}/bin/configure/alacritty.sh"
     source "${PROJECT_ROOT}/bin/configure/ansible.sh"
     source "${PROJECT_ROOT}/bin/configure/asdf.sh"
     source "${PROJECT_ROOT}/bin/configure/asdf_plugins.sh"
@@ -141,8 +139,6 @@ function setup() {
     if [[ "$(is_docker)" != "true" ]]; then setup_systemctl; fi
 
     # Run second
-    setup_alacritty_dotfiles
-    setup_alacritty_desktop_file
     setup_ansible_dotfiles
     setup_asdf
     setup_asdf_dotfiles

@@ -106,7 +106,6 @@ set listchars=tab:>\ ,trail:-,nbsp:+
 
 " Enble mouse bu mouse will not allow copy on hover (hold shift to copy content with mouse will owkr)
 set mouse=a
-set ttymouse=sgr " fix for issue with alacritty terminal
 
 " Allow <c-a> and <c-x> to increment/decrement octal and hexadecimal numbers and alphabet
 set nrformats=octal,hex,alpha
