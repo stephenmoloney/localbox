@@ -83,7 +83,9 @@ function install() {
     exec_with_retries "${PROJECT_ROOT}/bin/install/krew.sh" 0 2 "${KREW_VERSION:-}"
     "${PROJECT_ROOT}/bin/install/pgcli.sh" "${PGCLI_VERSION:-}" "${POSTGRESQL_CLIENT_VERSION:-}"
     exec_with_retries "${PROJECT_ROOT}/bin/install/nerd_fonts.sh" 0 2 "${NERDFONTS_VERSION:-}"
-    exec_with_retries "${PROJECT_ROOT}/bin/install/nerdctl.sh" 0 2 "${NERDCTL_VERSION:-}"
+    if [[ "$(is_docker)" != "true" ]]; then
+        exec_with_retries "${PROJECT_ROOT}/bin/install/nerdctl.sh" 0 2 "${NERDCTL_VERSION:-}"
+    fi
     exec_with_retries "${PROJECT_ROOT}/bin/install/pipx.sh" 0 2 "${PIPX_VERSION:-}"
     exec_with_retries "${PROJECT_ROOT}/bin/install/rust_pkgs.sh" 0 2
     exec_with_retries "${PROJECT_ROOT}/bin/install/shellcheck.sh" 0 2 "${SHELLCHECK_VERSION:-}"
