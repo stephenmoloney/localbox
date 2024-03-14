@@ -1,7 +1,6 @@
 argo 3.5.2
 argocd 2.9.3
 argo-rollouts 1.6.2
-bats 1.10.0
 bitwarden 2023.10.0
 boundary 0.14.2
 cfssl 1.6.4

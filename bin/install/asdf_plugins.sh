@@ -5,7 +5,7 @@ set -o errtrace
 
 # ******* Importing utils.sh as a source of common shell functions *******
 GITHUB_URL=https://raw.githubusercontent.com/stephenmoloney/localbox/master
-UTILS_PATH="$(dirname "${BASH_SOURCE[0]}")/../utils.sh"
+UTILS_PATH="$(dirname "${BASH_SOURCE[0]:-}")/../utils.sh"
 if [[ -e "${UTILS_PATH}" ]]; then
     source "${UTILS_PATH}"
 else
@@ -26,7 +26,7 @@ PROJECT_ROOT="$(project_root)"
 
 # ******* Importing fallbacks.sh as a means of installing missing deps *******
 GITHUB_URL=https://raw.githubusercontent.com/stephenmoloney/localbox/master
-FALLBACKS_PATH="$(dirname "${BASH_SOURCE[0]}")"/../fallbacks.sh
+FALLBACKS_PATH="$(dirname "${BASH_SOURCE[0]:-}")"/../fallbacks.sh
 if [[ -e "${FALLBACKS_PATH}" ]]; then
     source "${FALLBACKS_PATH}"
 else
@@ -185,6 +185,6 @@ if [[ -n "$(ls -A ${PROJECT_ROOT}/asdf-helm.* 2>/dev/null || true)" ]]; then
     rm -rf "${PROJECT_ROOT}/asdf-helm.*"
 fi
 
-if [[ "$0" == "${BASH_SOURCE[0]}" ]]; then
+if [[ "$0" == "${BASH_SOURCE[0]:-}" ]]; then
     main
 fi

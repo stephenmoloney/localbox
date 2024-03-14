@@ -6,7 +6,7 @@ set -o errtrace
 
 # ******* Importing utils.sh as a source of common shell functions *******
 GITHUB_URL=https://raw.githubusercontent.com/stephenmoloney/localbox/master
-UTILS_PATH="$(dirname "${BASH_SOURCE[0]}")/utils.sh"
+UTILS_PATH="$(dirname "${BASH_SOURCE[0]:-}")/utils.sh"
 if [[ -e "${UTILS_PATH}" ]]; then
     source "${UTILS_PATH}"
 else
@@ -62,7 +62,6 @@ function install() {
     exec_with_retries "${PROJECT_ROOT}/bin/install/rust.sh" 0 2 "${RUST_VERSION:-}"
 
     # Phase 2
-    exec_with_retries "${PROJECT_ROOT}/bin/install/alacritty.sh" 0 2 "${ALACRITTY_VERSION:-}"
     exec_with_retries "${PROJECT_ROOT}/bin/install/argos_translate.sh" 0 2 "${ARGOS_TRANSLATE_GUI_VERSION:-}"
     exec_with_retries "${PROJECT_ROOT}/bin/install/ansible.sh" 0 2 "${ANSIBLE_VERSION:-}" "${ANSIBLE_LINT_VERSION}"
     exec_with_retries "${PROJECT_ROOT}/bin/install/ansible_modules.sh" 0 2
@@ -85,7 +84,6 @@ function install() {
     "${PROJECT_ROOT}/bin/install/pgcli.sh" "${PGCLI_VERSION:-}" "${POSTGRESQL_CLIENT_VERSION:-}"
     exec_with_retries "${PROJECT_ROOT}/bin/install/nerd_fonts.sh" 0 2 "${NERDFONTS_VERSION:-}"
     exec_with_retries "${PROJECT_ROOT}/bin/install/nerdctl.sh" 0 2 "${NERDCTL_VERSION:-}"
-    exec_with_retries "${PROJECT_ROOT}/bin/install/pencil.sh" 0 2 "${PENCIL_VERSION:-}"
     exec_with_retries "${PROJECT_ROOT}/bin/install/pipx.sh" 0 2 "${PIPX_VERSION:-}"
     exec_with_retries "${PROJECT_ROOT}/bin/install/rust_pkgs.sh" 0 2
     exec_with_retries "${PROJECT_ROOT}/bin/install/shellcheck.sh" 0 2 "${SHELLCHECK_VERSION:-}"
@@ -109,7 +107,6 @@ function setup() {
     # shellcheck disable=SC2068
     opts_handling $@
 
-    source "${PROJECT_ROOT}/bin/configure/alacritty.sh"
     source "${PROJECT_ROOT}/bin/configure/ansible.sh"
     source "${PROJECT_ROOT}/bin/configure/asdf.sh"
     source "${PROJECT_ROOT}/bin/configure/asdf_plugins.sh"
@@ -141,8 +138,6 @@ function setup() {
     if [[ "$(is_docker)" != "true" ]]; then setup_systemctl; fi
 
     # Run second
-    setup_alacritty_dotfiles
-    setup_alacritty_desktop_file
     setup_ansible_dotfiles
     setup_asdf
     setup_asdf_dotfiles
