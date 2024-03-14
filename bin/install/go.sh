@@ -49,8 +49,9 @@ function install_go() {
         if [[ -d "${GOROOT}" ]]; then
             sudo rm -rf "${GOROOT}"
         fi
+        sudo mkdir -p "${GOROOT}" || true
         sudo tar \
-            -C /usr/local \
+            -C "$(dirname "${GOROOT}")" \
             -xzf "go${version}.linux-amd64.tar.gz"
         rm "go${version}.linux-amd64.tar.gz"
     else
