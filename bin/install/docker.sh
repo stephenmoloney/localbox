@@ -7,7 +7,7 @@ DOCKER_VERSION_FALLBACK=5:24.0.6-1~ubuntu.22.04~jammy
 
 # ******* Importing utils.sh as a source of common shell functions *******
 GITHUB_URL=https://raw.githubusercontent.com/stephenmoloney/localbox/master
-UTILS_PATH="$(dirname "${BASH_SOURCE[0]}")/../utils.sh"
+UTILS_PATH="$(dirname "${BASH_SOURCE[0]:-}")/../utils.sh"
 if [[ -e "${UTILS_PATH}" ]]; then
     source "${UTILS_PATH}"
 else
@@ -61,6 +61,6 @@ function main() {
     install_docker "${version}"
 }
 
-if [[ "$0" == "${BASH_SOURCE[0]}" ]]; then
+if [[ "$0" == "${BASH_SOURCE[0]:-}" ]]; then
     main "${@}"
 fi

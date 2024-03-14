@@ -7,7 +7,7 @@ GOGH_VERSION_FALLBACK=v242
 
 # ******* Importing utils.sh as a source of common shell functions *******
 GITHUB_URL=https://raw.githubusercontent.com/stephenmoloney/localbox/master
-UTILS_PATH="$(dirname "${BASH_SOURCE[0]}")/../utils.sh"
+UTILS_PATH="$(dirname "${BASH_SOURCE[0]:-}")/../utils.sh"
 if [[ -e "${UTILS_PATH}" ]]; then
     source "${UTILS_PATH}"
 else
@@ -49,6 +49,6 @@ function main() {
     install_gogh "${version}"
 }
 
-if [[ "$0" == "${BASH_SOURCE[0]}" ]]; then
+if [[ "$0" == "${BASH_SOURCE[0]:-}" ]]; then
     main "${@}"
 fi

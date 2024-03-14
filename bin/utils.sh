@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # shellcheck disable=SC2001,SC2034,SC2181
 
-CALLER_RELATIVE_PATH="$(echo "${BASH_SOURCE[0]}" | sed "s/$(basename "${BASH_SOURCE[0]}")//")"
+CALLER_RELATIVE_PATH="$(echo "${BASH_SOURCE[0]:-}" | sed "s/$(basename "${BASH_SOURCE[0]:-}")//")"
 export TZ=${TZ:-Etc/UTC}
 export DEBIAN_FRONTEND=noninteractive
 

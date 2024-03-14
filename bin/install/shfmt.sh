@@ -7,7 +7,7 @@ SHFMT_VERSION_FALLBACK=3.7.0
 
 # ******* Importing utils.sh as a source of common shell functions *******
 GITHUB_URL=https://raw.githubusercontent.com/stephenmoloney/localbox/master
-UTILS_PATH="$(dirname "${BASH_SOURCE[0]}")/../utils.sh"
+UTILS_PATH="$(dirname "${BASH_SOURCE[0]:-:-}")/../utils.sh"
 if [[ -e "${UTILS_PATH}" ]]; then
     source "${UTILS_PATH}"
 else
@@ -27,7 +27,7 @@ fi
 
 # ******* Importing fallbacks.sh as a means of installing missing deps *******
 GITHUB_URL=https://raw.githubusercontent.com/stephenmoloney/localbox/master
-FALLBACKS_PATH="$(dirname "${BASH_SOURCE[0]}")"/../fallbacks.sh
+FALLBACKS_PATH="$(dirname "${BASH_SOURCE[0]:-}")"/../fallbacks.sh
 if [[ -e "${FALLBACKS_PATH}" ]]; then
     source "${FALLBACKS_PATH}"
 else
