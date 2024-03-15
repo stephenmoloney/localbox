@@ -3,10 +3,10 @@ set -eu
 set -o pipefail
 set -o errtrace
 
-GO_VERSION_FALLBACK=1.20.4
+GO_VERSION_FALLBACK=1.22.0
 export GOPATH="${GOPATH:-${HOME}/src/go}"
 export GOROOT="${GOROOT:-/usr/local/go}"
-export PATH="${PATH}:/usr/local/go/bin"
+export PATH="${PATH}:${GOROOT}/bin"
 
 # ******* Importing utils.sh as a source of common shell functions *******
 GITHUB_URL=https://raw.githubusercontent.com/stephenmoloney/localbox/master
@@ -47,7 +47,7 @@ function install_go() {
 
         wget "https://golang.org/dl/go${version}.linux-amd64.tar.gz"
         if [[ -d "${GOROOT}" ]]; then
-            sudo rm -rf "${GOROOT}"
+            sudo rm -R "${GOROOT}"
         fi
         sudo mkdir -p "${GOROOT}" || true
         sudo tar \
@@ -57,6 +57,12 @@ function install_go() {
     else
         echo "version ${version} of go is already installed"
     fi
+
+    export GOROOT="${GOROOT:-/usr/local/go}"
+    export GOPATH="${GOPATH:-${HOME}/src/go}"
+    export PATH="${PATH}:${GOROOT}/bin"
+
+    echo "1*******"
 
     go version
 }

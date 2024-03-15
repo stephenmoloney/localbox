@@ -3,7 +3,7 @@ set -eu
 set -o pipefail
 set -o errtrace
 
-SHFMT_VERSION_FALLBACK=3.7.0
+SHFMT_VERSION_FALLBACK=3.8.0
 
 # ******* Importing utils.sh as a source of common shell functions *******
 GITHUB_URL=https://raw.githubusercontent.com/stephenmoloney/localbox/master
@@ -58,10 +58,7 @@ function install_shfmt() {
 
     if [[ -z "$(get_current_version 2>/dev/null || true)" ]] ||
         [[ "$(get_current_version 2>/dev/null || true)" != "${version}" ]]; then
-        GOOS="$(go env GOOS)" \
-        GOARCH="$(go env GOARCH)" \
-        GO111MODULE=on \
-            go install "mvdan.cc/sh/v3/cmd/shfmt@v${version}"
+        go install "mvdan.cc/sh/v3/cmd/shfmt@v${version}"
         sudo mv "${GOPATH}/bin/shfmt" /usr/local/bin/shfmt
     else
         echo "shfmt version ${version} is already installed"
