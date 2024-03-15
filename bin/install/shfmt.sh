@@ -45,7 +45,7 @@ else
 fi
 # ****************************************************************************
 
-maybe_install_go_as_fallback
+# maybe_install_go_as_fallback
 
 function get_current_version() {
     shfmt --version | tr -d "v"
@@ -58,15 +58,10 @@ function install_shfmt() {
 
     if [[ -z "$(get_current_version 2>/dev/null || true)" ]] ||
         [[ "$(get_current_version 2>/dev/null || true)" != "${version}" ]]; then
-        echo "&&&"
-        go env
-        echo "***"
-        goos="$(go env goos)" \
-        goarch="$(go env goarch)" \
         GOPROXY=direct \
-        GO111MODULE=on \
-        GOSUMDB=sum.golang.org \
-        GOPROXY=https://proxy.golang.org \
+            GO111MODULE=on \
+            GOSUMDB=sum.golang.org \
+            GOPROXY=https://proxy.golang.org \
             go install "mvdan.cc/sh/v3/cmd/shfmt@v${version}"
         sudo mv "${GOPATH}/bin/shfmt" /usr/local/bin/shfmt
     else
