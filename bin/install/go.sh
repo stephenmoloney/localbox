@@ -45,6 +45,7 @@ function install_go() {
         echo "Installing go version ${version}"
 
         wget "https://golang.org/dl/go${version}.linux-amd64.tar.gz"
+        ls -al
         sudo tar \
             -C /usr/local \
             -xzf "go${version}.linux-amd64.tar.gz"
