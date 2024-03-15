@@ -46,14 +46,17 @@ function install_go() {
         echo "Installing go version ${version}"
 
         wget "https://golang.org/dl/go${version}.linux-amd64.tar.gz"
-        if [[ -d "${GOROOT}" ]]; then
-            sudo rm -rf "${GOROOT}"
-        fi
-        sudo mkdir -p "${GOROOT}" || true
+
         sudo tar \
             -C "$(dirname "${GOROOT}")" \
             -xzf "go${version}.linux-amd64.tar.gz"
         rm "go${version}.linux-amd64.tar.gz"
+        {
+            echo "export PATH=${PATH}"
+            echo "export GOPATH=${GOPATH}" >>"${HOME}/.bash_profile"
+            echo "export GOROOT=${GOROOT}" >>"${HOME}/.bash_profile"
+        } >>"${HOME}/.bash_profile"
+        source "${HOME}/.bash_profile"
     else
         echo "version ${version} of go is already installed"
     fi
