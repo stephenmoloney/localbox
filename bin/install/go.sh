@@ -35,14 +35,13 @@ function install_go() {
     if [[ ! -d "${GOPATH}" ]]; then
         mkdir -p "${GOPATH}"
     fi
-    sudo rm -rf /usr/local/go || true
 
     if [[ "$(go version 2>/dev/null || true)" != *"${version}"* ]]; then
         echo "The current version of go does not match the required version"
         echo "Installing go version ${version}"
 
+        sudo rm -rf /usr/local/go || true
         wget "https://golang.org/dl/go${version}.linux-amd64.tar.gz"
-        ls -al
         sudo tar \
             -C /usr/local \
             -xzf "go${version}.linux-amd64.tar.gz"
