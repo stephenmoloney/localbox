@@ -4,9 +4,6 @@ set -o pipefail
 set -o errtrace
 
 GO_VERSION_FALLBACK=1.22.0
-
-rm -rf /usr/local/go && tar -C /usr/local -xzf go1.22.1.linux-amd64.tar.gz
-
 export GOPATH="${GOPATH:-${HOME}/src/go}"
 export PATH="${PATH}:/usr/local/go/bin"
 
