@@ -48,7 +48,7 @@ function install_go() {
         rm "go${version}.linux-amd64.tar.gz"
         {
             echo "export PATH=${PATH}"
-            echo "export GOPATH=${GOPATH}" >>"${HOME}/.bash_profile"
+            echo "export GOPATH=${GOPATH}"
         } >>"${HOME}/.bash_profile"
         source "${HOME}/.bash_profile"
     else
