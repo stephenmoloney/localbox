@@ -18,8 +18,6 @@ env:
   DEBIAN_FRONTEND: noninteractive
   TZ: Europe/Zurich
   USER: runner
-  # GOPATH: ${{ github.workspace }}
-  GOROOT: /usr/local/go
 
 jobs:
   # Lint codebase

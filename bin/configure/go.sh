@@ -3,15 +3,14 @@
 set -eo pipefail
 
 function setup_go() {
-    export GOROOT="${GOROOT:-/usr/local/go}"
-    if [[ -e "${GOROOT}" ]]; then
+    if [[ -e /usr/local/go ]]; then
         export GOPATH="${GOPATH:-${HOME}/src/go}"
         if [[ ! -d "${GOPATH}" ]]; then
             mkdir -p "${GOPATH}"
         fi
-        if [[ -e "${GOROOT}/bin" ]] &&
-            [[ -z "$(grep "${GOROOT}/bin" <<<"${PATH}" 2>/dev/null || true)" ]]; then
-            export PATH="${PATH}:${GOROOT}/bin"
+        if [[ -e /usr/local/go/bin ]] &&
+            [[ -z "$(grep /usr/local/go/bin <<<"${PATH}" 2>/dev/null || true)" ]]; then
+            export PATH="${PATH}:/usr/local/go/bin"
         fi
     fi
 }
