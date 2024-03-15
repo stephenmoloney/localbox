@@ -40,8 +40,8 @@ function install_go() {
         echo "The current version of go does not match the required version"
         echo "Installing go version ${version}"
 
+        rm -rf /usr/local/go || sudo rm -rf /usr/local/go
         wget "https://golang.org/dl/go${version}.linux-amd64.tar.gz"
-
         sudo tar \
             -C /usr/local \
             -xzf "go${version}.linux-amd64.tar.gz"
