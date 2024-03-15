@@ -62,6 +62,9 @@ function install_shfmt() {
         # GOARCH="$(go env GOARCH)" \
         # GOPROXY=direct \
         # GO111MODULE=on \
+        echo "&&&"
+        go env
+        echo "***"
         go install "mvdan.cc/sh/v3/cmd/shfmt@v${version}"
         sudo mv "${GOPATH}/bin/shfmt" /usr/local/bin/shfmt
     else
