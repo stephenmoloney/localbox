@@ -4,6 +4,7 @@ set -o pipefail
 set -o errtrace
 
 GO_VERSION_FALLBACK=1.20.4
+export GOROOT=/usr/local/go
 export GOPATH="${GOPATH:-${HOME}/src/go}"
 export PATH="${PATH}:/usr/local/go/bin"
 
@@ -47,6 +48,7 @@ function install_go() {
             -xzf "go${version}.linux-amd64.tar.gz"
         rm "go${version}.linux-amd64.tar.gz"
         {
+            echo "export GOROOT=${GOROOT}"
             echo "export PATH=${PATH}"
             echo "export GOPATH=${GOPATH}"
         } >>"${HOME}/.bash_profile"
