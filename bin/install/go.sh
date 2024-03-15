@@ -4,7 +4,9 @@ set -o pipefail
 set -o errtrace
 
 GO_VERSION_FALLBACK=1.22.0
-export GOROOT=/usr/local/go
+
+rm -rf /usr/local/go && tar -C /usr/local -xzf go1.22.1.linux-amd64.tar.gz
+
 export GOPATH="${GOPATH:-${HOME}/src/go}"
 export PATH="${PATH}:/usr/local/go/bin"
 
@@ -36,21 +38,19 @@ function install_go() {
     if [[ ! -d "${GOPATH}" ]]; then
         mkdir -p "${GOPATH}"
     fi
+    sudo rm -rf /usr/local/go || true
 
     if [[ "$(go version 2>/dev/null || true)" != *"${version}"* ]]; then
         echo "The current version of go does not match the required version"
         echo "Installing go version ${version}"
 
-        rm -rf /usr/local/go || sudo rm -rf /usr/local/go
         wget "https://golang.org/dl/go${version}.linux-amd64.tar.gz"
         sudo tar \
             -C /usr/local \
             -xzf "go${version}.linux-amd64.tar.gz"
         rm "go${version}.linux-amd64.tar.gz"
         {
-            echo "export GOROOT=${GOROOT}"
             echo "export PATH=${PATH}"
-            echo "export GOPATH=${GOPATH}"
         } >>"${HOME}/.bash_profile"
         source "${HOME}/.bash_profile"
     else
