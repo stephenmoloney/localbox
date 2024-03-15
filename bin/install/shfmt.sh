@@ -58,14 +58,14 @@ function install_shfmt() {
 
     if [[ -z "$(get_current_version 2>/dev/null || true)" ]] ||
         [[ "$(get_current_version 2>/dev/null || true)" != "${version}" ]]; then
-        # GOOS="$(go env GOOS)" \
-        # GOARCH="$(go env GOARCH)" \
-        # GOPROXY=direct \
-        # GO111MODULE=on \
         echo "&&&"
         go env
         echo "***"
-        export GOPROXY=https://proxy.golang.org
+        GOOS="$(go env GOOS)" \
+        GOARCH="$(go env GOARCH)" \
+        GOPROXY=direct \
+        GO111MODULE=on \
+        GOSUMDB=sum.golang.org \
         GOPROXY=https://proxy.golang.org \
             go install "mvdan.cc/sh/v3/cmd/shfmt@v${version}"
         sudo mv "${GOPATH}/bin/shfmt" /usr/local/bin/shfmt
