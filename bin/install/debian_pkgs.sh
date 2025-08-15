@@ -56,6 +56,7 @@ DEBIAN_PKGS=(
     ["qrencode"]="*"
     ["scdaemon"]="*"
     ["scrcpy"]="*"
+    ["tesseract-ocr"]="*"
     ["tmux"]="*"
     ["tree"]="*"
     ["unzip"]="*"

@@ -67,6 +67,41 @@ ASDF_ERLANG_DEPS=(
     xsltproc
 )
 
+ASDF_ERLANG_DEPS=(
+    autoconf
+    build-essential
+    fop
+    libncurses5-dev
+    libwxgtk3.0-gtk3-dev
+    libgl1-mesa-dev
+    libglu1-mesa-dev
+    libpng-dev
+    libssh-dev
+    libxml2-utils
+    m4
+    openssl
+    xsltproc
+)
+
+ASDF_PYTHON_DEPS=(
+    make
+    build-essential
+    libssl-dev
+    zlib1g-dev
+    libbz2-dev
+    libreadline-dev
+    curl
+    git
+    libncursesw5-dev
+    xz-utils
+    tk-dev
+    libxml2-dev
+    libxmlsec1-dev
+    libffi-dev
+    liblzma-dev
+    libsqlite3-dev
+)
+
 ASDF_NODEJS_DEPS=(
     dirmngr
     gpg
@@ -87,10 +122,13 @@ ASDF_RUBY_DEPS=(
     libgdbm-dev
     libdb-dev
 )
+
 # shellcheck shell=bash disable=SC2034
 ASDF_GROOVY_DISABLE_JAVA_HOME_EXPORT=true
 
 function install_asdf_plugins() {
+    local python_current_bin
+    local python_current_version
     local plugins
     local plugin
     local plugin_versions
@@ -112,10 +150,14 @@ function install_asdf_plugins() {
     export KERL_BUILD_DOCS=yes
     export KERL_BASE_DIR="${HOME}/.kerl"
 
-    # asdf-gcloud should try python3 as gcloud now supports it.
-    # python-is-python3 package is a workaround
-    export CLOUDSDK_PYTHON=python3
-    maybe_install_apt_pkg "python-is-python3" "*"
+    python_current_version="$(asdf list python | awk NR==1 | xargs)"
+    export CLOUDSDK_PYTHON="$(readlink -f "${HOME}"/.asdf/installs/python/"${python_current_version}"/bin/python3)"
+
+    # Required for pythong (and therefore gcloud)
+    for dep in "${ASDF_PYTHON_DEPS[@]}"; do
+        maybe_install_apt_pkg "${dep}" "*"
+    done
+
     if [[ ! -d "${HOME}/.config/gcloud/" ]]; then
         mkdir -p "${HOME}/.config/gcloud"
     fi
