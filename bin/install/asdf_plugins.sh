@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# shellcheck disable=SC2125,SC2155
 set -eu
 set -o pipefail
 set -o errtrace
@@ -127,7 +128,6 @@ ASDF_RUBY_DEPS=(
 ASDF_GROOVY_DISABLE_JAVA_HOME_EXPORT=true
 
 function install_asdf_plugins() {
-    local python_current_bin
     local python_current_version
     local plugins
     local plugin
