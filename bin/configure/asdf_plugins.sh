@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# shellcheck disable=SC2125
+# shellcheck disable=SC2155
 set -eo pipefail
 
 function setup_java() {
@@ -56,6 +56,9 @@ function setup_gcloud() {
             source "${HOME}/.asdf/installs/gcloud/${gcloud_version}/path.bash.inc"
         fi
     fi
+
+    python_current_version="$(asdf list python | awk NR==1 | xargs)"
+    export CLOUDSDK_PYTHON="$(readlink -f "${HOME}"/.asdf/installs/python/"${python_current_version}"/bin/python3)"
     export USE_GKE_GCLOUD_AUTH_PLUGIN=True
 }
 

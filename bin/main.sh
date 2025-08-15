@@ -56,6 +56,8 @@ function install() {
     opts_handling $@
 
     # Phase 1
+    exec_with_retries "${PROJECT_ROOT}/bin/install/asdf.sh" 0 2 "${ASDF_VERSION:-}"
+    exec_with_retries "${PROJECT_ROOT}/bin/install/asdf_plugins.sh" 0 2
     exec_with_retries "${PROJECT_ROOT}/bin/install/debian_pkgs.sh" 0 2
     exec_with_retries "${PROJECT_ROOT}/bin/install/go.sh" 0 2 "${GO_VERSION:-}"
     exec_with_retries "${PROJECT_ROOT}/bin/install/jq.sh" 0 2 "${JQ_VERSION:-}"
@@ -65,8 +67,6 @@ function install() {
     exec_with_retries "${PROJECT_ROOT}/bin/install/argos_translate.sh" 0 2 "${ARGOS_TRANSLATE_GUI_VERSION:-}"
     exec_with_retries "${PROJECT_ROOT}/bin/install/ansible.sh" 0 2 "${ANSIBLE_VERSION:-}" "${ANSIBLE_LINT_VERSION}"
     exec_with_retries "${PROJECT_ROOT}/bin/install/ansible_modules.sh" 0 2
-    exec_with_retries "${PROJECT_ROOT}/bin/install/asdf.sh" 0 2 "${ASDF_VERSION:-}"
-    exec_with_retries "${PROJECT_ROOT}/bin/install/asdf_plugins.sh" 0 2
     exec_with_retries "${PROJECT_ROOT}/bin/install/azure_cli.sh" 0 2 "${AZURE_CLI_VERSION:-}"
     exec_with_retries "${PROJECT_ROOT}/bin/install/black.sh" 0 2 "${BLACK_VERSION:-}"
     exec_with_retries "${PROJECT_ROOT}/bin/install/bpytop.sh" 0 2 "${BPYTOP_VERSION:-}"
@@ -87,6 +87,7 @@ function install() {
         exec_with_retries "${PROJECT_ROOT}/bin/install/nerdctl.sh" 0 2 "${NERDCTL_VERSION:-}"
     fi
     exec_with_retries "${PROJECT_ROOT}/bin/install/pipx.sh" 0 2 "${PIPX_VERSION:-}"
+    exec_with_retries "${PROJECT_ROOT}/bin/install/pdf2odt.sh" 0 2 "${PDF2ODT_VERSION:-}"
     exec_with_retries "${PROJECT_ROOT}/bin/install/rust_pkgs.sh" 0 2
     exec_with_retries "${PROJECT_ROOT}/bin/install/shellcheck.sh" 0 2 "${SHELLCHECK_VERSION:-}"
     exec_with_retries "${PROJECT_ROOT}/bin/install/shfmt.sh" 0 2 "${SHFMT_VERSION:-}"
