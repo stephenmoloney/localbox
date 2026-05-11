@@ -3,7 +3,7 @@ set -eu
 set -o pipefail
 set -o errtrace
 
-BLACK_VERSION_FALLBACK=23.9.1
+BLACK_VERSION_FALLBACK=26.5.1
 
 # ******* Importing utils.sh as a source of common shell functions *******
 GITHUB_URL=https://raw.githubusercontent.com/stephenmoloney/localbox/master
@@ -33,11 +33,15 @@ function install_black() {
     local version="${1}"
 
     maybe_install_apt_pkg "python3-pip" "*"
-    pip3 install click==7.1.2
+    if ! command -v pipx &>/dev/null; then
+        sudo apt-get install -y pipx
+        sudo pipx ensurepath --force
+        export PATH="$HOME/.local/bin:$PATH"
+    fi
 
     if [[ -z "$(get_current_version 2>/dev/null || true)" ]] ||
         [[ "$(get_current_version 2>/dev/null || true)" != "${version}" ]]; then
-        pip3 install black=="${version}"
+        pipx install --force black=="${version}"
     else
         echo "black version ${version} is already installed"
         echo "Skipping installation"
@@ -46,6 +50,22 @@ function install_black() {
     if [[ -z "$(grep "${HOME}/.local/bin" <<<"${PATH}" 2>/dev/null || true)" ]]; then
         export PATH="${PATH}:${HOME}/.local/bin"
     fi
+
+    if [[ -L ~/.local/bin/black ]]; then
+        rm ~/.local/bin/black || true
+    fi
+
+    if [[ -L ~/.local/bin/blackd ]]; then
+        rm ~/.local/bin/blackd || true
+    fi
+
+    ln -s \
+        /home/u2/.local/pipx/venvs/black/bin/black \
+        ~/.local/bin/black
+
+    ln -s \
+        /home/u2/.local/pipx/venvs/black/bin/blackd \
+        ~/.local/bin/blackd
 
     black --version
 }

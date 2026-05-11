@@ -3,7 +3,7 @@ set -eu
 set -o pipefail
 set -o errtrace
 
-NERDCTL_VERSION_FALLBACK=1.6.0
+NERDCTL_VERSION_FALLBACK=2.3.1
 
 # ******* Importing utils.sh as a source of common shell functions *******
 GITHUB_URL=https://raw.githubusercontent.com/stephenmoloney/localbox/master

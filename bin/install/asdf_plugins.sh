@@ -103,6 +103,17 @@ ASDF_PYTHON_DEPS=(
     libsqlite3-dev
 )
 
+ASDF_NEOVIM_DEPS=(
+    make
+    gcc
+    ripgrep
+    fd-find
+    tree-sitter-cli
+    unzip
+    git
+    xclip
+)
+
 ASDF_NODEJS_DEPS=(
     dirmngr
     gpg
@@ -127,6 +138,9 @@ ASDF_RUBY_DEPS=(
 # shellcheck shell=bash disable=SC2034
 ASDF_GROOVY_DISABLE_JAVA_HOME_EXPORT=true
 
+# Overcome an issue installing poetry
+ASDF_INSTALL_TYPE=
+
 function install_asdf_plugins() {
     local python_current_version
     local plugins
@@ -138,6 +152,11 @@ function install_asdf_plugins() {
 
     # Required for nodejs amd yarn
     for dep in "${ASDF_NODEJS_DEPS[@]}"; do
+        maybe_install_apt_pkg "${dep}" "*"
+    done
+
+    # Required for neovim
+    for dep in "${ASDF_NEOVIM_DEPS[@]}"; do
         maybe_install_apt_pkg "${dep}" "*"
     done
 
@@ -196,7 +215,7 @@ function install_asdf_plugins() {
                 touch "${HOME}"/.tool-versions
             fi
             echo "Setting ${plugin} to version ${plugin_versions[0]}"
-            asdf global "${plugin}" "${plugin_versions[0]}"
+            asdf set --home "${plugin}" "${plugin_versions[0]}"
         fi
     done
 }
@@ -215,7 +234,8 @@ function install_gcloud_components() {
 }
 
 function main() {
-    source "${HOME}/.asdf/asdf.sh"
+    export ASDF_DATA_DIR="${HOME}"/.asdf
+    export PATH="${PATH}:${ASDF_DATA_DIR}/shims"
     install_asdf_plugins
     install_gcloud_components
     gcloud components update

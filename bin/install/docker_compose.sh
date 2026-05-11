@@ -3,7 +3,7 @@ set -eu
 set -o pipefail
 set -o errtrace
 
-DOCKER_COMPOSE_VERSION_FALLBACK=2.22.0
+DOCKER_COMPOSE_VERSION_FALLBACK=5.1.4
 BASE_URL=https://github.com/docker/compose/releases/download
 
 # ******* Importing utils.sh as a source of common shell functions *******

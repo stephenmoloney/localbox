@@ -12,16 +12,16 @@ stages:
   - test
 
   # Run the build process inside a docker container (somewhat different process)
-  - provision-in-docker:ubuntu-20-04
+  - provision-in-docker:ubuntu-26-04
 
   # Run the build process on a clean VM (fallbacks off)
   - spawn-gitlab-runner:provision-in-vm-no-fallbacks
-  - provision-in-vm-no-fallbacks:ubuntu-20-04
+  - provision-in-vm-no-fallbacks:ubuntu-26-04
   - destroy-gitlab-runner:provision-in-vm-no-fallbacks
 
   # Run the build process on a clean VM (fallbacks on)
   - spawn-gitlab-runner:provision-in-vm-with-fallbacks
-  - provision-in-vm-with-fallbacks:ubuntu-20-04
+  - provision-in-vm-with-fallbacks:ubuntu-26-04
   - destroy-gitlab-runner:provision-in-vm-with-fallbacks
 
 variables:
@@ -32,7 +32,7 @@ variables:
 lint:
   stage: lint
   needs: []
-  image: ubuntu:20.04
+  image: ubuntu:26.04
   before_script:
     - >
       source ./ci/provision_emulate.sh &&
@@ -51,7 +51,7 @@ lint:
     WORKDIR: /localbox
   stage: test
   needs: ["lint"]
-  image: ubuntu:20.04
+  image: ubuntu:26.04
   timeout: 12h
   before_script:
     - >
@@ -83,9 +83,9 @@ tests:
 .provision_emulate: &provision_emulate
   variables:
     WORKDIR: /home/ubuntu/Documents/repos/dotfiles
-  stage: provision-in-docker:ubuntu-20-04
+  stage: provision-in-docker:ubuntu-26-04
   needs: ["tests"]
-  image: ubuntu:20.04
+  image: ubuntu:26.04
   timeout: 12h
   before_script:
     - |
@@ -150,7 +150,7 @@ spawn_gitlab_runner_provision_in_vm_no_fallbacks:
 
 provision_in_vm_no_fallbacks:
   needs: ["spawn_gitlab_runner_provision_in_vm_no_fallbacks"]
-  stage: provision-in-vm-no-fallbacks:ubuntu-20-04
+  stage: provision-in-vm-no-fallbacks:ubuntu-26-04
   variables:
     USER: gitlab-runner
     FALLBACK_VERSIONS: "false"
@@ -168,7 +168,7 @@ provision_in_vm_no_fallbacks:
 
   tags:
     - vm
-    - ubuntu20.04
+    - ubuntu26.04
   allow_failure: true
 
 destroy_gitlab_runner_provision_in_vm_no_fallbacks:
@@ -187,7 +187,7 @@ spawn_gitlab_runner_provision_in_vm_with_fallbacks:
 
 provision_in_vm_with_fallbacks:
   needs: ["spawn_gitlab_runner_provision_in_vm_with_fallbacks"]
-  stage: provision-in-vm-with-fallbacks:ubuntu-20-04
+  stage: provision-in-vm-with-fallbacks:ubuntu-26-04
   variables:
     USER: gitlab-runner
     FALLBACK_VERSIONS: "true"
@@ -204,7 +204,7 @@ provision_in_vm_with_fallbacks:
         headless="${HEADLESS_ONLY}"
   tags:
     - vm
-    - ubuntu20.04
+    - ubuntu26.04
   allow_failure: true
 
 destroy_gitlab_runner_provision_in_vm_with_fallbacks:

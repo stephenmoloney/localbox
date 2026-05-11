@@ -148,48 +148,6 @@ docker run \
     'make test_spec spec_file=spec/bin/debian_pkgs_spec.sh use_docker=false'
 ```
 
-## Vim keys
-
-**_Common Actions_**
-
-| Key Pattern                        | Action                              | Notes                                                                         |
-| ---------------------------------- | ----------------------------------- | ----------------------------------------------------------------------------- |
-| <kbd>\\</kbd>                      | `Leader key`                        | Special vim precursor command key                                             |
-| <kbd>↑</kbd> or <kbd>k</kbd>       | `Up arrow`                          | Move up                                                                       |
-| <kbd>↓</kbd> or <kbd>j</kbd>       | `Down arrow`                        | Move down                                                                     |
-| <kbd>←</kbd> or <kbd>h</kbd>       | `Left arrow`                        | Move left                                                                     |
-| <kbd>→</kbd> or <kbd>l</kbd>       | `Right arrow`                       | Move right                                                                    |
-| <kbd>:q⏎</kbd>                     | `Close window without saving`       | Will usually block you if there unsaved work                                  |
-| <kbd>:qa⏎</kbd>                    | `Force close window without saving` | Quits without saving                                                          |
-| <kbd>go</kbd>                      | `Open tab from nerdtree`            | Opens a vim tab in current window pane                                        |
-| <kbd>gs</kbd>                      | `Open tab from nerdtree`            | Opens a new vertically split vim pane                                         |
-| <kbd>control</kbd> + <kbd>ww</kbd> | `Toggle between vim panes`          | Handy when moving from nerdtree to the text editorpane                        |
-| <kbd>za</kbd>                      | `Toggle open/close current fold`    | Toggles open/close the current fold in selection                              |
-| <kbd>zc</kbd>                      | `Toggle close a fold`               | Closes the current fold in selection if open or parent fold if already closed |
-| <kbd>zk</kbd>                      | `Moves cursor to next fold up`      | Moves cursor to next fold up                                                  |
-| <kbd>zj</kbd>                      | `Moves cursor to next fold down`    | Moves cursor to next fold down                                                |
-| <kbd>zR</kbd>                      | `Open all folds`                    | Opens all folds                                                               |
-| <kbd>zM</kbd>                      | `Close all folds`                   | Closes all folds                                                              |
-| <kbd>Shift</kbd><kbd>Tab</kbd>     | `Trigger open autocompelte menu`    | Triggers the opening of the autocompettion menu. Hand in yaml for example.    |
-
-**_Plugin Actions_**
-
-| Key Pattern                       | Action                  | Notes                                                                          |
-| --------------------------------- | ----------------------- | ------------------------------------------------------------------------------ |
-| <kbd>\ww</kbd>                    | `MarkdownPreviewToggle` | Toggles the markdown to be viewer in a newly opened browser window             |
-| <kbd>\ee</kbd>                    | `NERDTreeToggle`        | Toggles open and close the nerdtree vim pane                                   |
-| <kbd>\tt</kbd>                    | `NERDTreeRefreshRoot`   | Reload the nerdtree vim pane                                                   |
-| <kbd>\uu</kbd>                    | `UndotreeToggle`        | Toggles the undotree menu to popup                                             |
-| <kbd>\rr</kbd>                    | `TabBarToggle`          | Toggles the tagbar menu to popup                                               |
-| <kbd>\nn</kbd>                    | `NnnPicker`             | Opens the Nnn file picker                                                      |
-| <kbd>\aa</kbd>                    | `AnyFoldActivate`       | Toggles the anyfold activation. Action will depend on `set foldlevel` settings |
-| <kbd>\\tm</kbd>                   | `ToggleTableMode`       | Enters into table mode making it easy for table formatting                     |
-| <kbd>Control</kbd> + <kbd>k</kbd> | `Move selection up`     | Moves the selected text in visual mode up                                      |
-| <kbd>Control</kbd> + <kbd>j</kbd> | `Move selection down`   | Moves the selected text in visual mode down                                    |
-| <kbd>\\ff</kbd>                   | `Open esearch`          | Opens esearch at the selected folder in nerdtree                               |
-| <kbd>\\cc</kbd>                   | `Comment code`          | Comments highlighted block of code in visual mode                              |
-| <kbd>\\cu</kbd>                   | `Uncomments code`       | Uncomments highlighted block of code in visual mode                            |
-
 ## Nice themes
 
 - [nord](https://github.com/arcticicestudio/nord-vim)

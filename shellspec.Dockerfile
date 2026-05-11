@@ -1,6 +1,6 @@
 FROM shellspec/shellspec-debian:0.28.1 as upstream
 
-FROM ubuntu:20.04
+FROM ubuntu:26.04
 
 COPY --from=upstream /opt/shellspec /shellspec_src
 

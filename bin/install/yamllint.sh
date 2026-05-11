@@ -3,7 +3,7 @@ set -eu
 set -o pipefail
 set -o errtrace
 
-YAMLLINT_VERSION_FALLBACK=1.32.0
+YAMLLINT_VERSION_FALLBACK=1.38.0
 
 # ******* Importing utils.sh as a source of common shell functions *******
 GITHUB_URL=https://raw.githubusercontent.com/stephenmoloney/localbox/master
@@ -33,10 +33,15 @@ function install_yamllint() {
     local version="${1}"
 
     maybe_install_apt_pkg "python3-pip" "*"
+    if ! command -v pipx &>/dev/null; then
+        sudo apt-get install -y pipx
+        sudo pipx ensurepath --force
+        export PATH="$HOME/.local/bin:$PATH"
+    fi
 
     if [[ -z "$(get_current_version 2>/dev/null || true)" ]] ||
         [[ "$(get_current_version 2>/dev/null || true)" != "${version}" ]]; then
-        pip3 install yamllint=="${version}"
+        pipx install --force yamllint=="${version}"
     else
         echo "yamllint version ${version} is already installed"
         echo "Skipping installation"
@@ -45,6 +50,15 @@ function install_yamllint() {
     if [[ -z "$(grep "${HOME}/.local/bin" <<<"${PATH}" 2>/dev/null || true)" ]]; then
         export PATH="${PATH}:${HOME}/.local/bin"
     fi
+
+    if [[ -L ~/.local/bin/yamllint ]]; then
+        rm ~/.local/bin/yamllint || true
+    fi
+
+    ln -s \
+        /home/u2/.local/pipx/venvs/yamllint/bin/yamllint \
+        ~/.local/bin/yamllint
+
     yamllint --version
 }
 

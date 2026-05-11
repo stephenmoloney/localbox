@@ -3,7 +3,7 @@ set -eu
 set -o pipefail
 set -o errtrace
 
-NERDFONTS_VERSION_FALLBACK=3.0.2
+NERDFONTS_VERSION_FALLBACK=3.4.0
 
 NERD_FONTS_FOR_INSTALLATION=(
     UbuntuMono

@@ -5,7 +5,7 @@ set -o errtrace
 
 function uninstall_diagrams() {
     if [[ -n "$(command -v diagrams)" ]]; then
-        pip3 uninstall --yes diagrams
+        pipx uninstall --force diagrams
     fi
 }
 

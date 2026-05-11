@@ -3,7 +3,7 @@ set -eu
 set -o pipefail
 set -o errtrace
 
-JMESPATH_VERSION_FALLBACK=1.0.1
+JMESPATH_VERSION_FALLBACK=1.1.0
 
 # ******* Importing utils.sh as a source of common shell functions *******
 GITHUB_URL=https://raw.githubusercontent.com/stephenmoloney/localbox/master
@@ -33,10 +33,15 @@ function install_jmespath() {
     local version="${1}"
 
     maybe_install_apt_pkg "python3-pip" "*"
+    if ! command -v pipx &>/dev/null; then
+        sudo apt-get install -y pipx
+        sudo pipx ensurepath --force
+        export PATH="$HOME/.local/bin:$PATH"
+    fi
 
     if [[ -z "$(get_current_version 2>/dev/null || true)" ]] ||
         [[ "$(get_current_version 2>/dev/null || true)" != "${version}" ]]; then
-        pip3 install jmespath=="${version}"
+        pipx install --force jmespath=="${version}"
     else
         echo "jmespath version ${version} is already installed"
         echo "Skipping installation"
@@ -45,6 +50,14 @@ function install_jmespath() {
     if [[ -z "$(grep "${HOME}/.local/bin" <<<"${PATH}" 2>/dev/null || true)" ]]; then
         export PATH="${PATH}:${HOME}/.local/bin"
     fi
+
+    if [[ -L ~/.local/bin/jmespath ]]; then
+        rm ~/.local/bin/jmespath || true
+    fi
+
+    ln -s \
+        /home/u2/.local/pipx/venvs/jmespath/bin/jp.py \
+        ~/.local/bin/jmespath
 }
 
 function main() {

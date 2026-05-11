@@ -33,10 +33,15 @@ function install_pdf2odt() {
     local version="${1}"
 
     maybe_install_apt_pkg "python3-pip" "*"
+    if ! command -v pipx &>/dev/null; then
+        sudo apt-get install -y pipx
+        sudo pipx ensurepath --force
+        export PATH="$HOME/.local/bin:$PATH"
+    fi
 
     if [[ -z "$(get_current_version 2>/dev/null || true)" ]] ||
         [[ "$(get_current_version 2>/dev/null || true)" != "${version}" ]]; then
-        pip3 install pdf2odt=="${version}"
+        pipx install --force pdf2odt=="${version}"
     else
         echo "pdf2odt version ${version} is already installed"
         echo "Skipping installation"
@@ -45,6 +50,14 @@ function install_pdf2odt() {
     if [[ -z "$(grep "${HOME}/.local/bin" <<<"${PATH}" 2>/dev/null || true)" ]]; then
         export PATH="${PATH}:${HOME}/.local/bin"
     fi
+
+    if [[ -L ~/.local/bin/pdf2odt ]]; then
+        rm ~/.local/bin/pdf2odt || true
+    fi
+
+    ln -s \
+        /home/u2/.local/pipx/venvs/pdf2odt/bin/pdf2odt \
+        ~/.local/bin/pdf2odt
 }
 
 function main() {

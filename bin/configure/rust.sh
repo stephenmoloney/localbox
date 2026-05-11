@@ -22,7 +22,18 @@ fi
 PROJECT_ROOT="$(project_root)"
 
 function calc_io_threads() {
-    echo "$((($(nproc --all) / 4) * 3))"
+    local cores
+    local threads
+
+    cores="$(nproc --all 2>/dev/null || echo 1)"
+    threads=$(((cores / 4) * 3))
+
+    # Ensure at least 1 thread is returned to avoid 0
+    if [[ "${threads}" -lt 1 ]]; then
+        threads=1
+    fi
+
+    echo "$threads"
 }
 
 function calc_unpack_ram() {
@@ -37,7 +48,7 @@ function setup_rust() {
 
     if [[ "$#" -lt 2 ]] && [[ "$#" -ne 0 ]]; then
         echo >&2 "Expected 2 arguments, only $# provided."
-        return 1
+        exit 1
     fi
 
     if [[ -z "${io_threads}" ]]; then

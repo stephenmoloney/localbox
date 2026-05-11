@@ -1,9 +1,6 @@
 #!/usr/bin/env bash
-set -eu
-set -o pipefail
-set -o errtrace
-
-ARGOS_TRANSLATE_GUI_VERSION_FALLBACK=1.6.3
+# shellcheck disable=SC2125
+set -eo pipefail
 
 # ******* Importing utils.sh as a source of common shell functions *******
 GITHUB_URL=https://raw.githubusercontent.com/stephenmoloney/localbox/master
@@ -24,24 +21,15 @@ else
     fi
 fi
 # ************************************************************************
+PROJECT_ROOT="$(project_root)"
 
-function install_argos_translate_gui() {
-    local version="${1}"
+function setup_neovim() {
 
-    maybe_install_apt_pkg "python3-pip" "*"
-    pip3 install argostranslategui=="${version}"
-
-    if [[ -z "$(grep "${HOME}/.local/bin" <<<"${PATH}" 2>/dev/null || true)" ]]; then
-        export PATH="${PATH}:${HOME}/.local/bin"
+    if [[ ! -d "${HOME}"/.config/nvim ]]; then
+        mkdir -p "${HOME}"/.config/nvim
     fi
+
+    cp -r \
+        "${PROJECT_ROOT}"/config/dotfiles/neovim \
+        "${HOME}"/.config/nvim/*
 }
-
-function main() {
-    local version="${1:-$ARGOS_TRANSLATE_GUI_VERSION_FALLBACK}"
-
-    install_argos_translate_gui "${version}"
-}
-
-if [[ "$0" == "${BASH_SOURCE[0]:-}" ]]; then
-    main "${@}"
-fi

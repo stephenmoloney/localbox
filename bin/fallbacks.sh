@@ -107,15 +107,8 @@ function maybe_install_go_as_fallback() {
 function maybe_install_asdf_as_fallback() {
     local asdf_version
 
-    if [[ -z "${ASDF_DIR:-}" ]]; then
-        if [[ -e "${HOME}/.asdf/asdf.sh" ]]; then
-            source "${HOME}/.asdf/asdf.sh"
-        fi
-    else
-        if [[ -e "${ASDF_DIR:-}/asdf.sh" ]]; then
-            source "${ASDF_DIR}/asdf.sh"
-        fi
-    fi
+    export ASDF_DATA_DIR="${HOME}"/.asdf
+    export PATH="${PATH}:${ASDF_DATA_DIR}/shims"
 
     if [[ -z "$(command -v asdf)" ]]; then
         echo "Installing asdf as a fallback measure"
@@ -144,29 +137,17 @@ function maybe_install_asdf_as_fallback() {
 }
 
 function maybe_install_node_as_fallback() {
-    if [[ -z "${ASDF_DIR:-}" ]]; then
-        if [[ -e "${HOME}/.asdf/asdf.sh" ]]; then
-            source "${HOME}/.asdf/asdf.sh"
-        else
-            maybe_install_asdf_as_fallback
-        fi
-    else
-        if [[ -e "${ASDF_DIR:-}/asdf.sh" ]]; then
-            source "${ASDF_DIR}/asdf.sh"
-        fi
+    if [[ -z "$(command -v asdf)" ]]; then
+        maybe_install_asdf_as_fallback
     fi
 
     if [[ -z "$(command -v node)" ]]; then
         maybe_install_apt_pkg "dirmngr" "*"
         maybe_install_apt_pkg "gpg" "*"
         maybe_install_apt_pkg "curl" "*"
-
-        if [[ -z "$(command -v asdf)" ]]; then
-            maybe_install_asdf_as_fallback
-        fi
         asdf plugin add nodejs
         asdf install nodejs "${NODEJS_VERSION_FALLBACK}"
-        asdf global nodejs "${NODEJS_VERSION_FALLBACK}"
+        asdf set --home nodejs "${NODEJS_VERSION_FALLBACK}"
         node --version
     else
         echo "node version $(node --version) is already installed"
@@ -174,28 +155,16 @@ function maybe_install_node_as_fallback() {
 }
 
 function maybe_install_yarn_as_fallback() {
-    if [[ -z "${ASDF_DIR:-}" ]]; then
-        if [[ -e "${HOME}/.asdf/asdf.sh" ]]; then
-            source "${HOME}/.asdf/asdf.sh"
-        else
-            maybe_install_asdf_as_fallback
-        fi
-    else
-        if [[ -e "${ASDF_DIR:-}/asdf.sh" ]]; then
-            source "${ASDF_DIR}/asdf.sh"
-        fi
+    if [[ -z "$(command -v asdf)" ]]; then
+        maybe_install_asdf_as_fallback
     fi
 
     if [[ -z "$(command -v yarn)" ]]; then
         maybe_install_apt_pkg "gpg" "*"
         maybe_install_apt_pkg "curl" "*"
-
-        if [[ -z "$(command -v asdf)" ]]; then
-            maybe_install_asdf_as_fallback
-        fi
         asdf plugin add yarn
         asdf install yarn "${YARN_VERSION_FALLBACK}"
-        asdf global yarn "${YARN_VERSION_FALLBACK}"
+        asdf set --home yarn "${YARN_VERSION_FALLBACK}"
         yarn --version
     else
         echo "yarn version $(yarn --version) is already installed"
@@ -222,30 +191,18 @@ function maybe_install_jq_as_fallback() {
 }
 
 function maybe_install_ruby_as_fallback() {
-    if [[ -z "${ASDF_DIR:-}" ]]; then
-        if [[ -e "${HOME}/.asdf/asdf.sh" ]]; then
-            source "${HOME}/.asdf/asdf.sh"
-        else
-            maybe_install_asdf_as_fallback
-        fi
-    else
-        if [[ -e "${ASDF_DIR:-}/asdf.sh" ]]; then
-            source "${ASDF_DIR}/asdf.sh"
-        fi
+    if [[ -z "$(command -v asdf)" ]]; then
+        maybe_install_asdf_as_fallback
     fi
 
     if [[ -z "$(command -v ruby)" ]]; then
-        if [[ -z "$(command -v asdf)" ]]; then
-            maybe_install_asdf_as_fallback
-        fi
-
         for dep in "${ASDF_RUBY_DEPS[@]}"; do
             maybe_install_apt_pkg "${dep}" "*"
         done
 
         asdf plugin add ruby
         asdf install ruby "${RUBY_VERSION_FALLBACK}"
-        asdf global ruby "${RUBY_VERSION_FALLBACK}"
+        asdf set --home ruby "${RUBY_VERSION_FALLBACK}"
         ruby --version
     else
         echo "ruby version $(ruby --version) is already installed"
@@ -253,26 +210,14 @@ function maybe_install_ruby_as_fallback() {
 }
 
 function maybe_install_kubectl_as_fallback() {
-    if [[ -z "${ASDF_DIR:-}" ]]; then
-        if [[ -e "${HOME}/.asdf/asdf.sh" ]]; then
-            source "${HOME}/.asdf/asdf.sh"
-        else
-            maybe_install_asdf_as_fallback
-        fi
-    else
-        if [[ -e "${ASDF_DIR:-}/asdf.sh" ]]; then
-            source "${ASDF_DIR}/asdf.sh"
-        fi
+    if [[ -z "$(command -v asdf)" ]]; then
+        maybe_install_asdf_as_fallback
     fi
 
     if [[ -z "$(command -v kubectl)" ]]; then
-        if [[ -z "$(command -v asdf)" ]]; then
-            maybe_install_asdf_as_fallback
-        fi
-
         asdf plugin add kubectl
         asdf install kubectl "${KUBECTL_VERSION_FALLBACK}"
-        asdf global kubectl "${KUBECTL_VERSION_FALLBACK}"
+        asdf set --home kubectl "${KUBECTL_VERSION_FALLBACK}"
         kubectl version --short --client
     else
         echo "kubectl version $(kubectl version --short --client | cut -d' ' -f3) is already installed"
@@ -322,23 +267,3 @@ function maybe_install_flatpak_as_fallback() {
     fi
 }
 
-function maybe_configure_vimrc_as_fallback() {
-    if [[ ! -e "${HOME}/.vimrc" ]]; then
-        echo "Attempting to configure .vimrc from local files"
-        if [[ -e "${PROJECT_ROOT}/config/dotfiles/vim/vimrc" ]]; then
-            cp \
-                "${PROJECT_ROOT}/config/dotfiles/vim/vimrc" \
-                "${HOME}/.vimrc"
-        else
-            echo "Falling back to remote vimrc file ${GITHUB_URL}/config/dotfiles/vim/vimrc"
-            if curl -sIf -o /dev/null ${GITHUB_URL}/config/dotfiles/vim/vimrc; then
-                curl "${GITHUB_URL}/config/dotfiles/vim/vimrc" >"${HOME}/.vimrc"
-            else
-                echo "${GITHUB_URL}/config/dotfiles/vim/vimrc does not exist" >/dev/stderr
-                return 1
-            fi
-        fi
-    else
-        echo "${HOME}/.vimrc is already configured"
-    fi
-}

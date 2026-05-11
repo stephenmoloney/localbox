@@ -17,7 +17,7 @@ indent_size = 8
 [justfile]
 indent_size = 4
 
-[*.{sh,Dockerfile,vimrc,vim,bashrc}]
+[*.{sh,Dockerfile,bashrc}]
 indent_size = 4
 
 [Makefile]
