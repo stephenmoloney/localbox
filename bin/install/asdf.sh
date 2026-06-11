@@ -3,7 +3,8 @@ set -eu
 set -o pipefail
 set -o errtrace
 
-ASDF_VERSION_FALLBACK=0.10.0
+ASDF_VERSION_FALLBACK=0.19.0
+BASE_URL=https://github.com/asdf-vm/asdf/releases/download
 
 # ******* Importing utils.sh as a source of common shell functions *******
 GITHUB_URL=https://raw.githubusercontent.com/stephenmoloney/localbox/master
@@ -46,7 +47,29 @@ function install_asdf() {
             "${HOME}/.asdf"
     fi
 
-    . "${HOME}"/.asdf/asdf.sh
+    pushd "$(mktemp -d)" || true
+    curl -L -o asdf.tar.gz \
+        "${BASE_URL}"/v0.19.0/asdf-v0.19.0-linux-amd64.tar.gz
+    curl -L -o asdf.tar.gz.md5 \
+        "${BASE_URL}"/v"${version}"/asdf-v"${version}"-linux-amd64.tar.gz.md5
+    ACTUAL_HASH=$(md5sum asdf.tar.gz | awk '{print $1}')
+    OFFICIAL_HASH=$(cat asdf.tar.gz.md5 | tr -d '[:space:]')
+    echo "Actual:   $ACTUAL_HASH"
+    echo "Official: $OFFICIAL_HASH"
+    if [ "$ACTUAL_HASH" = "$OFFICIAL_HASH" ]; then
+        echo "✅ Integrity Check PASSED"
+    else
+        echo "❌ Integrity Check FAILED! The download is corrupted or tampered."
+        exit 1
+    fi
+    tar -xzf asdf.tar.gz
+    ls -al
+    chmod +x asdf
+    sudo mv asdf /usr/local/bin/asdf
+    popd
+
+    export ASDF_DATA_DIR="${HOME}"/.asdf
+    export PATH="${PATH}:${ASDF_DATA_DIR}/shims"
 
     asdf --version
 }

@@ -3,7 +3,7 @@ set -eu
 set -o pipefail
 set -o errtrace
 
-SHELLCHECK_VERSION_FALLBACK=0.9.0
+SHELLCHECK_VERSION_FALLBACK=0.11.0
 
 # ******* Importing utils.sh as a source of common shell functions *******
 GITHUB_URL=https://raw.githubusercontent.com/stephenmoloney/localbox/master

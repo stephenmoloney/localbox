@@ -21,22 +21,18 @@ function main() {
     source "${LOCALBOX_PATH}/bin/configure/ansible.sh"
     source "${LOCALBOX_PATH}/bin/configure/asdf.sh"
     source "${LOCALBOX_PATH}/bin/configure/asdf_plugins.sh"
-    source "${LOCALBOX_PATH}/bin/configure/bpytop.sh"
     source "${LOCALBOX_PATH}/bin/configure/dotnet_core.sh"
     source "${LOCALBOX_PATH}/bin/configure/git.sh"
     source "${LOCALBOX_PATH}/bin/configure/go.sh"
     source "${LOCALBOX_PATH}/bin/configure/krew.sh"
     source "${LOCALBOX_PATH}/bin/configure/misc.sh"
     source "${LOCALBOX_PATH}/bin/configure/rust.sh"
-    source "${LOCALBOX_PATH}/bin/configure/pgcli.sh"
-    source "${LOCALBOX_PATH}/bin/configure/pipx.sh"
     source "${LOCALBOX_PATH}/bin/configure/tmux.sh"
     source "${LOCALBOX_PATH}/bin/configure/tmuxinator.sh"
     source "${LOCALBOX_PATH}/bin/configure/yamllint.sh"
 
     setup_ansible
     setup_asdf
-    setup_bpytop
     setup_dotnet_core
     setup_editors
     setup_gcloud # asdf plugin
@@ -48,8 +44,6 @@ function main() {
     setup_krew
     setup_locales
     setup_timezone
-    setup_pgcli
-    setup_pipx
     setup_rust
     setup_starship # asdf plugin
     setup_tmux_plugin_manager

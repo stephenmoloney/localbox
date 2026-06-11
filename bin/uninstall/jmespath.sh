@@ -5,7 +5,7 @@ set -o errtrace
 
 function uninstall_jmespath() {
     if [[ -n "$(command -v jmespath)" ]]; then
-        pip3 uninstall --yes jmespath
+        pipx uninstall --force jmespath
     fi
 }
 

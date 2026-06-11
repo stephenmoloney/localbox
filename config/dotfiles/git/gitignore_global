@@ -3,10 +3,6 @@
 .swp
 .swo
 
-# Configs
-coc-settings.json
-.vim
-
 # Packages/binaries
 node_modules
 *.dll

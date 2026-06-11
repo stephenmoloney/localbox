@@ -3,7 +3,7 @@ set -eu
 set -o pipefail
 set -o errtrace
 
-DIAGRAMS_VERSION_FALLBACK=0.23.3
+DIAGRAMS_VERSION_FALLBACK=0.25.1
 
 # ******* Importing utils.sh as a source of common shell functions *******
 GITHUB_URL=https://raw.githubusercontent.com/stephenmoloney/localbox/master
@@ -29,12 +29,25 @@ function install_diagrams() {
     local version="${1}"
 
     maybe_install_apt_pkg "python3-pip" "*"
+    if ! command -v pipx &>/dev/null; then
+        sudo apt-get install -y pipx
+        sudo pipx ensurepath --force
+        export PATH="$HOME/.local/bin:$PATH"
+    fi
 
-    pip3 install diagrams=="${version}"
+    pipx install --force diagrams=="${version}"
 
     if [[ -z "$(grep "${HOME}/.local/bin" <<<"${PATH}" 2>/dev/null || true)" ]]; then
         export PATH="${PATH}:${HOME}/.local/bin"
     fi
+
+    if [[ -L ~/.local/bin/diagrams ]]; then
+        rm ~/.local/bin/diagrams || true
+    fi
+
+    ln -s \
+        /home/u2/.local/pipx/venvs/diagrams/bin/diagrams \
+        ~/.local/bin/diagrams
 }
 
 function main() {

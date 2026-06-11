@@ -5,7 +5,7 @@ set -o errtrace
 
 function uninstall_pdf2odt() {
     if [[ -n "$(command -v pdf2odt)" ]]; then
-        pip3 uninstall --yes pdf2odt
+        pipx uninstall --force pdf2odt
     fi
 }
 

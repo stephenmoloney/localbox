@@ -4,7 +4,7 @@ set -o pipefail
 set -o errtrace
 
 FLATPAK_VERSION_FALLBACK="*"
-FREEDESKTOP_VERSION_FALLBACK=22.08
+FREEDESKTOP_VERSION_FALLBACK=24.08
 
 # ******* Importing utils.sh as a source of common shell functions *******
 GITHUB_URL=https://raw.githubusercontent.com/stephenmoloney/localbox/master
@@ -38,9 +38,7 @@ function install_flatpak() {
 
     if [[ -z "$(get_current_version 2>/dev/null || true)" ]] ||
         [[ "$(get_current_version 2>/dev/null || true)" != "${flatpak_version}" ]]; then
-        # Temp fix: while jammy is not in the repository
-        # maybe_install_apt_pkg "flatpak" "${flatpak_version}"
-        sudo apt-get install -y flatpak
+        maybe_install_apt_pkg "flatpak" "${flatpak_version}"
         apt_hold_pkg "flatpak"
 
         sudo flatpak remote-add \
@@ -53,17 +51,17 @@ function install_flatpak() {
             --system \
             flathub oci+https://tenacityteam.github.io/tenacity-flatpak-nightly
 
-        sudo flatpak install \
-            -y \
-            --noninteractive \
-            --system \
-            flathub "org.freedesktop.Platform/x86_64/${freedesktop_version}"
-
         flatpak list
     else
         echo "flatpak version ${flatpak_version} is already installed"
         echo "Skipping installation"
     fi
+
+    sudo flatpak install \
+        -y \
+        --noninteractive \
+        --system \
+        flathub "org.freedesktop.Platform/x86_64/${freedesktop_version}"
 
     flatpak --version
 }

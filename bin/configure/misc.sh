@@ -70,8 +70,8 @@ function setup_timezone() {
 }
 
 function setup_editors() {
-    export EDITOR=vim
-    export K8S_EDITOR=vim
+    export EDITOR=nvim
+    export K8S_EDITOR=nvim
 }
 
 function setup_gpg_ssh_agent() {

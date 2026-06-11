@@ -5,7 +5,7 @@ set -o errtrace
 
 function uninstall_ansible() {
     if [[ -n "$(command -v ansible)" ]]; then
-        pip3 uninstall --yes ansible
+        pipx uninstall --force ansible
     fi
     if [[ -d "${HOME}/.ansible" ]]; then
         sudo rm -rf "${HOME}/.ansible"

@@ -5,7 +5,7 @@ set -o errtrace
 
 function uninstall_yamllint() {
     if [[ -n "$(command -v yamllint)" ]]; then
-        pip3 uninstall --yes yamllint
+        pipx uninstall --force yamllint
     fi
 }
 

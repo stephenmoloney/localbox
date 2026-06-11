@@ -32,11 +32,13 @@ DEBIAN_PKGS=(
     ["dialog"]="*"
     ["converseen"]="*"
     ["exuberant-ctags"]="*"
+    ["fonts-noto-color-emoji"]="*"
     ["jdupes"]="*"
     ["git"]="*"
     ["gitk"]="*"
     ["git-cola"]="*"
     ["gnome-tweaks"]="*"
+    ["gnome-browser-connector"]="*"
     ["gnupg"]="*"
     ["httpie"]="*"
     ["inxi"]="*"
@@ -45,7 +47,7 @@ DEBIAN_PKGS=(
     ["lsb-release"]="*"
     ["libssl-dev"]="*"
     ["nautilus-image-converter"]="*"
-    ["neofetch"]="*"
+    ["fastfetch"]="*"
     ["nnn"]="*"
     ["openvpn"]="*"
     ["openssl"]="*"
@@ -112,6 +114,9 @@ function main() {
         fi
     done
 
+    sudo apt-get install -y pipx
+    sudo pipx ensurepath --force
+    source "${HOME}"/.bashrc
     sudo apt-mark showhold
 }
 
