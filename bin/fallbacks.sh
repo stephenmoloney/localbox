@@ -266,4 +266,3 @@ function maybe_install_flatpak_as_fallback() {
         echo "Flatpak version $(flatpak --version | cut -d ' ' -f2) already installed"
     fi
 }
-

@@ -2,7 +2,7 @@
 set -eo pipefail
 
 LIGHT_PROFILES=(
-    github
+    github-light
     lunaria-light
     pencil-light
 )
@@ -14,7 +14,6 @@ DARK_PROFILES=(
     chalkboard
     lunaria-dark
     lunaria-eclipse
-    miu
     nord
     seafoam-pastel
     slate
@@ -62,11 +61,11 @@ function setup_gnome_terminal_profiles() {
         visible-name \
         "default"
 
-    pushd "${HOME}/src/open/gogh/themes" || exit
+    pushd "${HOME}/src/open/gogh" || exit
     for profile in "${ALL_PROFILES[@]}"; do
         echo "Installing the ${profile} theme"
         export TERMINAL="gnome-terminal"
-        bash -c "./${profile}.sh"
+        bash -c "./installs/${profile}.sh"
         unset TERMINAL
     done
     popd || exit

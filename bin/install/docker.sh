@@ -3,7 +3,7 @@ set -eu
 set -o pipefail
 set -o errtrace
 
-DOCKER_VERSION_FALLBACK=5:29.5.3-1~ubuntu.24.04~noble
+DOCKER_VERSION_FALLBACK=5:29.5
 
 # ******* Importing utils.sh as a source of common shell functions *******
 GITHUB_URL=https://raw.githubusercontent.com/stephenmoloney/localbox/master
@@ -25,12 +25,24 @@ else
 fi
 # ************************************************************************
 
+function get_full_version() {
+    local version="${1}"
+
+    apt-cache madison docker-ce |
+        grep "${version}" |
+        head -n1 |
+        awk '{print $3}'
+}
+
 function install_docker() {
+    local full_version
     local version="${1}"
 
     maybe_install_apt_pkg "lsb-release" "*"
     maybe_install_apt_pkg "curl" "*"
     maybe_install_apt_pkg "gpg" "*"
+
+    full_version=$(get_full_version "${version}")
 
     if [[ ! -e /usr/share/keyrings/docker-archive-keyring.gpg ]]; then
         curl -fsSL https://download.docker.com/linux/ubuntu/gpg |
@@ -44,9 +56,9 @@ function install_docker() {
         sudo tee /etc/apt/sources.list.d/docker.list >/dev/null
 
     maybe_install_apt_pkg "containerd.io" "*"
-    maybe_install_apt_pkg "docker-ce" "${version}"
+    maybe_install_apt_pkg "docker-ce" "${full_version}"
     apt_hold_pkg "docker-ce"
-    maybe_install_apt_pkg "docker-ce-cli" "${version}"
+    maybe_install_apt_pkg "docker-ce-cli" "${full_version}"
     apt_hold_pkg "docker-ce-cli"
     if [[ -n "${USER:-}" ]]; then
         sudo usermod -aG docker "${USER}"
