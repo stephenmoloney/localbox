@@ -44,7 +44,6 @@ else
 fi
 # ****************************************************************************
 
-
 BOTTOM_VERSION_FALLBACK=0.12.3
 GIT_DELTA_VERSION_FALLBACK=0.19.2
 JUST_VERSION_FALLBACK=1.52.0
