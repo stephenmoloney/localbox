@@ -56,8 +56,8 @@ function install_jmespath() {
     fi
 
     ln -s \
-        /home/u2/.local/pipx/venvs/jmespath/bin/jp.py \
-        ~/.local/bin/jmespath
+        "${HOME}"/.local/share/pipx/venvs/jmespath/bin/jp.py \
+        ~/.local/bin/jmespath || true
 }
 
 function main() {

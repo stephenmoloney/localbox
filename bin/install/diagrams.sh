@@ -46,8 +46,8 @@ function install_diagrams() {
     fi
 
     ln -s \
-        /home/u2/.local/pipx/venvs/diagrams/bin/diagrams \
-        ~/.local/bin/diagrams
+        "${HOME}"/.local/share/pipx/venvs/diagrams/bin/diagrams \
+        ~/.local/bin/diagrams || true
 }
 
 function main() {
