@@ -56,8 +56,8 @@ function install_pdf2odt() {
     fi
 
     ln -s \
-        /home/u2/.local/pipx/venvs/pdf2odt/bin/pdf2odt \
-        ~/.local/bin/pdf2odt
+        "${HOME}"/.local/share/pipx/venvs/pdf2odt/bin/pdf2odt \
+        ~/.local/bin/pdf2odt || true
 }
 
 function main() {

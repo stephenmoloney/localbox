@@ -1,3 +1,4 @@
+python 3.14.6
 argo 4.0.4
 argocd 3.3.7
 argo-rollouts 1.9.0
@@ -10,7 +11,6 @@ dotenv-linter 4.0.0
 editorconfig-checker v3.7.0
 elixir 1.19.5
 erlang 28.4.2
-python 3.14.4
 gcloud 565.0.0
 golangci-lint 2.11.4
 groovy 5.0.5
@@ -26,7 +26,7 @@ nodejs 25.9.0
 neovim 0.12.3
 opentofu 1.11.6
 packer 1.15.1
-poetry 2.4.1
+poetry 1.8.5
 protoc 3.20.3
 rclone 1.73.4
 rebar 3.27.0

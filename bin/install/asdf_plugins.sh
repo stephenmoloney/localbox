@@ -57,7 +57,7 @@ ASDF_ERLANG_DEPS=(
     build-essential
     fop
     libncurses5-dev
-    libwxgtk3.0-gtk3-dev
+    libwxgtk3.2-dev
     libgl1-mesa-dev
     libglu1-mesa-dev
     libpng-dev
@@ -73,7 +73,7 @@ ASDF_ERLANG_DEPS=(
     build-essential
     fop
     libncurses5-dev
-    libwxgtk3.0-gtk3-dev
+    libwxgtk3.2-dev
     libgl1-mesa-dev
     libglu1-mesa-dev
     libpng-dev
@@ -196,12 +196,7 @@ function install_asdf_plugins() {
         plugin="${plugin_array[0]}"
         plugin_versions=("${plugin_array[@]:1}")
 
-        if [[ "$(
-            asdf plugin list | grep -w "${plugin}" >/dev/null 2>&1
-            echo $?
-        )" -gt 0 ]]; then
-            asdf plugin add "${plugin}"
-        fi
+        asdf plugin add "${plugin}"
 
         for plugin_version in "${plugin_versions[@]}"; do
             if [[ "${plugin_version}" != "system" ]]; then

@@ -44,16 +44,15 @@ function install_docker() {
 
     full_version=$(get_full_version "${version}")
 
-    if [[ ! -e /usr/share/keyrings/docker-archive-keyring.gpg ]]; then
-        curl -fsSL https://download.docker.com/linux/ubuntu/gpg |
-            sudo gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg
-    fi
+    sudo install -m 0755 -d /etc/apt/keyrings
+    sudo curl -fsSL https://download.docker.com/linux/ubuntu/gpg -o /etc/apt/keyrings/docker.asc
+    sudo chmod a+r /etc/apt/keyrings/docker.asc
 
-    echo \
-        "deb [arch=amd64 signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] \
+    echo "deb [arch=$(dpkg --print-architecture) \
+        signed-by=/etc/apt/keyrings/docker.asc] \
         https://download.docker.com/linux/ubuntu \
-        $(lsb_release -cs) stable" |
-        sudo tee /etc/apt/sources.list.d/docker.list >/dev/null
+        $(. /etc/os-release && echo "$VERSION_CODENAME") \
+        stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
 
     maybe_install_apt_pkg "containerd.io" "*"
     maybe_install_apt_pkg "docker-ce" "${full_version}"

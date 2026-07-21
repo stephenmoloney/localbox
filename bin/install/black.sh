@@ -60,12 +60,12 @@ function install_black() {
     fi
 
     ln -s \
-        /home/u2/.local/pipx/venvs/black/bin/black \
-        ~/.local/bin/black
+        "${HOME}"/.local/share/pipx/venvs/black/bin/black \
+        ~/.local/bin/black || true
 
     ln -s \
-        /home/u2/.local/pipx/venvs/black/bin/blackd \
-        ~/.local/bin/blackd
+        "${HOME}"/.local/share/pipx/venvs/black/bin/blackd \
+        ~/.local/bin/blackd || true
 
     black --version
 }

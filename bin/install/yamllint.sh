@@ -56,8 +56,8 @@ function install_yamllint() {
     fi
 
     ln -s \
-        /home/u2/.local/pipx/venvs/yamllint/bin/yamllint \
-        ~/.local/bin/yamllint
+        "${HOME}"/.local/share/pipx/venvs/yamllint/bin/yamllint \
+        ~/.local/bin/yamllint || true
 
     yamllint --version
 }

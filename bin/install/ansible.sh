@@ -56,8 +56,8 @@ function install_ansible() {
     fi
 
     ln -s \
-        /home/u2/.local/pipx/venvs/ansible-core/bin/ansible \
-        ~/.local/bin/ansible
+        "${HOME}"/.local/share/pipx/venvs/ansible-core/bin/ansible \
+        ~/.local/bin/ansible || true
 
     ansible --version
 }
@@ -70,8 +70,8 @@ function install_ansible_auxillaries() {
     fi
 
     ln -s \
-        /home/u2/.local/pipx/venvs/ansible-core/bin/ansible-lint \
-        ~/.local/bin/ansible-lint
+        "${HOME}"/.local/share/pipx/venvs/ansible-core/bin/ansible-lint \
+        ~/.local/bin/ansible-lint || true
 
     ansible-lint --version
 }
@@ -86,3 +86,4 @@ function main() {
 if [[ "$0" == "${BASH_SOURCE[0]:-}" ]]; then
     main "${@}"
 fi
+
