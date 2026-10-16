@@ -4,5 +4,13 @@
   },
   "MD033": {
     "allowed_elements": ["kbd"]
-  }
+  },
+  "overrides": [
+    {
+      "files": ["config/dotfiles/neovim/LICENSE.md"],
+      "config": {
+        "MD041": false
+      }
+    }
+  ]
 }

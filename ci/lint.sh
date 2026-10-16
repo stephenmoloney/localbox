@@ -21,6 +21,7 @@ function lint_markdown() {
     yarn run \
         --silent markdownlint-cli2 \
         "**/*.md" \
+        '!config/dotfiles/neovim/LICENSE.md' \
         "#node_modules"
     echo "Finished formatting markdown with prettier"
 }
