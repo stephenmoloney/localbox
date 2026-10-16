@@ -973,5 +973,29 @@ do
   -- require 'custom.plugins'
 end
 
+-- ============================================================
+-- SECTION 10: CUSTOM ADDITIONS
+-- Markdown preview plugin (maintained fork, prebuilt binaries)
+-- ============================================================
+do
+  -- selimacerbas/markdown-preview.nvim - Actively maintained, ships with binaries
+  vim.pack.add { 'selimacerbas/markdown-preview.nvim' }
+
+  -- Simple setup - no build steps required
+  local ok, md_preview = pcall(require, 'markdown-preview')
+  if ok then
+    md_preview.setup({
+      browser = '/usr/bin/firefox',
+      auto_close = 0,
+      port = 8000,
+    })
+  end
+
+  -- Keymaps
+  vim.keymap.set('n', '<leader>mp', '<cmd>MarkdownPreview<CR>', { desc = '[M]arkdown [P]review' })
+  vim.keymap.set('n', '<leader>ms', '<cmd>MarkdownPreviewStop<CR>', { desc = '[M]arkdown preview [S]top' })
+  vim.keymap.set('n', '<leader>mt', '<cmd>MarkdownPreviewToggle<CR>', { desc = '[M]arkdown preview [T]oggle' })
+end
+
 -- The line beneath this is called `modeline`. See `:help modeline`
 -- vim: ts=2 sts=2 sw=2 et

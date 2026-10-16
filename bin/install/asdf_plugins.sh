@@ -139,6 +139,7 @@ ASDF_RUBY_DEPS=(
 ASDF_GROOVY_DISABLE_JAVA_HOME_EXPORT=true
 
 # Overcome an issue installing poetry
+# shellcheck disable=SC2034
 ASDF_INSTALL_TYPE=
 
 function install_asdf_plugins() {

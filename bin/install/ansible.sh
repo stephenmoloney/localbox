@@ -86,4 +86,3 @@ function main() {
 if [[ "$0" == "${BASH_SOURCE[0]:-}" ]]; then
     main "${@}"
 fi
-

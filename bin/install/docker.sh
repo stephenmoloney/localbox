@@ -52,7 +52,7 @@ function install_docker() {
         signed-by=/etc/apt/keyrings/docker.asc] \
         https://download.docker.com/linux/ubuntu \
         $(. /etc/os-release && echo "$VERSION_CODENAME") \
-        stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+        stable" | sudo tee /etc/apt/sources.list.d/docker.list >/dev/null
 
     maybe_install_apt_pkg "containerd.io" "*"
     maybe_install_apt_pkg "docker-ce" "${full_version}"
