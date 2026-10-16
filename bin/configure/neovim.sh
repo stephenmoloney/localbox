@@ -30,6 +30,6 @@ function setup_neovim() {
     fi
 
     cp -r \
-        "${PROJECT_ROOT}"/config/dotfiles/neovim \
-        "${HOME}"/.config/nvim/*
+        "${PROJECT_ROOT}"/config/dotfiles/neovim/* \
+        "${HOME}"/.config/nvim/
 }
