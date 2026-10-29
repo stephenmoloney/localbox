@@ -975,27 +975,57 @@ end
 
 -- ============================================================
 -- SECTION 10: CUSTOM ADDITIONS
--- Markdown preview plugin (maintained fork, prebuilt binaries)
+-- Manual install for kitehost + standard mdkite
 -- ============================================================
 do
-  -- selimacerbas/markdown-preview.nvim - Actively maintained, ships with binaries
-  vim.pack.add { 'selimacerbas/markdown-preview.nvim' }
+  local PACK_DIR = vim.fn.stdpath("data") .. "/site/pack/core/opt"
+  local kitehost_dir = PACK_DIR .. "/kitehost.nvim"
 
-  -- Simple setup - no build steps required
-  local ok, md_preview = pcall(require, 'markdown-preview')
-  if ok then
-    md_preview.setup({
-      browser = '/usr/bin/firefox',
-      auto_close = 0,
-      port = 8000,
-    })
+  -- 1. Manual Clone for kitehost.nvim (only if missing)
+  if vim.fn.isdirectory(kitehost_dir) == 0 then
+    vim.fn.mkdir(PACK_DIR, "p")
+    local cmd = { "git", "clone", "--depth", "1", "https://github.com/selimacerbas/kitehost.nvim", kitehost_dir }
+    local res = vim.fn.system(cmd)
+    if vim.v.shell_error ~= 0 then
+      vim.notify("Failed to clone kitehost.nvim:\n" .. res, vim.log.levels.ERROR)
+      return -- Stop here if clone failed
+    end
+    vim.notify("Successfully cloned kitehost.nvim", vim.log.levels.INFO)
   end
 
-  -- Keymaps
-  vim.keymap.set('n', '<leader>mp', '<cmd>MarkdownPreview<CR>', { desc = '[M]arkdown [P]review' })
-  vim.keymap.set('n', '<leader>ms', '<cmd>MarkdownPreviewStop<CR>', { desc = '[M]arkdown preview [S]top' })
-  vim.keymap.set('n', '<leader>mt', '<cmd>MarkdownPreviewToggle<CR>', { desc = '[M]arkdown preview [T]oggle' })
-end
+  -- 2. Force-load the manually installed plugin
+  -- This is crucial: it adds the plugin to runtimepath immediately
+  local host_loaded = pcall(vim.cmd, "packadd! kitehost.nvim")
+  if not host_loaded then
+    vim.notify("Could not load kitehost.nvim via packadd", vim.log.levels.ERROR)
+  end
 
--- The line beneath this is called `modeline`. See `:help modeline`
--- vim: ts=2 sts=2 sw=2 et
+  -- 3. Standard Install for mdkite.nvim
+  local added, err = pcall(vim.pack.add, { 'selimacerbas/mdkite.nvim' })
+  if not added then
+    -- If pack.add fails, try to load it manually too just in case it was already there
+    pcall(vim.cmd, "packadd! mdkite.nvim")
+  end
+
+  -- 4. Configuration & Keymaps (mdkite only)
+  local ok, mdkite = pcall(require, 'mdkite')
+  if ok then
+    mdkite.setup({
+      browser    = '/usr/bin/firefox',
+      instance_mode = "takeover",  -- one shared tab across instances
+      port          = 0,           -- 0 = auto (8421 in takeover mode)
+      open_browser  = true,
+      default_theme = "light",     -- initial preview theme
+      debounce_ms   = 300,
+    })
+
+    -- Mdkite Keymaps only
+    vim.keymap.set('n', '<leader>mp', '<cmd>MdKite start<CR>',   { desc = '[M]dkite [P]review' })
+    vim.keymap.set('n', '<leader>ms', '<cmd>MdKite stop<CR>',    { desc = '[M]dkite preview [S]top' })
+    vim.keymap.set('n', '<leader>mr', '<cmd>MdKite refresh<CR>', { desc = '[M]dkite preview [R]efresh' })
+
+    vim.notify("mdkite loaded successfully", vim.log.levels.INFO)
+  else
+    vim.notify("mdkite module not found (kitehost might be missing)", vim.log.levels.WARN)
+  end
+end
