@@ -4,6 +4,9 @@ set -eu
 set -o pipefail
 set -o errtrace
 
+ex_community_plugin=("herdr")
+ex_community_plugin_url=("https://github.com/RobLoach/asdf-herdr.git")
+
 # ******* Importing utils.sh as a source of common shell functions *******
 GITHUB_URL=https://raw.githubusercontent.com/stephenmoloney/localbox/master
 UTILS_PATH="$(dirname "${BASH_SOURCE[0]:-}")/../utils.sh"
@@ -197,7 +200,12 @@ function install_asdf_plugins() {
         plugin="${plugin_array[0]}"
         plugin_versions=("${plugin_array[@]:1}")
 
-        asdf plugin add "${plugin}"
+        if plugin_index="$(printf '%s\n' "${ex_community_plugin[@]}" |
+            awk -v plugin="$plugin" '$0 == plugin { print NR - 1; found=1; exit } END { if (!found) exit 1 }')"; then
+            asdf plugin add "${ex_community_plugin[$plugin_index]}" "${ex_community_plugin_url[$plugin_index]}"
+        else
+            asdf plugin add "${plugin}"
+        fi
 
         for plugin_version in "${plugin_versions[@]}"; do
             if [[ "${plugin_version}" != "system" ]]; then

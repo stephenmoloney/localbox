@@ -18,6 +18,7 @@ helm 4.1.4
 helm-cr 1.8.1
 helm-ct 3.14.0
 helmfile 1.4.4
+herdr 0.9.5
 hey 0.1.5
 java adoptopenjdk-25.0.2+10.0.LTS
 kubectl 1.35.4
