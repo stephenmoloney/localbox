@@ -1,6 +1,7 @@
 [alias]
-        plog = log --decorate=short --pretty=oneline -n 40 --graph --abbrev-commit
         contrib = shortlog --summary --numbered --email
+        ls-branches = !git for-each-ref refs/heads refs/remotes --sort=-committerdate --format=\"%(committerdate:format:%Y-%m-%d %H:%M:%S) | %(committerdate:relative) | %(authorname) | %(refname:short)\"
+        plog = log --decorate=short --pretty=oneline -n 40 --graph --abbrev-commit
 
 [cola]
         spellcheck = false
@@ -54,4 +55,3 @@
         name = Stephen Moloney
         email = contact@stephenmoloney.ie
         signingkey = AE60E3176F2B785A16F50CE371EEDBCB37274237
-
