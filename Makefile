@@ -29,7 +29,8 @@ endif
 	provision \
 	provision_emulate \
 	test_all_docker \
-	test_spec
+	test_spec \
+	version_bumps
 
 .ONESHELL:
 init:
@@ -106,3 +107,7 @@ provision_emulate:
 	echo "The motivation for this is to emulate a CI run locally"
 	source ./ci/provision_emulate.sh
 	emulate_ci
+
+.ONESHELL:
+version_bumps:
+	source ./bin/utils.sh && bump_asdf_tool_versions

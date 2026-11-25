@@ -4,8 +4,14 @@ set -eu
 set -o pipefail
 set -o errtrace
 
-ex_community_plugin=("herdr")
-ex_community_plugin_url=("https://github.com/RobLoach/asdf-herdr.git")
+ex_community_plugin=(
+    "herdr"
+    "kyverno"
+)
+ex_community_plugin_url=(
+    "https://github.com/RobLoach/asdf-herdr.git"
+    "https://github.com/hobaen/asdf-kyverno-cli.git"
+)
 
 # ******* Importing utils.sh as a source of common shell functions *******
 GITHUB_URL=https://raw.githubusercontent.com/stephenmoloney/localbox/master
@@ -54,22 +60,6 @@ maybe_install_go_as_fallback   # go required for go-jsonnet installation
 
 # shellcheck disable=SC2034
 export ASDF_WEBSOCAT_DISTRO=websocat.x86_64-unknown-linux-musl
-
-ASDF_ERLANG_DEPS=(
-    autoconf
-    build-essential
-    fop
-    libncurses5-dev
-    libwxgtk3.2-dev
-    libgl1-mesa-dev
-    libglu1-mesa-dev
-    libpng-dev
-    libssh-dev
-    libxml2-utils
-    m4
-    openssl
-    xsltproc
-)
 
 ASDF_ERLANG_DEPS=(
     autoconf
@@ -150,36 +140,22 @@ function install_asdf_plugins() {
     local plugins
     local plugin
     local plugin_versions
+    local ex_url
+    local i
 
-    # Potentially required dependencies
-    maybe_install_apt_pkg "libreadline-dev" "*"
-
-    # Required for nodejs amd yarn
-    for dep in "${ASDF_NODEJS_DEPS[@]}"; do
-        maybe_install_apt_pkg "${dep}" "*"
-    done
-
-    # Required for neovim
-    for dep in "${ASDF_NEOVIM_DEPS[@]}"; do
-        maybe_install_apt_pkg "${dep}" "*"
-    done
-
-    # Required for erlang
-    for dep in "${ASDF_ERLANG_DEPS[@]}"; do
-        maybe_install_apt_pkg "${dep}" "*"
-    done
+    maybe_install_apt_pkgs \
+        "libreadline-dev" \
+        "${ASDF_NODEJS_DEPS[@]}" \
+        "${ASDF_NEOVIM_DEPS[@]}" \
+        "${ASDF_ERLANG_DEPS[@]}" \
+        "${ASDF_PYTHON_DEPS[@]}" \
+        "${ASDF_RUBY_DEPS[@]}"
 
     export KERL_CONFIGURE_OPTIONS="--disable-debug --without-odbc --without-javac"
     export KERL_BUILD_DOCS=yes
     export KERL_BASE_DIR="${HOME}/.kerl"
-
     python_current_version="$(asdf list python | awk NR==1 | xargs)"
     export CLOUDSDK_PYTHON="$(readlink -f "${HOME}"/.asdf/installs/python/"${python_current_version}"/bin/python3)"
-
-    # Required for pythong (and therefore gcloud)
-    for dep in "${ASDF_PYTHON_DEPS[@]}"; do
-        maybe_install_apt_pkg "${dep}" "*"
-    done
 
     if [[ ! -d "${HOME}/.config/gcloud/" ]]; then
         mkdir -p "${HOME}/.config/gcloud"
@@ -188,21 +164,30 @@ function install_asdf_plugins() {
         "${PROJECT_ROOT}/config/dotfiles/gcloud/default-cloud-sdk-components" \
         "${HOME}/.config/gcloud/.default-cloud-sdk-components"
 
-    #  Required for ruby
-    for dep in "${ASDF_RUBY_DEPS[@]}"; do
-        maybe_install_apt_pkg "${dep}" "*"
-    done
-
-    mapfile -t plugins <"${PROJECT_ROOT}/config/dotfiles/asdf/tool-versions"
+    # One tool per line; strip comments and blank lines
+    mapfile -t plugins < <(grep -vE '^[[:space:]]*(#|$)' \
+        "${PROJECT_ROOT}/config/dotfiles/asdf/tool-versions")
 
     for plugin in "${plugins[@]}"; do
         IFS=' ' read -r -a plugin_array <<<"${plugin}"
         plugin="${plugin_array[0]}"
         plugin_versions=("${plugin_array[@]:1}")
 
-        if plugin_index="$(printf '%s\n' "${ex_community_plugin[@]}" |
-            awk -v plugin="$plugin" '$0 == plugin { print NR - 1; found=1; exit } END { if (!found) exit 1 }')"; then
-            asdf plugin add "${ex_community_plugin[$plugin_index]}" "${ex_community_plugin_url[$plugin_index]}"
+        # Resolve custom URL for community plugins (empty if not in the list)
+        ex_url=""
+        for i in "${!ex_community_plugin[@]}"; do
+            if [[ "${plugin}" == "${ex_community_plugin[i]}" ]]; then
+                ex_url="${ex_community_plugin_url[i]:-}"
+                break
+            fi
+        done
+
+        # Idempotent: skip plugins that are already registered
+        if asdf plugin list 2>/dev/null | grep -qx -- "${plugin}"; then
+            echo "Plugin ${plugin} already added, skipping"
+        elif [[ -n "${ex_url}" ]]; then
+            echo "Adding community plugin ${ex_url}"
+            asdf plugin add "${plugin}" "${ex_url}"
         else
             asdf plugin add "${plugin}"
         fi

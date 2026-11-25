@@ -16,7 +16,7 @@ else
         sudo apt install -y -qq curl
     fi
     echo "Falling back to remote script ${GITHUB_URL}/bin/utils.sh"
-    if curl -sIf -o /dev/null ${GITHUB_URL}/bin/utils.sh; then
+    if curl -sIf -o /dev/null "${GITHUB_URL}/bin/utils.sh"; then
         source <(curl -s "${GITHUB_URL}/bin/utils.sh")
     else
         echo "${GITHUB_URL}/bin/utils.sh does not exist" >/dev/stderr
@@ -26,40 +26,30 @@ fi
 # ************************************************************************
 
 function get_current_version() {
-    yamllint --version | cut -d ' ' -f2
+    yamllint --version 2>/dev/null | cut -d ' ' -f2
 }
 
 function install_yamllint() {
     local version="${1}"
 
     maybe_install_apt_pkg "python3-pip" "*"
+
     if ! command -v pipx &>/dev/null; then
         sudo apt-get install -y pipx
-        sudo pipx ensurepath --force
-        export PATH="$HOME/.local/bin:$PATH"
+        pipx ensurepath
     fi
 
-    if [[ -z "$(get_current_version 2>/dev/null || true)" ]] ||
-        [[ "$(get_current_version 2>/dev/null || true)" != "${version}" ]]; then
+    if [[ ":${PATH}:" != *":${HOME}/.local/bin:"* ]]; then
+        export PATH="${PATH}:${HOME}/.local/bin"
+    fi
+
+    if [[ -z "$(get_current_version || true)" ]] ||
+        [[ "$(get_current_version || true)" != "${version}" ]]; then
         pipx install --force yamllint=="${version}"
     else
         echo "yamllint version ${version} is already installed"
         echo "Skipping installation"
     fi
-
-    if [[ -z "$(grep "${HOME}/.local/bin" <<<"${PATH}" 2>/dev/null || true)" ]]; then
-        export PATH="${PATH}:${HOME}/.local/bin"
-    fi
-
-    if [[ -L ~/.local/bin/yamllint ]]; then
-        rm ~/.local/bin/yamllint || true
-    fi
-
-    ln -s \
-        "${HOME}"/.local/share/pipx/venvs/yamllint/bin/yamllint \
-        ~/.local/bin/yamllint || true
-
-    yamllint --version
 }
 
 function main() {

@@ -26,11 +26,12 @@ fi
 # ************************************************************************
 
 function get_current_version() {
-    black --version | cut -d' ' -f3
+    black --version 2>/dev/null | head -n1 | cut -d' ' -f2 || true
 }
 
 function install_black() {
     local version="${1}"
+    local current_version
 
     maybe_install_apt_pkg "python3-pip" "*"
     if ! command -v pipx &>/dev/null; then
@@ -39,9 +40,10 @@ function install_black() {
         export PATH="$HOME/.local/bin:$PATH"
     fi
 
-    if [[ -z "$(get_current_version 2>/dev/null || true)" ]] ||
-        [[ "$(get_current_version 2>/dev/null || true)" != "${version}" ]]; then
-        pipx install --force black=="${version}"
+    current_version="$(get_current_version)"
+
+    if [[ -z "${current_version}" ]] || [[ "${current_version}" != "${version}" ]]; then
+        pipx install --force "black==${version}"
     else
         echo "black version ${version} is already installed"
         echo "Skipping installation"
@@ -50,22 +52,6 @@ function install_black() {
     if [[ -z "$(grep "${HOME}/.local/bin" <<<"${PATH}" 2>/dev/null || true)" ]]; then
         export PATH="${PATH}:${HOME}/.local/bin"
     fi
-
-    if [[ -L ~/.local/bin/black ]]; then
-        rm ~/.local/bin/black || true
-    fi
-
-    if [[ -L ~/.local/bin/blackd ]]; then
-        rm ~/.local/bin/blackd || true
-    fi
-
-    ln -s \
-        "${HOME}"/.local/share/pipx/venvs/black/bin/black \
-        ~/.local/bin/black || true
-
-    ln -s \
-        "${HOME}"/.local/share/pipx/venvs/black/bin/blackd \
-        ~/.local/bin/blackd || true
 
     black --version
 }
