@@ -4,7 +4,7 @@ set -o pipefail
 set -o errtrace
 
 # Default version (matches recent stable releases)
-AZURE_CLI_VERSION_FALLBACK="2.87.0"
+AZURE_CLI_VERSION_FALLBACK="2.93.0"
 
 # ******* Importing utils.sh as a source of common shell functions *******
 GITHUB_URL=https://raw.githubusercontent.com/stephenmoloney/localbox/master

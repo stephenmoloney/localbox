@@ -26,11 +26,12 @@ fi
 # ************************************************************************
 
 function get_current_version() {
-    ansible --version | cut -d ' ' -f2
+    ansible --version 2>/dev/null | cut -d ' ' -f2 || true
 }
 
 function install_ansible() {
     local version="${1}"
+    local current_version
 
     maybe_install_apt_pkg "python3-pip" "*"
     if ! command -v pipx &>/dev/null; then
@@ -39,9 +40,10 @@ function install_ansible() {
         export PATH="$HOME/.local/bin:$PATH"
     fi
 
-    if [[ -z "$(get_current_version 2>/dev/null || true)" ]] ||
-        [[ "$(get_current_version 2>/dev/null || true)" != "${version}" ]]; then
-        pipx install --force ansible-core=="${version}"
+    current_version="$(get_current_version)"
+
+    if [[ -z "${current_version}" ]] || [[ "${current_version}" != "${version}" ]]; then
+        pipx install --force "ansible-core==${version}"
     else
         echo "ansible version ${version} is already installed"
         echo "Skipping installation"
@@ -51,27 +53,11 @@ function install_ansible() {
         export PATH="${PATH}:${HOME}/.local/bin"
     fi
 
-    if [[ -L ~/.local/bin/ansible ]]; then
-        rm ~/.local/bin/ansible || true
-    fi
-
-    ln -s \
-        "${HOME}"/.local/share/pipx/venvs/ansible-core/bin/ansible \
-        ~/.local/bin/ansible || true
-
     ansible --version
 }
 
 function install_ansible_auxillaries() {
     pipx inject ansible-core ansible-lint
-
-    if [[ -L ~/.local/bin/ansible-lint ]]; then
-        rm ~/.local/bin/ansible-lint || true
-    fi
-
-    ln -s \
-        "${HOME}"/.local/share/pipx/venvs/ansible-core/bin/ansible-lint \
-        ~/.local/bin/ansible-lint || true
 
     ansible-lint --version
 }

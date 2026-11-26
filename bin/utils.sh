@@ -89,6 +89,35 @@ function maybe_install_apt_pkg() {
     fi
 }
 
+function maybe_install_apt_pkgs() {
+    local pkg
+    local apt_installed
+    local -a missing=()
+
+    if [[ $# -eq 0 ]]; then
+        echo "at least one pkg must be set as a variable"
+        return 1
+    fi
+
+    apt_installed="$(sudo apt list --installed 2>/dev/null)"
+
+    for pkg in "$@"; do
+        if [[ -z "$(grep "${pkg}/" <<<"${apt_installed}" 2>/dev/null || true)" ]]; then
+            missing+=("${pkg}")
+        else
+            echo "package ${pkg} is already installed"
+            echo "Skipping ${pkg} installation"
+        fi
+    done
+
+    if [[ "${#missing[@]}" -eq 0 ]]; then
+        return 0
+    fi
+
+    echo "Installing packages: ${missing[*]}"
+    sudo --preserve-env apt install -y --allow-downgrades -qq "${missing[@]}"
+}
+
 function maybe_uninstall_apt_pkg() {
     local pkg="${1}"
     local apt_installed
