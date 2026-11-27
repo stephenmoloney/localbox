@@ -93,6 +93,7 @@ function maybe_install_apt_pkgs() {
     local pkg
     local apt_installed
     local -a missing=()
+    local -a unavailable=()
 
     if [[ $# -eq 0 ]]; then
         echo "at least one pkg must be set as a variable"
@@ -102,13 +103,22 @@ function maybe_install_apt_pkgs() {
     apt_installed="$(sudo apt list --installed 2>/dev/null)"
 
     for pkg in "$@"; do
-        if [[ -z "$(grep "${pkg}/" <<<"${apt_installed}" 2>/dev/null || true)" ]]; then
-            missing+=("${pkg}")
-        else
+        if [[ -n "$(grep "^${pkg}/" <<<"${apt_installed}" 2>/dev/null || true)" ]]; then
             echo "package ${pkg} is already installed"
             echo "Skipping ${pkg} installation"
+        elif apt-cache show "${pkg}" >/dev/null 2>&1; then
+            missing+=("${pkg}")
+        else
+            unavailable+=("${pkg}")
         fi
     done
+
+    if [[ "${#unavailable[@]}" -gt 0 ]]; then
+        echo "ERROR: the following packages do not exist in the apt repositories:" >&2
+        echo "  ${unavailable[*]}" >&2
+        echo "Fix the dependency list in the calling script, or run on a release where these packages exist." >&2
+        return 1
+    fi
 
     if [[ "${#missing[@]}" -eq 0 ]]; then
         return 0
@@ -116,6 +126,66 @@ function maybe_install_apt_pkgs() {
 
     echo "Installing packages: ${missing[*]}"
     sudo --preserve-env apt install -y --allow-downgrades -qq "${missing[@]}"
+}
+
+function maybe_install_apt_pkgs_with_versions() {
+    local apt_installed
+    local -a to_install=()
+    local -a to_unhold=()
+    local pkg
+    local pkg_version
+    local installed_entry
+    local i
+
+    if [[ $# -eq 0 ]]; then
+        echo "usage: maybe_install_apt_pkgs_with_versions pkg version [pkg version ...]"
+        return 1
+    fi
+
+    if (( $# % 2 != 0 )); then
+        echo "arguments must come in pkg version pairs (got $# args)"
+        return 1
+    fi
+
+    apt_installed="$(sudo apt list --installed 2>/dev/null)"
+
+    for (( i = 1; i <= $#; i += 2 )); do
+        pkg="${!i}"
+        pkg_version="${@:i+1:1}"
+
+        if [[ "${pkg_version}" == "*" ]]; then
+            if [[ -z "$(grep "^${pkg}/" <<<"${apt_installed}" 2>/dev/null || true)" ]]; then
+                to_install+=("${pkg}")
+            else
+                echo "package ${pkg} is already installed (latest requested), skipping"
+            fi
+            continue
+        fi
+
+        installed_entry="$(grep "^${pkg}/" <<<"${apt_installed}" 2>/dev/null || true)"
+
+        if [[ -z "${installed_entry}" ]]; then
+            to_install+=("${pkg}=${pkg_version}")
+        elif [[ "${installed_entry}" != *"${pkg_version}"* ]]; then
+            to_unhold+=("${pkg}")
+            to_install+=("${pkg}=${pkg_version}")
+        else
+            echo "package ${pkg} version ${pkg_version} is already installed, skipping"
+        fi
+    done
+
+    if [[ "${#to_unhold[@]}" -gt 0 ]]; then
+        echo "Unholding packages: ${to_unhold[*]}"
+        sudo apt-mark unhold "${to_unhold[@]}" >/dev/null
+    fi
+
+    if [[ "${#to_install[@]}" -eq 0 ]]; then
+        echo "Nothing to install"
+        return 0
+    fi
+
+    echo "Installing packages: ${to_install[*]}"
+    sudo --preserve-env apt install -y --allow-downgrades -qq "${to_install[@]}"
 }
 
 function maybe_uninstall_apt_pkg() {
@@ -135,14 +205,6 @@ function maybe_uninstall_apt_pkg() {
 function opts_handler() {
     for opt in "$@"; do
         case "${opt}" in
-        --headless=true)
-            export HEADLESS_ONLY=true
-            shift
-            ;;
-        --headless=false)
-            export HEADLESS_ONLY=false
-            shift
-            ;;
         --use-fallback-versions=true)
             export SOURCE_ENV_FILE=false
             shift
@@ -158,7 +220,6 @@ function opts_handler() {
             ;;
         esac
     done
-    echo "HEADLESS_ONLY: ${HEADLESS_ONLY:-false}"
     echo "SOURCE_ENV_FILE: ${SOURCE_ENV_FILE:-true}"
 }
 
@@ -196,12 +257,6 @@ function exec_with_retries() {
 
 function is_docker() {
     if [[ -e /.dockerenv ]]; then
-        echo "true"
-    fi
-}
-
-function headless_only() {
-    if [[ "${HEADLESS_ONLY:-false}" == "true" ]]; then
         echo "true"
     fi
 }

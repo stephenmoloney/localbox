@@ -135,6 +135,14 @@ ASDF_GROOVY_DISABLE_JAVA_HOME_EXPORT=true
 # shellcheck disable=SC2034
 ASDF_INSTALL_TYPE=
 
+# Detect container runtimes (docker writes /.dockerenv, podman writes
+# /run/.containerenv). Used to skip GUI-heavy build steps such as the
+# wx application of Erlang/OTP, which are useless headless.
+function in_container() {
+    [[ -e /.dockerenv ]] ||
+        [[ -e /run/.containerenv ]]
+}
+
 function install_asdf_plugins() {
     local python_current_version
     local plugins
@@ -152,10 +160,14 @@ function install_asdf_plugins() {
         "${ASDF_RUBY_DEPS[@]}"
 
     export KERL_CONFIGURE_OPTIONS="--disable-debug --without-odbc --without-javac"
+    # Skip the wx GUI application inside containers: it needs wxWidgets
+    # dev packages that a headless image doesn't carry, and adds a large
+    # amount of build time for something unusable without a display
+    if in_container; then
+        export KERL_CONFIGURE_OPTIONS="${KERL_CONFIGURE_OPTIONS} --without-wx"
+    fi
     export KERL_BUILD_DOCS=yes
     export KERL_BASE_DIR="${HOME}/.kerl"
-    python_current_version="$(asdf list python | awk NR==1 | xargs)"
-    export CLOUDSDK_PYTHON="$(readlink -f "${HOME}"/.asdf/installs/python/"${python_current_version}"/bin/python3)"
 
     if [[ ! -d "${HOME}/.config/gcloud/" ]]; then
         mkdir -p "${HOME}/.config/gcloud"
@@ -207,6 +219,16 @@ function install_asdf_plugins() {
             asdf set --home "${plugin}" "${plugin_versions[0]}"
         fi
     done
+
+    # Must run AFTER the plugin loop: python is registered and installed
+    # by the loop, and in a fresh container (CI) it does not exist before
+    # that — asdf list python would abort with "No such plugin: python"
+    if asdf plugin list 2>/dev/null | grep -qx "python"; then
+        python_current_version="$(asdf list python | awk NR==1 | xargs)"
+        export CLOUDSDK_PYTHON="$(readlink -f "${HOME}"/.asdf/installs/python/"${python_current_version}"/bin/python3)"
+    else
+        echo "python plugin not present, skipping CLOUDSDK_PYTHON setup"
+    fi
 }
 
 function install_gcloud_components() {

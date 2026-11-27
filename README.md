@@ -18,16 +18,10 @@ git clone https://github.com/stephenmoloney/localbox.git
 cd localbox
 ```
 
-### Provisioning with GUI apps
+### Provisioning
 
 ```bash
 make provision
-```
-
-### Provisioning without GUI apps
-
-```bash
-make provision headless=true
 ```
 
 ### Provisioning using environment versions
@@ -45,7 +39,7 @@ make provision
 To use default fallback versions and ignore `.env`
 
 ```bash
-make provision fallback_versions=true headless=false
+make provision fallback_versions=true
 ```
 
 ### Emulate installation locally
@@ -71,7 +65,7 @@ docker run \
   -v $PWD:/localbox \
   --user ubuntu \
   local/shellspec-ubuntu:latest \
-  bash -c 'sudo apt install -y make && make provision headless=true'
+  bash -c 'sudo apt install -y make && make provision'
 ```
 
 ## Installation

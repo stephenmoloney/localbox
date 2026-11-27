@@ -96,9 +96,7 @@ provision_in_docker:
   <<: *provision_emulate
   script:
     - >
-      su ubuntu -c "make provision
-        fallback_versions=${FALLBACK_VERSIONS}
-        headless=${HEADLESS_ONLY}"
+      su ubuntu -c "make provision fallback_versions=${FALLBACK_VERSIONS}"
 
   parallel:
     matrix:
@@ -154,17 +152,12 @@ provision_in_vm_no_fallbacks:
   variables:
     USER: gitlab-runner
     FALLBACK_VERSIONS: "false"
-    HEADLESS_ONLY: "true"
   script:
     - |
       sudo apt update -y -qq
       sudo apt install -y build-essential
-      make install \
-        fallback_versions="${FALLBACK_VERSIONS}" \
-        headless="${HEADLESS_ONLY}"
-      make configure \
-        fallback_versions="${FALLBACK_VERSIONS}" \
-        headless="${HEADLESS_ONLY}"
+      make install fallback_versions="${FALLBACK_VERSIONS}"
+      make configure fallback_versions="${FALLBACK_VERSIONS}"
 
   tags:
     - vm
@@ -191,17 +184,12 @@ provision_in_vm_with_fallbacks:
   variables:
     USER: gitlab-runner
     FALLBACK_VERSIONS: "true"
-    HEADLESS_ONLY: "true"
   script:
     - |
       sudo apt update -y -qq
       sudo apt install -y build-essential
-      make install \
-        fallback_versions="${FALLBACK_VERSIONS}" \
-        headless="${HEADLESS_ONLY}"
-      make configure \
-        fallback_versions="${FALLBACK_VERSIONS}" \
-        headless="${HEADLESS_ONLY}"
+      make install fallback_versions="${FALLBACK_VERSIONS}"
+      make configure fallback_versions="${FALLBACK_VERSIONS}"
   tags:
     - vm
     - ubuntu26.04

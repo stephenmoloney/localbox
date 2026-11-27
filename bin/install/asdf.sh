@@ -29,11 +29,12 @@ fi
 function install_asdf() {
     local version="${1}"
 
-    maybe_install_apt_pkg "curl" "*"
-    maybe_install_apt_pkg "dirmngr" "*"
-    maybe_install_apt_pkg "gawk" "*"
-    maybe_install_apt_pkg "git" "*"
-    maybe_install_apt_pkg "gpg" "*"
+    maybe_install_apt_pkgs_with_versions \
+        curl "*" \
+        dirmngr "*" \
+        gawk "*" \
+        git "*" \
+        gpg "*"
 
     if [[ -d "${HOME}/.asdf" ]]; then
         pushd "${HOME}/.asdf" || exit

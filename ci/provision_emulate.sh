@@ -28,6 +28,32 @@ PROJECT_ROOT="$(project_root)"
 function create_user() {
     apt update -y -qq
     apt install -y sudo make
+
+    # Force the Noninteractive debconf frontend permanently in the container.
+    # Setting DEBIAN_FRONTEND via docker exec env does not survive the
+    # provisioning chain: sudo-rs (the default sudo on ubuntu 26.04) ignores
+    # --preserve-env and strips the variable, so apt under sudo still got
+    # interactive prompts (keyboard-configuration hang). The debconf
+    # database setting applies to every apt/dpkg invocation regardless of
+    # environment, user, or sudo boundary, and survives docker commit.
+    echo 'debconf debconf/frontend select Noninteractive' | debconf-set-selections
+
+    # Answer dpkg conffile prompts the CI way: keep whatever is already
+    # on disk unless the package has no local version.
+    cat >/etc/apt/apt.conf.d/99localbox-ci <<'EOF'
+DPkg::Options {
+   "--force-confdef";
+   "--force-confold";
+};
+EOF
+
+    # The .env sets LC_ALL=en_US.UTF-8; slim docker images ship no locales,
+    # so generate it here or every sourced shell warns (and perl/apt complain)
+    apt install -y locales
+    sed -i 's/^# *en_US.UTF-8 UTF-8/en_US.UTF-8 UTF-8/' /etc/locale.gen
+    locale-gen
+    update-locale LANG=en_US.UTF-8 LC_ALL=en_US.UTF-8
+
     if [[ -z "$(grep ubuntu /etc/passwd 2>/dev/null || true)" ]]; then
         if [[ -d /home/ubuntu ]]; then
             groupadd -r ubuntu
@@ -50,9 +76,23 @@ function create_user() {
                 ubuntu
         fi
         usermod -a -G sudo ubuntu
-        echo "%sudo ALL=(ALL:ALL) NOPASSWD: ALL" >>/etc/sudoers
-        sudo chown -R ubuntu:ubuntu /home/ubuntu
+        chown -R ubuntu:ubuntu /home/ubuntu
     fi
+
+    # Grant passwordless sudo unconditionally (not only on user creation),
+    # via a per-USER drop-in: sudo-rs (the default sudo on ubuntu 26.04)
+    # reliably honours user specs, whereas group specs ("%sudo") are the
+    # historically flaky part. /etc/sudoers.d is included by default.
+    echo "ubuntu ALL=(ALL:ALL) NOPASSWD: ALL" >/etc/sudoers.d/ubuntu
+    chmod 0440 /etc/sudoers.d/ubuntu
+
+    # Fail loudly right here if passwordless sudo is broken, instead of
+    # mid-provision with password prompts no one can answer.
+    if ! su - ubuntu -c "sudo -n true" >/dev/null 2>&1; then
+        echo "ERROR: passwordless sudo for user ubuntu is not working" >&2
+        exit 1
+    fi
+    echo "passwordless sudo for user ubuntu verified"
 }
 
 function get_image_status() {
@@ -69,7 +109,12 @@ function emulate_ci() {
     local new_image_hash
 
     docker_status="$(get_image_status)"
-    image_name=ubuntu:22.04
+    image_name=ubuntu:26.04
+
+    if ! docker image inspect "${image_name}" >/dev/null 2>&1; then
+        echo "Image ${image_name} not found locally, pulling..."
+        docker pull "${image_name}"
+    fi
 
     echo "Current state of localbox docker container: ${docker_status}"
     if [[ "${docker_status}" == "removing" ]]; then
@@ -88,14 +133,19 @@ function emulate_ci() {
         docker commit \
             "$(docker ps -a --filter=name=localbox --latest -q 2>/dev/null || true)" \
             "${image_name}" 2>/dev/null ||
-            docker tag ubuntu:22.04 "${image_name}"
+            docker tag ubuntu:26.04 "${image_name}"
         # Remove the previous container (if any)
         docker rm -f localbox 2>/dev/null || true
         # Start the new container and keep it alive
+        cpu_percent=50
+        cpu_cores="$(nproc)"
+        cpu_quota=$(( cpu_cores * 100000 * cpu_percent / 100 ))
         docker run \
             -d \
-            --kernel-memory=4g \
-            --cpus=4 \
+            --memory=4g \
+            --memory-swap=4g \
+            --cpu-period=100000 \
+            --cpu-quota="${cpu_quota}" \
             --name localbox \
             --dns 1.1.1.1 \
             "${image_name}" \
@@ -110,16 +160,23 @@ function emulate_ci() {
     docker exec -ti localbox bash -c "rm -rf /root/localbox"
     docker cp "${PROJECT_ROOT}" localbox:/root/localbox
 
-    # Prepare the container (install ubuntu user and sudo)
+    # Prepare the container (install ubuntu user, sudo, locales and the
+    # noninteractive debconf frontend)
     docker exec \
         -ti \
         -e CI=true \
+        -e DEBIAN_FRONTEND=noninteractive \
         --workdir /root/localbox \
         localbox \
         bash -c "source ./ci/provision_emulate.sh && create_user"
+
     # Copy in files from this repository for access from ubuntu user
     docker exec -ti localbox bash -c "rm -rf /home/ubuntu/src/open/localbox"
     docker cp "${PROJECT_ROOT}" localbox:/home/ubuntu/src/open/localbox
+
+    # docker cp lays files down as root; hand the tree back to the
+    # ubuntu user or every mkdir/write under ${HOME} fails later
+    docker exec localbox bash -c "chown -R ubuntu:ubuntu /home/ubuntu"
 
     # Run the install and configure commands
     docker exec \
@@ -128,6 +185,7 @@ function emulate_ci() {
         --user ubuntu \
         -e USER=ubuntu \
         -e CI=true \
+        -e DEBIAN_FRONTEND=noninteractive \
         localbox \
         bash -c 'make provision'
 }

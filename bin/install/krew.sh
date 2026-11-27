@@ -45,6 +45,21 @@ else
 fi
 # ****************************************************************************
 
+# Heal a common asdf state: the version is registered as installed but the
+# shim is missing (interrupted install callback) or ~/.asdf/shims is not
+# on PATH in this shell. krew needs a working kubectl before anything else.
+if ! command -v kubectl >/dev/null 2>&1; then
+    if [[ -d "${HOME}/.asdf/shims" ]]; then
+        export PATH="${HOME}/.asdf/shims:${PATH}"
+    fi
+fi
+if ! command -v kubectl >/dev/null 2>&1; then
+    if asdf plugin list 2>/dev/null | grep -qx kubectl; then
+        echo "kubectl shim missing despite version being registered, running asdf reshim"
+        asdf reshim kubectl
+    fi
+fi
+
 maybe_install_kubectl_as_fallback
 
 function get_current_krew_version() {

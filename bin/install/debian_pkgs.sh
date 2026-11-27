@@ -63,60 +63,49 @@ DEBIAN_PKGS=(
     ["tree"]="*"
     ["unzip"]="*"
     ["wget"]="*"
+    ["pipx"]="*"
     ["xsel"]="*"
 )
-GUI_APPS="git-cola gitk gnome-tweaks xsel"
+GUI_APPS="fastfetch git-cola gitk gnome-browser-connector gnome-tweaks xsel"
 
 function requires_gui() {
     local pkg="${1}"
 
     if [[ -z "$(grep "${pkg}" <<<"${GUI_APPS}" 2>/dev/null || true)" ]]; then
-        echo "no"
+        echo "false"
     else
-        echo "yes"
+        echo "true"
     fi
 }
 
 function main() {
-    export HEADLESS_ONLY="${HEADLESS_ONLY:-false}"
-
-    if [[ "${HEADLESS_ONLY:-false}" == "true" ]]; then
-        echo "Installing packages classified as not requiring a gui"
-    fi
+    local pkg
+    local pkg_version
+    local -a pkg_args=()
+    local -a pinned=()
 
     for pkg in "${!DEBIAN_PKGS[@]}"; do
-        local is_gui_app
+        if [[ "$(requires_gui "${pkg}")" == "true" ]]; then
+            continue
+        fi
 
-        is_gui_app="$(requires_gui "${pkg}")"
+        pkg_version="${DEBIAN_PKGS[$pkg]}"
+        pkg_args+=("${pkg}" "${pkg_version}")
 
-        if [[ "${HEADLESS_ONLY:-false}" != "true" ]]; then
-
-            maybe_install_apt_pkg \
-                "${pkg}" \
-                "${DEBIAN_PKGS[$pkg]}"
-
-            # Pin the package to the given version (if not *)
-            if [[ "${pkg}" != "*" ]]; then
-                apt_hold_pkg "${pkg}"
-            fi
-
-        elif [[ "${HEADLESS_ONLY:-false}" == "true" ]] && [[ "${is_gui_app}" == "no" ]]; then
-
-            maybe_install_apt_pkg \
-                "${pkg}" \
-                "${DEBIAN_PKGS[$pkg]}"
-
-            # Pin the package to the given version (if not *)
-            if [[ "${pkg}" != "*" ]]; then
-                apt_hold_pkg "${pkg}"
-            fi
-
+        if [[ "${pkg_version}" != "*" ]]; then
+            pinned+=("${pkg}")
         fi
     done
 
-    sudo apt-get install -y pipx
-    sudo pipx ensurepath --force
-    source "${HOME}"/.bashrc
+    if [[ "${#pkg_args[@]}" -gt 0 ]]; then
+        maybe_install_apt_pkgs_with_versions "${pkg_args[@]}"
+    fi
+
+    # Pin the packages to their versions (where not *)
+    for pkg in "${pinned[@]}"; do
+        apt_hold_pkg "${pkg}"
+    done
+
     sudo apt-mark showhold
 }
 

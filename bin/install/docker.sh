@@ -27,11 +27,21 @@ fi
 
 function get_full_version() {
     local version="${1}"
+    local full_version
 
-    apt-cache madison docker-ce |
+    full_version="$(apt-cache madison docker-ce |
         grep "${version}" |
         head -n1 |
-        awk '{print $3}'
+        awk '{print $3}' || true)"
+
+    if [[ -z "${full_version}" ]]; then
+        echo "ERROR: docker-ce version ${version} not found in the docker apt repository" >&2
+        echo "Available versions:" >&2
+        apt-cache madison docker-ce >&2 || true
+        return 1
+    fi
+
+    echo "${full_version}"
 }
 
 function install_docker() {
@@ -42,8 +52,9 @@ function install_docker() {
     maybe_install_apt_pkg "curl" "*"
     maybe_install_apt_pkg "gpg" "*"
 
-    full_version=$(get_full_version "${version}")
-
+    # Add the docker apt repo FIRST, then refresh indexes, and only then
+    # resolve the requested version — madison can only see the repo's
+    # packages after this
     sudo install -m 0755 -d /etc/apt/keyrings
     sudo curl -fsSL https://download.docker.com/linux/ubuntu/gpg -o /etc/apt/keyrings/docker.asc
     sudo chmod a+r /etc/apt/keyrings/docker.asc
@@ -53,6 +64,10 @@ function install_docker() {
         https://download.docker.com/linux/ubuntu \
         $(. /etc/os-release && echo "$VERSION_CODENAME") \
         stable" | sudo tee /etc/apt/sources.list.d/docker.list >/dev/null
+
+    sudo apt update -y -qq
+
+    full_version="$(get_full_version "${version}")"
 
     maybe_install_apt_pkg "containerd.io" "*"
     maybe_install_apt_pkg "docker-ce" "${full_version}"

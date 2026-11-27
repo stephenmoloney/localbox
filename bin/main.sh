@@ -31,11 +31,6 @@ trap 'exit_code=$?; exit_handler "${exit_code}" "ERR"' ERR
 function opts_handling() {
     opts_handler "${@}"
 
-    if [[ "${HEADLESS_ONLY:-false}" == "true" ]]; then
-        echo "installing in headless mode"
-    else
-        echo "installing in standard mode"
-    fi
     if [[ "${SOURCE_ENV_FILE:-true}" == "true" ]]; then
         echo "Sourcing environment variables from ${PROJECT_ROOT}/.env"
         set -o allexport
@@ -73,7 +68,7 @@ function install() {
     exec_with_retries "${PROJECT_ROOT}/bin/install/docker.sh" 0 2 "${DOCKER_VERSION:-}"
     exec_with_retries "${PROJECT_ROOT}/bin/install/docker_compose.sh" 0 2 "${DOCKER_COMPOSE_VERSION:-}"
     exec_with_retries "${PROJECT_ROOT}/bin/install/dotnet_core.sh" 0 2 "${DOTNET_CORE_SDK_VERSION:-}"
-    if [[ "$(is_docker)" != "true" ]] && [[ "$(headless_only)" != "true" ]]; then
+    if [[ "$(is_docker)" != "true" ]]; then
         "${PROJECT_ROOT}/bin/install/flatpak.sh" "${FLATPAK_VERSION:-}" "${FREEDESKTOP_VERSION:-}"
     fi
     exec_with_retries "${PROJECT_ROOT}/bin/install/gogh.sh" 0 2 "${GOGH_VERSION:-}"
@@ -135,7 +130,7 @@ function setup() {
     setup_docker
     setup_editorconfig
     setup_git_dotfiles
-    if [[ "$(is_docker)" != "true" ]] && [[ "$(headless_only)" != "true" ]]; then
+    if [[ "$(is_docker)" != "true" ]]; then
         setup_gnome_terminal_profiles "${SELECTED_THEME:-}"
     fi
     setup_go

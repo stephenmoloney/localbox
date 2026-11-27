@@ -1,11 +1,5 @@
 SHELL = bash
 
-ifeq ($(headless), true)
-	install_args := --headless=true
-else
-	install_args := --headless=false
-endif
-
 ifeq ($(fallback_versions), true)
 	preinstall_args := --use-fallback-versions=true
 else

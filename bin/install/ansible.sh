@@ -25,6 +25,12 @@ else
 fi
 # ************************************************************************
 
+# pipx installs app shims here; make sure it is on PATH before any
+# pipx-managed command is invoked
+if [[ ":${PATH}:" != *":${HOME}/.local/bin:"* ]]; then
+    export PATH="${HOME}/.local/bin:${PATH}"
+fi
+
 function get_current_version() {
     ansible --version 2>/dev/null | cut -d ' ' -f2 || true
 }
@@ -36,8 +42,9 @@ function install_ansible() {
     maybe_install_apt_pkg "python3-pip" "*"
     if ! command -v pipx &>/dev/null; then
         sudo apt-get install -y pipx
-        sudo pipx ensurepath --force
-        export PATH="$HOME/.local/bin:$PATH"
+        # Run as the invoking user: 'sudo pipx ensurepath' would configure
+        # root's environment, not this user's
+        pipx ensurepath --force
     fi
 
     current_version="$(get_current_version)"
@@ -49,15 +56,17 @@ function install_ansible() {
         echo "Skipping installation"
     fi
 
-    if [[ -z "$(grep "${HOME}/.local/bin" <<<"${PATH}" 2>/dev/null || true)" ]]; then
-        export PATH="${PATH}:${HOME}/.local/bin"
-    fi
-
     ansible --version
 }
 
 function install_ansible_auxillaries() {
-    pipx inject ansible-core ansible-lint
+    # Install ansible-lint in its own pipx venv rather than injecting into
+    # ansible-core: injection proved fragile (the package lands in the venv
+    # but its app shim can silently fail to materialise, giving
+    # 'command not found' with pipx reporting success)
+    if ! command -v ansible-lint >/dev/null 2>&1; then
+        pipx install ansible-lint
+    fi
 
     ansible-lint --version
 }
